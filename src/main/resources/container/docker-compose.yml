@@ -1,0 +1,18 @@
+version: "3"
+
+services:
+  python-3.8:
+    hostname: python-3.8
+    container_name: python-3.8
+    restart: always
+    build:
+      context: ./python-3.8
+      dockerfile: Dockerfile
+
+  python-2.7:
+    hostname: python-2.7
+    container_name: python-2.7
+    restart: always
+    build:
+      context: ./python-2.7
+      dockerfile: Dockerfile
