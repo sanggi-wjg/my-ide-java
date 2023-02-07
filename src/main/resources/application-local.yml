@@ -46,11 +46,16 @@ logging:
             sql: trace
     web: debug
 
-#springdoc:
-#  swagger-ui:
-#    display-request-duration: true
-#  api-docs:
-#    enabled: true
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+    display-request-duration: true
+    tags-sorter: alpha
+    operations-sorter: alpha
+#  paths-to-match: /*
+#  packages-to-scan: *
 
 server:
   port: 9000
