@@ -5,9 +5,9 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.PropertySources;
 
 @Configuration
-@PropertySources(
+@PropertySources({
         @PropertySource(value = "classpath:properties/.env")
-)
+})
 public class PropertyConfig {
 
 }

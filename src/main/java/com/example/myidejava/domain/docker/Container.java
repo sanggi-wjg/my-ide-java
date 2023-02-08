@@ -1,4 +1,4 @@
-package com.example.myidejava.domain.container;
+package com.example.myidejava.domain.docker;
 
 import jakarta.persistence.*;
 import lombok.Getter;

@@ -1,37 +1,37 @@
 package com.example.myidejava.core.util;
 
 import com.github.dockerjava.api.DockerClient;
+import com.github.dockerjava.api.command.ListContainersCmd;
 import com.github.dockerjava.api.model.Container;
 import com.github.dockerjava.core.DefaultDockerClientConfig;
-import com.github.dockerjava.core.DockerClientBuilder;
+import com.github.dockerjava.core.DockerClientImpl;
+import com.github.dockerjava.httpclient5.ApacheDockerHttpClient;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 @Component
 @Slf4j
 public class MyDockerClient {
-    @Value("${DOCKER_HOST}")
-    private String dockerHost;
-
-//    public MyDockerClient() {
-//        DefaultDockerClientConfig configBuilder = DefaultDockerClientConfig.createDefaultConfigBuilder()
-//                .withDockerHost(this.DOCKER_HOST)
-//                .build();
-//    }
+    private final Logger logger = LoggerFactory.getLogger(MyDockerClient.class);
 
     public void getContainers() {
-        DefaultDockerClientConfig configBuilder = DefaultDockerClientConfig.createDefaultConfigBuilder()
-                .withDockerHost(this.dockerHost)
-                .withDockerTlsVerify(false)
+        DefaultDockerClientConfig config = DefaultDockerClientConfig.createDefaultConfigBuilder()
                 .build();
 
-        System.out.println(this.dockerHost);
-        DockerClient dockerClient = DockerClientBuilder.getInstance().build();
-        List<Container> containers = dockerClient.listContainersCmd().exec();
-        containers.forEach(System.out::println);
+        ApacheDockerHttpClient httpClient = new ApacheDockerHttpClient.Builder()
+                .dockerHost(config.getDockerHost())
+                .maxConnections(100)
+//                .connectionTimeout(Duration.ofSeconds(10))
+//                .responseTimeout(Duration.ofSeconds(20))
+                .build();
+
+        DockerClient dockerClient = DockerClientImpl.getInstance(config, httpClient);
+        ListContainersCmd listContainersCmd = dockerClient.listContainersCmd().withShowAll(true);
+        for (Container container : listContainersCmd.exec()) {
+            System.out.println(container.getId());
+        }
     }
 
 }
