@@ -32,19 +32,15 @@ spring:
 
 logging:
   level:
+    web: debug
+    root: info
     org:
       springframework:
         web: debug
-        data:
-          elasticsearch:
-            client:
-              WIRE: trace
-            core: debug
       hibernate:
         type:
           descriptor:
             sql: trace
-    web: debug
 
 springdoc:
   api-docs:

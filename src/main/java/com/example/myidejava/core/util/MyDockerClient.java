@@ -1,8 +1,8 @@
 package com.example.myidejava.core.util;
 
+import com.example.myidejava.dto.docker.ContainerDto;
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.command.ListContainersCmd;
-import com.github.dockerjava.api.model.Container;
 import com.github.dockerjava.core.DefaultDockerClientConfig;
 import com.github.dockerjava.core.DockerClientImpl;
 import com.github.dockerjava.httpclient5.ApacheDockerHttpClient;
@@ -11,27 +11,48 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Component
 @Slf4j
 public class MyDockerClient {
-    private final Logger logger = LoggerFactory.getLogger(MyDockerClient.class);
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final DefaultDockerClientConfig config;
+    private final ApacheDockerHttpClient httpClient;
 
-    public void getContainers() {
-        DefaultDockerClientConfig config = DefaultDockerClientConfig.createDefaultConfigBuilder()
-                .build();
-
-        ApacheDockerHttpClient httpClient = new ApacheDockerHttpClient.Builder()
+    public MyDockerClient() {
+        config = DefaultDockerClientConfig.createDefaultConfigBuilder().build();
+        httpClient = new ApacheDockerHttpClient.Builder()
                 .dockerHost(config.getDockerHost())
                 .maxConnections(100)
 //                .connectionTimeout(Duration.ofSeconds(10))
 //                .responseTimeout(Duration.ofSeconds(20))
                 .build();
+    }
 
-        DockerClient dockerClient = DockerClientImpl.getInstance(config, httpClient);
-        ListContainersCmd listContainersCmd = dockerClient.listContainersCmd().withShowAll(true);
-        for (Container container : listContainersCmd.exec()) {
-            System.out.println(container.getId());
+    protected DockerClient getDockerClient() {
+        return DockerClientImpl.getInstance(config, httpClient);
+    }
+
+    public List<ContainerDto> getAllContainers() {
+        List<ContainerDto> containerRespons = new ArrayList<>();
+
+        try (ListContainersCmd containersCmd = getDockerClient().listContainersCmd().withShowAll(true)) {
+            containersCmd.exec().stream()
+                    .filter(container -> container.getImage().contains("docker-"))
+                    .forEach(container -> containerRespons.add(
+                            ContainerDto.builder()
+                                    .containerId(container.getId())
+                                    .dockerImageName(container.getImage())
+                                    .containerNames(container.getNames())
+                                    .createdAt(container.getCreated())
+                                    .containerState(container.getState())
+                                    .containerStatus(container.getStatus())
+                                    .build()
+                    ));
         }
+        return containerRespons;
     }
 
 }
