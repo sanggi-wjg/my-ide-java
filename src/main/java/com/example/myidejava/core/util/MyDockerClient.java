@@ -1,6 +1,8 @@
 package com.example.myidejava.core.util;
 
 import com.example.myidejava.dto.docker.ContainerDto;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.command.ListContainersCmd;
 import com.github.dockerjava.core.DefaultDockerClientConfig;
@@ -11,8 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Component
 @Slf4j
@@ -36,23 +37,35 @@ public class MyDockerClient {
     }
 
     public List<ContainerDto> getAllContainers() {
-        List<ContainerDto> containerRespons = new ArrayList<>();
+        List<ContainerDto> containerDtoList = new ArrayList<>();
 
         try (ListContainersCmd containersCmd = getDockerClient().listContainersCmd().withShowAll(true)) {
             containersCmd.exec().stream()
                     .filter(container -> container.getImage().contains("docker-"))
-                    .forEach(container -> containerRespons.add(
-                            ContainerDto.builder()
-                                    .containerId(container.getId())
-                                    .dockerImageName(container.getImage())
-                                    .containerNames(container.getNames())
-                                    .createdAt(container.getCreated())
-                                    .containerState(container.getState())
-                                    .containerStatus(container.getStatus())
-                                    .build()
-                    ));
+                    .forEach(container -> {
+                                Map<String, Integer> map = new HashMap<>();
+                                Arrays.stream(container.getPorts()).forEach(
+                                        port -> map.put(
+                                                port.getIp() == null ? "localhost" : port.getIp(),
+                                                port.getPrivatePort()
+                                        ));
+                                try {
+                                    ObjectMapper mapper = new ObjectMapper();
+                                    containerDtoList.add(
+                                            ContainerDto.builder()
+                                                    .containerId(container.getId())
+                                                    .dockerImageName(container.getImage())
+                                                    .containerState(container.getState())
+                                                    .containerStatus(container.getStatus())
+                                                    .containerPorts(mapper.writeValueAsString(map))
+                                                    .build());
+                                } catch (JsonProcessingException e) {
+                                    throw new RuntimeException(e);
+                                }
+                            }
+                    );
         }
-        return containerRespons;
+        return containerDtoList;
     }
 
 }

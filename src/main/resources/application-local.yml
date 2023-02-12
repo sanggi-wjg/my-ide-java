@@ -25,6 +25,7 @@ spring:
         default_batch_fetch_size: 1000
         show_sql: true
         format_sql: true
+        globally_quoted_identifiers: true
 
   jackson:
     serialization:
@@ -38,9 +39,10 @@ logging:
       springframework:
         web: debug
       hibernate:
-        type:
-          descriptor:
-            sql: trace
+        sql: debug
+        type: trace
+#          descriptor:
+#            sql: trace
 
 springdoc:
   api-docs:

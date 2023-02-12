@@ -1,6 +1,5 @@
 package com.example.myidejava.dto.docker;
 
-import com.example.myidejava.domain.docker.Container;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,8 +21,11 @@ public class ContainerDto {
     @Schema(description = "도커 이미지 이름", defaultValue = "docker-python-3.8")
     private String dockerImageName;
 
-    @Schema(description = "도커 컨테이너 이름들", defaultValue = "/python-3.8")
-    private String[] containerNames;
+    @Schema(description = "언어 이름", defaultValue = "python")
+    private String languageName;
+
+    @Schema(description = "언어 버전", defaultValue = "3.8")
+    private String languageVersion;
 
     @Schema(description = "도커 컨테이너 Up/Down 상태", defaultValue = "Up 3 days")
     private String containerStatus;
@@ -31,8 +33,26 @@ public class ContainerDto {
     @Schema(description = "도커 컨테이너 상태", defaultValue = "running")
     private String containerState;
 
-    @Schema(description = "도커 컨테이너 생성 시간(Timestamp)", defaultValue = "1675597026")
-    private Long createdAt;
+
+    @Schema(description = "도커 컨테이너 Open Port", defaultValue = "8000")
+    private String containerPorts;
+
+//    public static class ContainerDtoBuilder {
+//        public ContainerDtoBuilder containerPorts(ContainerPort[] ports) {
+//            ObjectMapper mapper = new ObjectMapper();
+////            Map<String, Integer> map = new HashMap<>();
+//
+////            Arrays.stream(ports).forEach(port -> {
+////                map.put(port.getIp(), port.getPublicPort());
+////            });
+//            try {
+//                this.containerPorts = mapper.writeValueAsString(map);
+//            } catch (JsonProcessingException e) {
+//                throw new RuntimeException(e);
+//            }
+//            return this;
+//        }
+//    }
 
     public String getLanguageName() {
         return getDockerImageName().split("-")[1];

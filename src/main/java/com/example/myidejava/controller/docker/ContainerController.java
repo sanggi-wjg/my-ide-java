@@ -23,8 +23,7 @@ public class ContainerController {
     @GetMapping("/containers")
     @ApiResponse(responseCode = "200", description = "도커 컨테이너 리스트")
     public ResponseEntity<List<ContainerDto>> getContainers() {
-        List<ContainerDto> containers = containerService.getAllContainers();
-        return ResponseEntity.ok().body(containers);
+        return ResponseEntity.ok(containerService.getAllContainers());
     }
 
     @PostMapping("/containers/{container_id}")
@@ -33,7 +32,7 @@ public class ContainerController {
             @PathVariable("container_id") Long containerId,
             @RequestBody @Valid RunCodeRequest runCodeRequest
     ) {
-        return ResponseEntity.ok().body(runCodeRequest.getCode());
+        return ResponseEntity.ok(runCodeRequest.getCode());
     }
 
 

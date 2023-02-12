@@ -2,6 +2,7 @@ package com.example.myidejava.service.docker;
 
 import com.example.myidejava.core.AppProperty;
 import com.example.myidejava.core.util.MyDockerClient;
+import com.example.myidejava.domain.docker.Container;
 import com.example.myidejava.dto.docker.ContainerDto;
 import com.example.myidejava.mapper.ContainerMapper;
 import com.example.myidejava.repository.docker.ContainerRepository;
@@ -25,6 +26,7 @@ public class ContainerService {
     public void init() {
         List<ContainerDto> containers = myDockerClient.getAllContainers();
         containers.forEach(containerDto -> {
+            // todo : 만약 컨테이너가 올라와 있지 않다면, docker-compose 실행 하도록 코드 추가.
             if (appProperty.isContainDockerImageName(containerDto.getDockerImageName())) {
                 createOrUpdate(containerDto);
             }
@@ -32,15 +34,14 @@ public class ContainerService {
     }
 
     public void createOrUpdate(ContainerDto containerDto) {
-        containerRepository.findByLanguageNameAndLanguageVersion(
-                containerDto.getLanguageName(), containerDto.getLanguageVersion())
+        containerRepository.findByLanguageNameAndLanguageVersion(containerDto.getLanguageName(), containerDto.getLanguageVersion())
                 .ifPresentOrElse(
-                        container -> container.update(containerDto),
+                        container -> container.saveContainerInfo(containerDto),
                         () -> containerRepository.save(containerMapper.INSTANCE.toEntity(containerDto))
                 );
     }
 
     public List<ContainerDto> getAllContainers() {
-        return myDockerClient.getAllContainers();
+        return containerMapper.INSTANCE.ofDtoList(containerRepository.findAll());
     }
 }
