@@ -10,17 +10,17 @@ import javax.persistence.Column;
 import javax.persistence.EntityListeners;
 import java.time.LocalDateTime;
 
+@Getter
 @MappedSuperclass
 @EntityListeners({AuditingEntityListener.class})
-@Getter
-public class BaseDateTime {
+public abstract class BaseDateTime {
 
     @CreatedDate
-    @Column(name = "created_at", updatable = false)
+    @Column(name = "created_at", updatable = false, nullable = false)
     private LocalDateTime createdAt;
 
     @LastModifiedDate
-    @Column(name = "updated_at")
+    @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 
     @Column(name = "deleted_at")

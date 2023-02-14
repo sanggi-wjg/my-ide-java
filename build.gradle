@@ -44,6 +44,10 @@ dependencies {
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
     testImplementation 'org.springframework.security:spring-security-test'
 
+    // jpa hibernate audit
+//    implementation 'org.hibernate:hibernate-envers:6.1.7.Final'
+
+
     // hibernate Json Field Helper
     implementation 'io.hypersistence:hypersistence-utils-hibernate-60:3.1.2'
     implementation 'com.fasterxml.jackson.module:jackson-module-jakarta-xmlbind-annotations'

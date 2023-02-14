@@ -41,8 +41,11 @@ logging:
       hibernate:
         sql: debug
         type: trace
-#          descriptor:
-#            sql: trace
+        descriptor:
+          sql: trace
+        orm:
+          jdbc:
+            bind: trace
 
 springdoc:
   api-docs:

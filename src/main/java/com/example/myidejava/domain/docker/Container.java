@@ -54,10 +54,7 @@ public class Container extends BaseDateTime {
     private CodeExecutorType codeExecutorType;
 
     public void saveCodeExecutorType() {
-        if (getContainerPorts().isEmpty()) {
-            codeExecutorType = CodeExecutorType.DOCKER_EXEC;
-        }
-        codeExecutorType = CodeExecutorType.HTTP;
+        codeExecutorType = getContainerPorts().isEmpty() ? CodeExecutorType.DOCKER_EXEC : CodeExecutorType.HTTP;
     }
 
     public void saveContainerInfo(ContainerDto containerDto) {

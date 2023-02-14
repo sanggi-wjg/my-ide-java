@@ -10,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.PostConstruct;
 import java.util.List;
 
 @Transactional
@@ -22,8 +21,7 @@ public class ContainerService {
     private final ContainerRepository containerRepository;
     private final ContainerMapper containerMapper;
 
-    @PostConstruct
-    public void init() {
+    public void initialize() {
         List<ContainerDto> containers = myDockerClient.getAllContainers();
         containers.forEach(containerDto -> {
             // todo : 만약 컨테이너가 올라와 있지 않다면, docker-compose 실행 하도록 코드 추가.
@@ -36,7 +34,9 @@ public class ContainerService {
     public void createOrUpdate(ContainerDto containerDto) {
         containerRepository.findByLanguageNameAndLanguageVersion(containerDto.getLanguageName(), containerDto.getLanguageVersion())
                 .ifPresentOrElse(
-                        container -> container.saveContainerInfo(containerDto),
+                        container -> {
+                            container.saveContainerInfo(containerDto);
+                        },
                         () -> {
                             Container container = containerMapper.INSTANCE.toEntity(containerDto);
                             container.saveCodeExecutorType();
@@ -45,8 +45,10 @@ public class ContainerService {
                 );
     }
 
-    @Transactional(readOnly = true)
+    @Transactional(readOnly = false)
     public List<ContainerDto> getAllContainers() {
+        Container container = Container.builder().containerId("123").dockerImageName("docker-php-7.6").languageName("php").languageVersion("7.6").containerStatus("rr").containerState("aa").build();
+        containerRepository.save(container);
         return containerMapper.INSTANCE.ofDtoList(containerRepository.findAll());
     }
 }
