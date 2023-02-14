@@ -33,7 +33,7 @@ spring:
 
 logging:
   level:
-    web: debug
+    web: info
     root: info
     org:
       springframework:

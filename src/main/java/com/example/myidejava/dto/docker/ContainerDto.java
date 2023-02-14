@@ -1,7 +1,5 @@
 package com.example.myidejava.dto.docker;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.dockerjava.api.model.Container;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -40,9 +38,8 @@ public class ContainerDto {
     @Schema(description = "도커 컨테이너 상태", defaultValue = "running")
     private String containerState;
 
-
     @Schema(description = "도커 컨테이너 Open Port", defaultValue = "8000")
-    private String containerPorts;
+    private Map<String, Object> containerPorts;
 
     public String getLanguageName() {
         return getDockerImageName().split("-")[1];
@@ -53,24 +50,19 @@ public class ContainerDto {
     }
 
     public static ContainerDto containerToDto(Container container) {
-        Map<String, Integer> map = new HashMap<>();
+        Map<String, Object> map = new HashMap<>();
         Arrays.stream(container.getPorts()).forEach(
                 port -> map.put(
                         port.getIp() == null ? "localhost" : port.getIp(),
                         port.getPrivatePort()
                 ));
-        try {
-            ObjectMapper mapper = new ObjectMapper();
-            return ContainerDto.builder()
-                    .containerId(container.getId())
-                    .dockerImageName(container.getImage())
-                    .containerState(container.getState())
-                    .containerStatus(container.getStatus())
-                    .containerPorts(mapper.writeValueAsString(map))
-                    .build();
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
+        return ContainerDto.builder()
+                .containerId(container.getId())
+                .dockerImageName(container.getImage())
+                .containerState(container.getState())
+                .containerStatus(container.getStatus())
+                .containerPorts(map)
+                .build();
     }
 
 }

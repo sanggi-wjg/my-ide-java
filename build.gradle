@@ -44,12 +44,9 @@ dependencies {
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
     testImplementation 'org.springframework.security:spring-security-test'
 
-    // https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core
-    implementation 'com.fasterxml.jackson.core:jackson-core:2.13.5'
-
     // hibernate Json Field Helper
     implementation 'io.hypersistence:hypersistence-utils-hibernate-60:3.1.2'
-    implementation 'com.fasterxml.jackson.module:jackson-module-jakarta-xmlbind-annotations:2.14.1'
+    implementation 'com.fasterxml.jackson.module:jackson-module-jakarta-xmlbind-annotations'
 
     // MapStruct
     annotationProcessor 'org.projectlombok:lombok-mapstruct-binding:0.2.0'

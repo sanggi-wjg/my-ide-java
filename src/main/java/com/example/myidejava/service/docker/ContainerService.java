@@ -37,10 +37,15 @@ public class ContainerService {
         containerRepository.findByLanguageNameAndLanguageVersion(containerDto.getLanguageName(), containerDto.getLanguageVersion())
                 .ifPresentOrElse(
                         container -> container.saveContainerInfo(containerDto),
-                        () -> containerRepository.save(containerMapper.INSTANCE.toEntity(containerDto))
+                        () -> {
+                            Container container = containerMapper.INSTANCE.toEntity(containerDto);
+                            container.saveCodeExecutorType();
+                            containerRepository.save(container);
+                        }
                 );
     }
 
+    @Transactional(readOnly = true)
     public List<ContainerDto> getAllContainers() {
         return containerMapper.INSTANCE.ofDtoList(containerRepository.findAll());
     }

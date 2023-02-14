@@ -10,6 +10,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Type;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Entity
 @Getter
 @NoArgsConstructor
@@ -44,12 +47,24 @@ public class Container extends BaseDateTime {
 
     @Type(JsonType.class)
     @Column(name = "container_ports", columnDefinition = "json")
-    private String containerPorts;
+    private Map<String, Object> containerPorts = new HashMap<>();
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "code_executor_type")
+    private CodeExecutorType codeExecutorType;
+
+    public void saveCodeExecutorType() {
+        if (getContainerPorts().isEmpty()) {
+            codeExecutorType = CodeExecutorType.DOCKER_EXEC;
+        }
+        codeExecutorType = CodeExecutorType.HTTP;
+    }
 
     public void saveContainerInfo(ContainerDto containerDto) {
-        this.containerId = containerDto.getContainerId();
-        this.containerState = containerDto.getContainerState();
-        this.containerStatus = containerDto.getContainerStatus();
-        this.containerPorts = containerDto.getContainerPorts();
+        containerId = containerDto.getContainerId();
+        containerState = containerDto.getContainerState();
+        containerStatus = containerDto.getContainerStatus();
+        containerPorts = containerDto.getContainerPorts();
+        saveCodeExecutorType();
     }
 }
