@@ -12,6 +12,8 @@ import java.util.List;
 @Component
 @ConfigurationProperties("app")
 public class AppProperty {
+
+    private String dockerImageTitle;
     private List<String> dockerImageNames;
 
     public boolean isContainDockerImageName(String dockerImageName) {

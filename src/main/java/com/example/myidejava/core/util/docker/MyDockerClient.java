@@ -1,4 +1,4 @@
-package com.example.myidejava.core.util;
+package com.example.myidejava.core.util.docker;
 
 import com.example.myidejava.dto.docker.ContainerDto;
 import com.github.dockerjava.api.DockerClient;
@@ -39,7 +39,7 @@ public class MyDockerClient {
         DockerClient dockerClient = getDockerClient();
 
         dockerClient.listContainersCmd().withShowAll(true).exec().stream()
-                .filter(container -> container.getImage().contains("docker-"))
+                .filter(container -> container.getImage().contains("container"))
                 .forEach(container -> containerDtoList.add(ContainerDto.containerToDto(container)));
         return containerDtoList;
     }

@@ -12,7 +12,7 @@ import javax.validation.constraints.NotBlank;
 public class RunCodeRequest {
 
     @NotBlank
-    @Schema(description = "실행할 코드", defaultValue = "print(1)")
+    @Schema(description = "실행할 코드", defaultValue = "print([i for i in range(10)])")
     private String code;
 
 }

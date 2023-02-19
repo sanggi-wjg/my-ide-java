@@ -2,6 +2,7 @@ package com.example.myidejava.domain.docker;
 
 import com.example.myidejava.domain.common.BaseDateTime;
 import com.example.myidejava.dto.docker.ContainerDto;
+import com.google.common.base.Joiner;
 import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -9,15 +10,18 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Type;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Entity
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "container", uniqueConstraints = {
         @UniqueConstraint(name = "uq_container_language_version", columnNames = {"language_name", "language_version"})
 })
@@ -53,11 +57,28 @@ public class Container extends BaseDateTime {
     @Column(name = "code_executor_type")
     private CodeExecutorType codeExecutorType;
 
+    public boolean isTypeDockerExec() {
+        return codeExecutorType.equals(CodeExecutorType.DOCKER_EXEC);
+    }
+
+    public boolean isTypeHttp() {
+        return codeExecutorType.equals(CodeExecutorType.HTTP);
+    }
+
+    public String getHttpUrlAddress() {
+        if (!isTypeHttp()) {
+            throw new IllegalStateException("todo : http type 이 아님");
+        }
+        return "http://" + containerPorts.entrySet().stream().map(m -> m.getKey() + ":" + m.getValue() + "/run").collect(Collectors.joining());
+//        return Joiner.on(":").withKeyValueSeparator(":").join(containerPorts);
+    }
+
     public void saveCodeExecutorType() {
         codeExecutorType = getContainerPorts().isEmpty() ? CodeExecutorType.DOCKER_EXEC : CodeExecutorType.HTTP;
     }
 
     public void saveContainerInfo(ContainerDto containerDto) {
+        dockerImageName = containerDto.getDockerImageName();
         containerId = containerDto.getContainerId();
         containerState = containerDto.getContainerState();
         containerStatus = containerDto.getContainerStatus();

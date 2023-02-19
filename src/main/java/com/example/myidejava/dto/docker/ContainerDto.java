@@ -54,7 +54,7 @@ public class ContainerDto {
         Arrays.stream(container.getPorts()).forEach(
                 port -> map.put(
                         port.getIp() == null ? "localhost" : port.getIp(),
-                        port.getPrivatePort()
+                        port.getPublicPort()
                 ));
         return ContainerDto.builder()
                 .containerId(container.getId())

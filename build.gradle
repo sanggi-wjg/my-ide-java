@@ -44,9 +44,9 @@ dependencies {
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
     testImplementation 'org.springframework.security:spring-security-test'
 
-    // jpa hibernate audit
-//    implementation 'org.hibernate:hibernate-envers:6.1.7.Final'
-
+    // rest template
+    implementation 'org.apache.httpcomponents.core5:httpcore5:5.2.1'
+    implementation 'org.apache.httpcomponents.client5:httpclient5:5.2.1'
 
     // hibernate Json Field Helper
     implementation 'io.hypersistence:hypersistence-utils-hibernate-60:3.1.2'

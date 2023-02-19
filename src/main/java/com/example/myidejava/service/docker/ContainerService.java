@@ -1,11 +1,16 @@
 package com.example.myidejava.service.docker;
 
 import com.example.myidejava.core.AppProperty;
-import com.example.myidejava.core.util.MyDockerClient;
+import com.example.myidejava.core.util.docker.executor.CodeExecutor;
+import com.example.myidejava.core.util.docker.executor.CodeExecutorFactory;
+import com.example.myidejava.core.util.docker.MyDockerClient;
 import com.example.myidejava.domain.docker.Container;
 import com.example.myidejava.dto.docker.ContainerDto;
+import com.example.myidejava.dto.docker.RunCodeRequest;
 import com.example.myidejava.mapper.ContainerMapper;
 import com.example.myidejava.repository.docker.ContainerRepository;
+import com.fasterxml.jackson.databind.JsonNode;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +25,7 @@ public class ContainerService {
     private final MyDockerClient myDockerClient;
     private final ContainerRepository containerRepository;
     private final ContainerMapper containerMapper;
+    private final CodeExecutorFactory codeExecutorFactory;
 
     public void initialize() {
         List<ContainerDto> containers = myDockerClient.getAllContainers();
@@ -34,9 +40,7 @@ public class ContainerService {
     public void createOrUpdate(ContainerDto containerDto) {
         containerRepository.findByLanguageNameAndLanguageVersion(containerDto.getLanguageName(), containerDto.getLanguageVersion())
                 .ifPresentOrElse(
-                        container -> {
-                            container.saveContainerInfo(containerDto);
-                        },
+                        container -> container.saveContainerInfo(containerDto),
                         () -> {
                             Container container = containerMapper.INSTANCE.toEntity(containerDto);
                             container.saveCodeExecutorType();
@@ -45,10 +49,18 @@ public class ContainerService {
                 );
     }
 
-    @Transactional(readOnly = false)
+    @Transactional(readOnly = true)
     public List<ContainerDto> getAllContainers() {
-        Container container = Container.builder().containerId("123").dockerImageName("docker-php-7.6").languageName("php").languageVersion("7.6").containerStatus("rr").containerState("aa").build();
-        containerRepository.save(container);
         return containerMapper.INSTANCE.ofDtoList(containerRepository.findAll());
     }
+
+    public JsonNode executeCode(Long containerId, RunCodeRequest runCodeRequest) {
+        Container container = containerRepository.findById(containerId).orElseThrow(() -> {
+            throw new EntityNotFoundException();
+        });
+
+        CodeExecutor codeExecutor = codeExecutorFactory.create(container);
+        return codeExecutor.execute(container, runCodeRequest.getCode());
+    }
+
 }

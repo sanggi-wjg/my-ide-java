@@ -1,7 +1,7 @@
 import sys
 from io import StringIO
 
-from flask import Flask, request
+from flask import Flask, request, jsonify
 
 app = Flask(__name__)
 
@@ -13,7 +13,12 @@ def run_code():
     sys.stdout = code_output
     sys.stderr = code_error
 
-    code = request.form.get('code', '')
+#     code = request.form.get('code', '')
+    body = request.get_json()
+    code = body.get('code', '')
+    # print(body)
+    # print(code)
+
     try:
         exec(code)
     except Exception as e:
@@ -32,4 +37,5 @@ def run_code():
 
 
 if __name__ == '__main__':
+    app.debug = True
     app.run()

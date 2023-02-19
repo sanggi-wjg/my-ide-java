@@ -29,4 +29,9 @@ public abstract class BaseDateTime {
     @Column(name = "deleted")
     private Boolean deleted = Boolean.FALSE;
 
+    public void delete() {
+        deletedAt = LocalDateTime.now();
+        deleted = Boolean.TRUE;
+    }
+
 }

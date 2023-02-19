@@ -5,6 +5,8 @@ services:
     hostname: python-3.8
     container_name: python-3.8
     restart: always
+    ports:
+      - "5010:5000"
     build:
       context: ./python-3.8
       dockerfile: Dockerfile
