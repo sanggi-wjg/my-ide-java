@@ -16,7 +16,7 @@ import java.util.Map;
 @Builder
 @AllArgsConstructor
 @Schema(description = "컨테이너 Response")
-public class ContainerDto {
+public class ContainerResponse {
     @Schema(description = "컨테이너 ID", defaultValue = "1")
     private Long id;
 
@@ -49,14 +49,14 @@ public class ContainerDto {
         return getDockerImageName().split("-")[2];
     }
 
-    public static ContainerDto containerToDto(Container container) {
+    public static ContainerResponse containerToDto(Container container) {
         Map<String, Object> map = new HashMap<>();
         Arrays.stream(container.getPorts()).forEach(
                 port -> map.put(
                         port.getIp() == null ? "localhost" : port.getIp(),
                         port.getPublicPort()
                 ));
-        return ContainerDto.builder()
+        return ContainerResponse.builder()
                 .containerId(container.getId())
                 .dockerImageName(container.getImage())
                 .containerState(container.getState())

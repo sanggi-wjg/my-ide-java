@@ -1,7 +1,7 @@
 package com.example.myidejava.mapper;
 
 import com.example.myidejava.domain.docker.Container;
-import com.example.myidejava.dto.docker.ContainerDto;
+import com.example.myidejava.dto.docker.ContainerResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
@@ -14,8 +14,8 @@ public interface ContainerMapper {
     ContainerMapper INSTANCE = Mappers.getMapper(ContainerMapper.class);
 
     @Mapping(target = "codeExecutorType", ignore = true)
-    Container toEntity(ContainerDto containerDto);
+    Container toEntity(ContainerResponse containerResponse);
 
-    List<ContainerDto> ofDtoList(List<Container> containers);
+    List<ContainerResponse> ofDtoList(List<Container> containers);
 
 }

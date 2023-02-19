@@ -1,6 +1,7 @@
 package com.example.myidejava.core.util.docker.executor;
 
 import com.example.myidejava.domain.docker.Container;
+import com.example.myidejava.dto.docker.CodeResponse;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -12,7 +13,7 @@ import org.springframework.web.client.RestTemplate;
 @Component
 public class HttpCodeExecutor implements CodeExecutor {
 
-    public JsonNode execute(Container container, String code) {
+    public CodeResponse execute(Container container, String code) {
         ObjectNode jsonNodes = JsonNodeFactory.instance.objectNode();
         jsonNodes.put("code", code);
 
@@ -20,7 +21,11 @@ public class HttpCodeExecutor implements CodeExecutor {
         ResponseEntity<JsonNode> response = restTemplate.postForEntity(container.getHttpUrlAddress(), jsonNodes, JsonNode.class);
 //        if (response.getStatusCode().equals(200) ){
 //        }
-        return response.getBody();
+        JsonNode body = response.getBody();
+        return CodeResponse.builder()
+                .output(body.get("output").textValue())
+                .error(body.get("error").textValue())
+                .build();
     }
 
 }

@@ -1,8 +1,7 @@
 package com.example.myidejava.domain.docker;
 
 import com.example.myidejava.domain.common.BaseDateTime;
-import com.example.myidejava.dto.docker.ContainerDto;
-import com.google.common.base.Joiner;
+import com.example.myidejava.dto.docker.ContainerResponse;
 import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -77,12 +76,12 @@ public class Container extends BaseDateTime {
         codeExecutorType = getContainerPorts().isEmpty() ? CodeExecutorType.DOCKER_EXEC : CodeExecutorType.HTTP;
     }
 
-    public void saveContainerInfo(ContainerDto containerDto) {
-        dockerImageName = containerDto.getDockerImageName();
-        containerId = containerDto.getContainerId();
-        containerState = containerDto.getContainerState();
-        containerStatus = containerDto.getContainerStatus();
-        containerPorts = containerDto.getContainerPorts();
+    public void saveContainerInfo(ContainerResponse containerResponse) {
+        dockerImageName = containerResponse.getDockerImageName();
+        containerId = containerResponse.getContainerId();
+        containerState = containerResponse.getContainerState();
+        containerStatus = containerResponse.getContainerStatus();
+        containerPorts = containerResponse.getContainerPorts();
         saveCodeExecutorType();
     }
 }

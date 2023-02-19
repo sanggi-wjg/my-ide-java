@@ -1,6 +1,6 @@
 package com.example.myidejava.core.util.docker;
 
-import com.example.myidejava.dto.docker.ContainerDto;
+import com.example.myidejava.dto.docker.ContainerResponse;
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.core.DefaultDockerClientConfig;
 import com.github.dockerjava.core.DockerClientImpl;
@@ -34,14 +34,14 @@ public class MyDockerClient {
         return DockerClientImpl.getInstance(config, httpClient);
     }
 
-    public List<ContainerDto> getAllContainers() {
-        List<ContainerDto> containerDtoList = new ArrayList<>();
+    public List<ContainerResponse> getAllContainers() {
+        List<ContainerResponse> containerResponseList = new ArrayList<>();
         DockerClient dockerClient = getDockerClient();
 
         dockerClient.listContainersCmd().withShowAll(true).exec().stream()
                 .filter(container -> container.getImage().contains("container"))
-                .forEach(container -> containerDtoList.add(ContainerDto.containerToDto(container)));
-        return containerDtoList;
+                .forEach(container -> containerResponseList.add(ContainerResponse.containerToDto(container)));
+        return containerResponseList;
     }
 
 }

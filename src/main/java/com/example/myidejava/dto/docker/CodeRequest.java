@@ -9,7 +9,7 @@ import javax.validation.constraints.NotBlank;
 @Getter
 @NoArgsConstructor
 @Schema(description = "코드 실행 Request")
-public class RunCodeRequest {
+public class CodeRequest {
 
     @NotBlank
     @Schema(description = "실행할 코드", defaultValue = "print([i for i in range(10)])")

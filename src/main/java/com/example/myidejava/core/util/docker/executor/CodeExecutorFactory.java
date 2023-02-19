@@ -9,8 +9,13 @@ public class CodeExecutorFactory {
     public CodeExecutor create(Container container) {
         if (container.isTypeDockerExec()) {
             return new HttpCodeExecutor();
+
+        } else if (container.isTypeHttp()) {
+            return new HttpCodeExecutor();
+            
+        } else {
+            throw new IllegalStateException("code executor factory is not implemented");
         }
-        return new HttpCodeExecutor();
     }
 
 

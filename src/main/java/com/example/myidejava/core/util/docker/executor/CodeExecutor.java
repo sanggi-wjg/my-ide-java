@@ -1,11 +1,11 @@
 package com.example.myidejava.core.util.docker.executor;
 
 import com.example.myidejava.domain.docker.Container;
-import com.fasterxml.jackson.databind.JsonNode;
+import com.example.myidejava.dto.docker.CodeResponse;
 
 public interface CodeExecutor {
 
-    JsonNode execute(Container container, String code);
+    CodeResponse execute(Container container, String code);
 
 }
 
