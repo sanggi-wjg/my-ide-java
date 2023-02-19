@@ -1,6 +1,7 @@
 package com.example.myidejava.controller.docker;
 
 import com.example.myidejava.dto.docker.CodeResponse;
+import com.example.myidejava.dto.docker.CodeSnippetResponse;
 import com.example.myidejava.dto.docker.ContainerResponse;
 import com.example.myidejava.dto.docker.CodeRequest;
 import com.example.myidejava.service.docker.ContainerService;
@@ -40,6 +41,14 @@ public class ContainerController {
             @RequestBody @Valid CodeRequest codeRequest
     ) {
         return ResponseEntity.ok(containerService.executeCode(containerId, codeRequest));
+    }
+
+    @GetMapping("/containers/{container_id}/code-snippets")
+    @ApiResponse(responseCode = "200", description = "도커 컨테이너 코드 실행 정보")
+    public ResponseEntity<List<CodeSnippetResponse>> getCodeSnippets(
+            @PathVariable("container_id") Long containerId
+    ) {
+        return ResponseEntity.ok(containerService.getContainerCodeSnippets(containerId));
     }
 
 

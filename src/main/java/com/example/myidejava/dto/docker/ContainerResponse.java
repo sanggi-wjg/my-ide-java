@@ -17,7 +17,7 @@ import java.util.Map;
 @AllArgsConstructor
 @Schema(description = "컨테이너 Response")
 public class ContainerResponse {
-    @Schema(description = "컨테이너 ID", defaultValue = "1")
+    @Schema(description = "container_id", defaultValue = "1")
     private Long id;
 
     @Schema(description = "도커 컨테이너 ID", defaultValue = "6539e3109c4ea65371e62ff62f0ef382db13c56616ec7ba96c9cec1e559c6a31")

@@ -7,8 +7,10 @@ import com.example.myidejava.core.util.docker.MyDockerClient;
 import com.example.myidejava.domain.docker.CodeSnippet;
 import com.example.myidejava.domain.docker.Container;
 import com.example.myidejava.dto.docker.CodeResponse;
+import com.example.myidejava.dto.docker.CodeSnippetResponse;
 import com.example.myidejava.dto.docker.ContainerResponse;
 import com.example.myidejava.dto.docker.CodeRequest;
+import com.example.myidejava.mapper.CodeSnippetMapper;
 import com.example.myidejava.mapper.ContainerMapper;
 import com.example.myidejava.repository.docker.CodeSnippetRepository;
 import com.example.myidejava.repository.docker.ContainerRepository;
@@ -29,6 +31,7 @@ public class ContainerService {
     private final ContainerRepository containerRepository;
     private final CodeSnippetRepository codeSnippetRepository;
     private final ContainerMapper containerMapper;
+    private final CodeSnippetMapper codeSnippetMapper;
     private final CodeExecutorFactory codeExecutorFactory;
 
     public void initialize() {
@@ -60,6 +63,13 @@ public class ContainerService {
 
     public List<ContainerResponse> getAllContainersOnServer() {
         return myDockerClient.getAllContainers();
+    }
+
+    public List<CodeSnippetResponse> getContainerCodeSnippets(Long containerId){
+        Container container = containerRepository.findById(containerId).orElseThrow(() ->{
+            throw new EntityNotFoundException();
+        });
+        return codeSnippetMapper.INSTANCE.ofDtoList(container.getCodeSnippetList());
     }
 
     public CodeResponse executeCode(Long containerId, CodeRequest codeRequest) {

@@ -11,7 +11,9 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Type;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -55,6 +57,9 @@ public class Container extends BaseDateTime {
     @Enumerated(EnumType.STRING)
     @Column(name = "code_executor_type")
     private CodeExecutorType codeExecutorType;
+
+    @OneToMany(mappedBy = "container")
+    private List<CodeSnippet> codeSnippetList = new ArrayList<>();
 
     public boolean isTypeDockerExec() {
         return codeExecutorType.equals(CodeExecutorType.DOCKER_EXEC);
