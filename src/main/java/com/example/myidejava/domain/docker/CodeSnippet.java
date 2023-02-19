@@ -41,7 +41,7 @@ public class CodeSnippet extends BaseDateTime {
     private String request;
 
     @Type(JsonType.class)
-    @Column(name = "response", columnDefinition = "json")
+    @Column(name = "response", columnDefinition = "longtext")
     private Map<String, Object> response;
 
 

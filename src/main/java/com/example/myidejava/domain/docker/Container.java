@@ -51,7 +51,7 @@ public class Container extends BaseDateTime {
     private String containerState;
 
     @Type(JsonType.class)
-    @Column(name = "container_ports", columnDefinition = "json")
+    @Column(name = "container_ports", columnDefinition = "longtext")
     private Map<String, Object> containerPorts = new HashMap<>();
 
     @Enumerated(EnumType.STRING)
@@ -82,10 +82,12 @@ public class Container extends BaseDateTime {
     }
 
     public void saveContainerInfo(ContainerResponse containerResponse) {
-        dockerImageName = containerResponse.getDockerImageName();
         containerId = containerResponse.getContainerId();
-        containerState = containerResponse.getContainerState();
+        dockerImageName = containerResponse.getDockerImageName();
+        languageName = containerResponse.getLanguageName();
+        languageVersion = containerResponse.getLanguageVersion();
         containerStatus = containerResponse.getContainerStatus();
+        containerState = containerResponse.getContainerState();
         containerPorts = containerResponse.getContainerPorts();
         saveCodeExecutorType();
     }
