@@ -53,7 +53,7 @@ public class ContainerResponse {
         Map<String, Object> map = new HashMap<>();
         Arrays.stream(container.getPorts()).forEach(
                 port -> map.put(
-                        port.getIp() == null ? "localhost" : port.getIp(),
+                        port.getIp() == null ? "0.0.0.0" : port.getIp(),
                         port.getPublicPort()
                 ));
         return ContainerResponse.builder()

@@ -13,7 +13,7 @@ import java.util.List;
 @Component
 public class MyDockerClient {
 
-    protected DockerClient getDockerClient() {
+    public DockerClient getDockerClient() {
         DefaultDockerClientConfig config = DefaultDockerClientConfig.createDefaultConfigBuilder().build();
         ApacheDockerHttpClient httpClient = new ApacheDockerHttpClient.Builder()
                 .dockerHost(config.getDockerHost())

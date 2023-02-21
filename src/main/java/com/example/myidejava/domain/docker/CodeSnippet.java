@@ -30,14 +30,14 @@ public class CodeSnippet extends BaseDateTime {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
+    @JoinColumn(name = "member_id", foreignKey = @ForeignKey(name = "fk_code_snippet_member_id"))
     private Member member;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "container_id", nullable = false)
+    @JoinColumn(name = "container_id", nullable = false, foreignKey = @ForeignKey(name = "fk_code_snippet_container_id"))
     private Container container;
 
-    @Column(name = "request")
+    @Column(name = "request", nullable = false)
     private String request;
 
     @Type(JsonType.class)
