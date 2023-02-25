@@ -22,4 +22,10 @@ public class Member extends BaseDateTime {
     @Column(name = "id", nullable = false)
     private Long id;
 
+    @Column(name = "username", nullable = false)
+    private String username;
+
+    @Column(name = "password", nullable = false)
+    private String password;
+
 }

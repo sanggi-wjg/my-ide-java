@@ -41,11 +41,13 @@ public class CodeSnippet extends BaseDateTime {
     private String request;
 
     @Type(JsonType.class)
-    @Column(name = "response", columnDefinition = "longtext")
-    private Map<String, Object> response;
+    @Column(name = "response", columnDefinition = "json")
+    private Map<String, String> response;
 
+    @Column(name = "is_success")
+    private Boolean isSuccess = Boolean.FALSE;
 
-    public static CodeSnippet create(Container container, CodeRequest codeRequest, Optional<Member> member){
+    public static CodeSnippet create(Container container, CodeRequest codeRequest, Optional<Member> member) {
         CodeSnippetBuilder builder = CodeSnippet.builder()
                 .container(container)
                 .request(codeRequest.getCode());
@@ -53,8 +55,11 @@ public class CodeSnippet extends BaseDateTime {
         return builder.build();
     }
 
-    public void saveResponse(Map<String, Object> response){
+    public void saveResponse(Map<String, String> response) {
         this.response = response;
+        if (response.get("error").isEmpty()) {
+            this.isSuccess = Boolean.TRUE;
+        }
     }
 
 }

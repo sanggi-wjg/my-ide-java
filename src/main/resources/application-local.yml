@@ -15,7 +15,7 @@ spring:
       maximum-pool-size: 10
   jpa:
     database: mysql
-    database-platform: org.hibernate.dialect.MySQL8Dialect
+    database-platform: org.hibernate.dialect.MySQLDialect
     open-in-view: false
     hibernate:
       ddl-auto: update
@@ -37,10 +37,10 @@ logging:
     root: info
     org:
       springframework:
-        web: debug
+        web: info
       hibernate:
         sql: debug
-        type: trace
+        type: info
         descriptor:
           sql: trace
         orm:

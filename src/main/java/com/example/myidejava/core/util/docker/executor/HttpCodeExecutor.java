@@ -9,8 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
-
-@Component
+//@Component
 public class HttpCodeExecutor implements CodeExecutor {
 
     public CodeResponse execute(Container container, String code) {

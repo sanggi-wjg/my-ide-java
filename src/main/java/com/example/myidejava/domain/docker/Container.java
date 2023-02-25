@@ -1,6 +1,8 @@
 package com.example.myidejava.domain.docker;
 
 import com.example.myidejava.domain.common.BaseDateTime;
+import com.example.myidejava.dto.docker.CodeRequest;
+import com.example.myidejava.dto.docker.CodeResponse;
 import com.example.myidejava.dto.docker.ContainerResponse;
 import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.*;
@@ -51,7 +53,7 @@ public class Container extends BaseDateTime {
     private String containerState;
 
     @Type(JsonType.class)
-    @Column(name = "container_ports", columnDefinition = "longtext")
+    @Column(name = "container_ports", columnDefinition = "json")
     private Map<String, Object> containerPorts = new HashMap<>();
 
     @Enumerated(EnumType.STRING)

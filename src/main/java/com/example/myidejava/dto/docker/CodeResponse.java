@@ -22,8 +22,8 @@ public class CodeResponse {
     @Schema(description = "코드 실행 에러", defaultValue = "Traceback (most recent call last):\\n  File \\\"/app/app.py\\\", line 23, in run_code\\n    File \\\"<string>\\\", line 1\\n    print([i for i in range(10)])1\\n                                 ^\\nSyntaxError: invalid syntax\\n")
     private String error;
 
-    public Map<String, Object> toMap(){
-        Map<String, Object> map = new HashMap<>();
+    public Map<String, String> toMap(){
+        Map<String, String> map = new HashMap<>();
         map.put("output", output);
         map.put("error", error);
         return map;

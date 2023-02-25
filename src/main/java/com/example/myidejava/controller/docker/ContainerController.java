@@ -34,21 +34,21 @@ public class ContainerController {
         return ResponseEntity.ok(containerService.getAllContainersOnServer());
     }
 
-    @PostMapping("/containers/{container_id}")
-    @ApiResponse(responseCode = "200", description = "도커 컨테이너 안에서 코드 실행")
-    public ResponseEntity<CodeResponse> executeCodeOnContainer(
-            @PathVariable("container_id") Long containerId,
-            @RequestBody @Valid CodeRequest codeRequest
-    ) {
-        return ResponseEntity.ok(containerService.executeCode(containerId, codeRequest));
-    }
-
     @GetMapping("/containers/{container_id}/code-snippets")
     @ApiResponse(responseCode = "200", description = "도커 컨테이너 코드 실행 정보")
     public ResponseEntity<List<CodeSnippetResponse>> getCodeSnippets(
             @PathVariable("container_id") Long containerId
     ) {
         return ResponseEntity.ok(containerService.getContainerCodeSnippets(containerId));
+    }
+
+    @PostMapping("/containers/{container_id}/code-snippets")
+    @ApiResponse(responseCode = "201", description = "도커 컨테이너 안에서 코드 실행")
+    public ResponseEntity<CodeResponse> executeCodeOnContainer(
+            @PathVariable("container_id") Long containerId,
+            @RequestBody @Valid CodeRequest codeRequest
+    ) {
+        return ResponseEntity.ok(containerService.executeCode(containerId, codeRequest));
     }
 
 

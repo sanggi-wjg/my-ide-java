@@ -32,7 +32,7 @@ public class ContainerService {
     private final CodeSnippetRepository codeSnippetRepository;
     private final ContainerMapper containerMapper;
     private final CodeSnippetMapper codeSnippetMapper;
-    private final CodeExecutorFactory codeExecutorFactory;
+//    private final CodeExecutorFactory codeExecutorFactory;
 
     public void initialize() {
         List<ContainerResponse> containers = myDockerClient.getAllContainers();
@@ -76,12 +76,14 @@ public class ContainerService {
         Container container = containerRepository.findById(containerId).orElseThrow(() -> {
             throw new EntityNotFoundException();
         });
-
+        // 코드 스니펫 생성
         CodeSnippet codeSnippet = CodeSnippet.create(container, codeRequest, Optional.empty());
         codeSnippetRepository.save(codeSnippet);
-
-        CodeExecutor codeExecutor = codeExecutorFactory.create(container);
-        CodeResponse codeResponse = codeExecutor.execute(container, codeRequest.getCode());
+        // 코드 실행
+        CodeResponse codeResponse = myDockerClient.executeCode(container, codeRequest);
+//        CodeExecutor codeExecutor = codeExecutorFactory.create(container);
+//        CodeResponse codeResponse = codeExecutor.execute(container, codeRequest.getCode());
+        // 실행 결과 저장
         codeSnippet.saveResponse(codeResponse.toMap());
         return codeResponse;
     }
