@@ -50,7 +50,8 @@ public class CodeSnippet extends BaseDateTime {
     public static CodeSnippet create(Container container, CodeRequest codeRequest, Optional<Member> member) {
         CodeSnippetBuilder builder = CodeSnippet.builder()
                 .container(container)
-                .request(codeRequest.getCode());
+                .request(codeRequest.getCode())
+                .isSuccess(Boolean.FALSE);
         member.ifPresent(builder::member);
         return builder.build();
     }

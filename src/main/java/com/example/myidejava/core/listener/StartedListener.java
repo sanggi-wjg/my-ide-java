@@ -1,4 +1,4 @@
-package com.example.myidejava.core.listeners;
+package com.example.myidejava.core.listener;
 
 import com.example.myidejava.service.docker.ContainerService;
 import lombok.RequiredArgsConstructor;
