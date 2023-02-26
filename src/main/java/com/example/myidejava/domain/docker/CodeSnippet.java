@@ -45,7 +45,7 @@ public class CodeSnippet extends BaseDateTime {
     private Map<String, String> response;
 
     @Column(name = "is_success")
-    private Boolean isSuccess = Boolean.FALSE;
+    private Boolean isSuccess;
 
     public static CodeSnippet create(Container container, CodeRequest codeRequest, Optional<Member> member) {
         CodeSnippetBuilder builder = CodeSnippet.builder()
