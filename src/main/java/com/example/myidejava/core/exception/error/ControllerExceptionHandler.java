@@ -10,18 +10,13 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @RequiredArgsConstructor
 public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 
-    private ResponseEntity<Object> response(MyException e) {
-        return new ResponseEntity<>(e, null, e.getErrorCode());
+    private ResponseEntity<Object> buildError(MyError error) {
+        return new ResponseEntity<>(error, null, error.getErrorCode());
     }
 
     @ExceptionHandler(NotFoundException.class)
     protected ResponseEntity<Object> handleNotFoundException(NotFoundException e) {
-        return response(MyException.builder()
-                .errorCode(e.getErrorCode())
-                .errorCodeRule(e.getErrorCodeRule())
-                .errorMessage(e.getErrorMessage())
-                .build()
-        );
+        return buildError(new MyError(e.getErrorCode(), e.getErrorCodeRule(), e.getErrorMessage()));
     }
 
 }
