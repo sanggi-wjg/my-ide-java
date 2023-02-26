@@ -6,7 +6,7 @@ from flask import Flask, request, jsonify
 app = Flask(__name__)
 
 
-@app.route('/run', methods = ['POST'])
+@app.route("/", methods = ['POST'])
 def run_code():
     code_output = StringIO()
     code_error = StringIO()

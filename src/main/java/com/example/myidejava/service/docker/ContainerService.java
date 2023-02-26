@@ -1,7 +1,7 @@
 package com.example.myidejava.service.docker;
 
 import com.example.myidejava.core.AppProperty;
-import com.example.myidejava.core.exception.error.ErrorCode;
+import com.example.myidejava.core.exception.error.code.ErrorCode;
 import com.example.myidejava.core.exception.error.NotFoundException;
 import com.example.myidejava.core.util.docker.MyDockerClient;
 import com.example.myidejava.domain.docker.CodeSnippet;

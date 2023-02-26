@@ -4,12 +4,12 @@ import com.example.myidejava.core.exception.error.code.ErrorCode;
 import lombok.Getter;
 
 @Getter
-public class NotFoundException extends RuntimeException {
+public class DockerAppException extends RuntimeException{
     private final int errorCode;
     private final String errorCodeRule;
     private final String errorMessage;
 
-    public NotFoundException(ErrorCode errorCode) {
+    public DockerAppException(ErrorCode errorCode) {
         this.errorCode = errorCode.getCode();
         this.errorCodeRule = errorCode.getCodeRule();
         this.errorMessage = errorCode.getMessage();

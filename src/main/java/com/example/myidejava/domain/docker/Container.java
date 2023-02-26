@@ -1,8 +1,8 @@
 package com.example.myidejava.domain.docker;
 
+import com.example.myidejava.core.exception.error.DockerAppException;
+import com.example.myidejava.core.exception.error.code.ErrorCode;
 import com.example.myidejava.domain.common.BaseDateTime;
-import com.example.myidejava.dto.docker.CodeRequest;
-import com.example.myidejava.dto.docker.CodeResponse;
 import com.example.myidejava.dto.docker.ContainerResponse;
 import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.*;
@@ -73,10 +73,9 @@ public class Container extends BaseDateTime {
 
     public String getHttpUrlAddress() {
         if (!isTypeHttp()) {
-            throw new IllegalStateException("todo : http type 이 아님");
+            throw new DockerAppException(ErrorCode.DOCKER_CONTAINER_IS_NOT_HTTP_TYPE);
         }
-        return "http://" + containerPorts.entrySet().stream().map(m -> m.getKey() + ":" + m.getValue() + "/run").collect(Collectors.joining());
-//        return Joiner.on(":").withKeyValueSeparator(":").join(containerPorts);
+        return "http://" + containerPorts.entrySet().stream().map(m -> m.getKey() + ":" + m.getValue()).collect(Collectors.joining());
     }
 
     public void saveCodeExecutorType() {
