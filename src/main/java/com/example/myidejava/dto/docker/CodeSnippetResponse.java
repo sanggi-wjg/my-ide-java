@@ -16,16 +16,24 @@ import java.util.Map;
 @Schema(description = "코드 스니펫 Response")
 public class CodeSnippetResponse {
 
-    @Schema(description = "code_snippet_id", defaultValue = "1")
+    @Schema(description = "code snippet id", defaultValue = "1")
     private Long id;
 
-    @Schema(description = "code request", defaultValue = "1")
+//    @Schema(description = "member", defaultValue = ".")
+//    private Member member;
+//
+//    @Schema(description = "container", defaultValue = ".")
+//    private Container container;
+
+    @Schema(description = "code request", defaultValue = "print(1)")
     private String request;
 
-    @Schema(description = "code response", defaultValue = "1")
+    @Schema(description = "code response", defaultValue = ".")
     private Map<String, Object> response;
 
     @Schema(description = "생성일", defaultValue = "1")
     private LocalDateTime createdAt;
 
+    @Schema(description = "성공 여부", defaultValue = "True")
+    private Boolean isSuccess;
 }

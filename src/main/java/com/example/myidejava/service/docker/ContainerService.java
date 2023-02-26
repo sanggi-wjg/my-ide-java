@@ -70,6 +70,7 @@ public class ContainerService {
         });
     }
 
+    @Transactional(readOnly = true)
     public List<CodeSnippetResponse> getContainerCodeSnippets(Long containerId) {
         Container container = getContainerById(containerId);
         return codeSnippetMapper.INSTANCE.ofDtoList(container.getCodeSnippetList());
