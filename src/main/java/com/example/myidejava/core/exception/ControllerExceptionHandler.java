@@ -1,5 +1,6 @@
 package com.example.myidejava.core.exception;
 
+import com.example.myidejava.core.exception.error.AuthException;
 import com.example.myidejava.core.exception.error.DockerAppException;
 import com.example.myidejava.core.exception.error.NotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -16,13 +17,25 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(error, null, error.getErrorCode());
     }
 
+    /*
+    * Not Found
+    * */
     @ExceptionHandler(NotFoundException.class)
     protected ResponseEntity<Object> handleNotFoundException(NotFoundException e) {
         return buildError(new ErrorResponse(e.getErrorCode(), e.getErrorCodeRule(), e.getErrorMessage()));
     }
 
+    /*
+    * Docker APP
+    * */
     @ExceptionHandler(DockerAppException.class)
     protected ResponseEntity<Object> handleDockerAppException(DockerAppException e) {
+        return buildError(new ErrorResponse(e.getErrorCode(), e.getErrorCodeRule(), e.getErrorMessage()));
+    }
+
+
+    @ExceptionHandler(AuthException.class)
+    protected ResponseEntity<Object> handleAuthException(AuthException e){
         return buildError(new ErrorResponse(e.getErrorCode(), e.getErrorCodeRule(), e.getErrorMessage()));
     }
 

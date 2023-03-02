@@ -60,3 +60,5 @@ springdoc:
 
 server:
   port: 9000
+
+jwt_secret: 359ad650b2a631ab4195e2540afa310cd59010b1 # openssl rand -hex 20

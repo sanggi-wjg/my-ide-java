@@ -58,6 +58,9 @@ dependencies {
     annotationProcessor 'org.mapstruct:mapstruct-processor:1.4.2.Final'
     testAnnotationProcessor "org.mapstruct:mapstruct-processor:1.4.2.Final"
 
+    // JWT
+    implementation 'com.auth0:java-jwt:4.2.1'
+
     // https://springdoc.org/v2/#spring-security-support
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-api:2.0.2'

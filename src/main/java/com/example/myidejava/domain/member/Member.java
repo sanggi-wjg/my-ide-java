@@ -1,6 +1,7 @@
 package com.example.myidejava.domain.member;
 
 import com.example.myidejava.domain.common.BaseDateTime;
+import com.example.myidejava.dto.auth.RegisterRequest;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,7 +25,10 @@ public class Member extends BaseDateTime {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "username", nullable = false, unique = true)
+    @Column(name = "email", nullable = false, unique = true)
+    private String email;
+
+    @Column(name = "username", nullable = false)
     private String username;
 
     @Column(name = "password", nullable = false)
@@ -35,5 +39,14 @@ public class Member extends BaseDateTime {
 
     @OneToMany(mappedBy = "member")
     private List<SocialLogin> socialLoginList = new ArrayList<>();
+
+    public static Member createEmailUser(String email, String username, String password) {
+        return Member.builder()
+                .email(email)
+                .username(username)
+                .password(password)
+                .isActive(Boolean.TRUE)
+                .build();
+    }
 
 }
