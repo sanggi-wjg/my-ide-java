@@ -1,4 +1,4 @@
-package com.example.myidejava.core.auth;
+package com.example.myidejava.core.jwt;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;

@@ -16,7 +16,7 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("dockers")
+@RequestMapping("/api/v1/dockers")
 @RequiredArgsConstructor
 @Tag(name = "Docker API", description = "Docker 관련 API")
 public class ContainerController {

@@ -1,4 +1,4 @@
-package com.example.myidejava.core;
+package com.example.myidejava.core.security;
 
 import com.example.myidejava.core.exception.error.AuthException;
 import com.example.myidejava.core.exception.error.code.ErrorCode;
@@ -25,7 +25,6 @@ public class MyUserDetailService implements UserDetailsService {
         Member member = memberRepository.findByEmail(email).orElseThrow(() -> {
             throw new AuthException(ErrorCode.FAIL_TO_DECODE_JWT_TOKEN);
         });
-
         return new User(email, member.getPassword(), Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER")));
     }
 }

@@ -1,4 +1,4 @@
-package com.example.myidejava.core;
+package com.example.myidejava.core.swagger;
 
 import org.springframework.context.annotation.Configuration;
 

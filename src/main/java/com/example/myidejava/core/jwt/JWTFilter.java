@@ -1,7 +1,7 @@
-package com.example.myidejava.core.auth;
+package com.example.myidejava.core.jwt;
 
 import com.auth0.jwt.exceptions.JWTVerificationException;
-import com.example.myidejava.core.MyUserDetailService;
+import com.example.myidejava.core.security.MyUserDetailService;
 import com.example.myidejava.core.exception.error.code.ErrorCode;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

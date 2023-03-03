@@ -1,4 +1,4 @@
-package com.example.myidejava.core.auth;
+package com.example.myidejava.core.jwt;
 
 public final class JWTPayloadNames {
 
