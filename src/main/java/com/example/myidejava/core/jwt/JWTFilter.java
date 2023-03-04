@@ -23,6 +23,7 @@ public class JWTFilter extends OncePerRequestFilter {
     private final MyUserDetailService userDetailService;
     private final JWTUtil jwtUtil;
 
+    // todo : constants refactoring
     private static final String AUTHORIZATION = "Authorization";
     private static final String BEARER_WITH_SPACE = "Bearer ";
     private static final Integer JWT_TOKEN_INDEX = 7;
@@ -55,7 +56,6 @@ public class JWTFilter extends OncePerRequestFilter {
                 }
             }
         }
-
         filterChain.doFilter(request, response);
     }
 }

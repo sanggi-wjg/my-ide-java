@@ -1,6 +1,6 @@
 package com.example.myidejava.controller.auth;
 
-import com.example.myidejava.dto.auth.LoginCredentials;
+import com.example.myidejava.dto.auth.LoginRequest;
 import com.example.myidejava.dto.auth.LoginResponse;
 import com.example.myidejava.dto.auth.RegisterRequest;
 import com.example.myidejava.dto.member.MemberResponse;
@@ -22,7 +22,6 @@ import javax.validation.Valid;
 @RequestMapping("/api/v1/auth")
 @Tag(name = "인증 API", description = "인증 관련")
 public class AuthController {
-
     private final MemberService memberService;
 
     @PostMapping("/register")
@@ -33,7 +32,7 @@ public class AuthController {
 
     @PostMapping("/login")
     @ApiResponse(responseCode = "200", description = "로그인")
-    public ResponseEntity<LoginResponse> login(@RequestBody @Valid LoginCredentials loginCredentials) {
-        return ResponseEntity.ok(memberService.authenticate(loginCredentials));
+    public ResponseEntity<LoginResponse> login(@RequestBody @Valid LoginRequest loginRequest) {
+        return ResponseEntity.ok(memberService.authenticate(loginRequest));
     }
 }

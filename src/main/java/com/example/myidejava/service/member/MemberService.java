@@ -4,7 +4,7 @@ import com.example.myidejava.core.security.CustomAuthenticationProvider;
 import com.example.myidejava.core.jwt.JWTUtil;
 import com.example.myidejava.domain.member.Member;
 import com.example.myidejava.domain.member.SocialLogin;
-import com.example.myidejava.dto.auth.LoginCredentials;
+import com.example.myidejava.dto.auth.LoginRequest;
 import com.example.myidejava.dto.auth.LoginResponse;
 import com.example.myidejava.dto.auth.RegisterRequest;
 import com.example.myidejava.dto.member.MemberResponse;
@@ -40,9 +40,9 @@ public class MemberService {
         return memberMapper.INSTANCE.toRegisterResponse(member, member.getSocialLoginList());
     }
 
-    public LoginResponse authenticate(@Valid LoginCredentials loginCredentials) {
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginCredentials.getEmail(), loginCredentials.getPassword()));
-        Member member = memberRepository.findByEmail(loginCredentials.getEmail()).orElseThrow(() -> {
+    public LoginResponse authenticate(@Valid LoginRequest loginRequest) {
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
+        Member member = memberRepository.findByEmail(loginRequest.getEmail()).orElseThrow(() -> {
             throw new IllegalStateException("todo : not found member entity");
         });
         String token = jwtUtil.generateToken(member);

@@ -13,14 +13,14 @@ import javax.validation.constraints.NotBlank;
 @AllArgsConstructor
 @Builder
 @Schema(description = "로그인 Request")
-public class LoginCredentials {
+public class LoginRequest {
 
     @NotBlank
-    @Schema(description = "이메일")
+    @Schema(description = "이메일", example = "user@dev.com")
     private String email;
 
     @NotBlank
-    @Schema(description = "비밀번호")
+    @Schema(description = "비밀번호", example = "passw0rd")
     private String password;
 
 }

@@ -22,7 +22,7 @@ public class RegisterRequest {
     @NotEmpty
     private String username;
 
-    @Schema(description = "비밀번호", defaultValue = "********")
+    @Schema(description = "비밀번호", defaultValue = "passw0rd")
     @NotEmpty
     private String password;
 }

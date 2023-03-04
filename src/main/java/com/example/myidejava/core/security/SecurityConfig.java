@@ -22,7 +22,10 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @Configuration
 public class SecurityConfig {
     private static final String[] REQUEST_WHITELIST = {
+            "/",
             "/health",
+            "/api/v1/auth/login",
+            "/api/v1/auth/register",
             // Swagger Docs
             "/v3/api-docs",
             "/v3/api-docs/**",
@@ -47,9 +50,9 @@ public class SecurityConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeHttpRequests(requests -> requests
-//                                .requestMatchers(REQUEST_WHITELIST).permitAll()
-//                                .anyRequest().authenticated()
-                                .anyRequest().permitAll()
+                                .requestMatchers(REQUEST_WHITELIST).permitAll()
+                                .anyRequest().authenticated()
+//                                .anyRequest().permitAll()
                 )
                 .userDetailsService(userDetailService)
                 .exceptionHandling()
