@@ -43,6 +43,12 @@ public abstract class ContainerCodeExecutor extends MyDockerClient {
         return file;
     }
 
+    protected final void unlink(File file) {
+        if (file.exists()) {
+            file.delete();
+        }
+    }
+
     protected final ExecCreateCmdResponse createCommand(String containerId, String[] command) {
         DockerClient dockerClient = getDockerClient();
         return dockerClient.execCreateCmd(containerId)
@@ -53,19 +59,16 @@ public abstract class ContainerCodeExecutor extends MyDockerClient {
                 .exec();
     }
 
-    protected final void copyResourceToContainer(String containerId, File file) {
+    protected final String copyResourceToContainer(String containerId, String extension, String content) {
+        File file = createTemporaryFile(extension, content);
         DockerClient dockerClient = getDockerClient();
         dockerClient.copyArchiveToContainerCmd(containerId)
                 .withHostResource(file.getAbsolutePath())
                 .withRemotePath(WORKDIR)
                 .exec();
-        unlink(file);
-    }
 
-    protected final void unlink(File file) {
-        if (file.exists()) {
-            file.delete();
-        }
+        unlink(file);
+        return file.getName();
     }
 
     protected final Map<String, String> startCommand(String createCommandResponseId) {

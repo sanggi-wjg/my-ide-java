@@ -17,9 +17,10 @@ public class CodeExecutorFactory {
             case PHP_DOCKER_EXEC -> {
                 return new PhpDockerExecCodeExecutor();
             }
-            default -> {
-                throw new IllegalStateException("code executor factory is not implemented");
+            case GCC_DOCKER_EXEC -> {
+                return new GccDockerExecCodeExecutor();
             }
+            default -> throw new IllegalStateException("code executor factory is not implemented");
         }
     }
 }
