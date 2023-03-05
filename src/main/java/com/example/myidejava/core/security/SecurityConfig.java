@@ -50,9 +50,9 @@ public class SecurityConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeHttpRequests(requests -> requests
-                                .requestMatchers(REQUEST_WHITELIST).permitAll()
-                                .anyRequest().authenticated()
-//                                .anyRequest().permitAll()
+//                                .requestMatchers(REQUEST_WHITELIST).permitAll()
+//                                .anyRequest().authenticated()
+                                .anyRequest().permitAll()
                 )
                 .userDetailsService(userDetailService)
                 .exceptionHandling()

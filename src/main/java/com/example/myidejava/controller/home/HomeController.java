@@ -7,18 +7,18 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@Tag(name = "홈", description = "")
+@Tag(name = "홈")
 public class HomeController {
 
     @GetMapping("/")
-    @ApiResponse(responseCode = "204", description = "Hello Home")
+    @ApiResponse(responseCode = "204", description = "Index")
     public ResponseEntity<String> home() {
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/health")
-    @ApiResponse(responseCode = "200", description = "Health Check")
+    @ApiResponse(responseCode = "200", description = "Health Check, ping pong.")
     public ResponseEntity<String> health() {
-        return ResponseEntity.ok().body("Pong");
+        return ResponseEntity.ok("pong");
     }
 }

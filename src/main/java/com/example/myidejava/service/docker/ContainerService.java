@@ -1,9 +1,7 @@
 package com.example.myidejava.service.docker;
 
-import com.example.myidejava.core.AppProperty;
-import com.example.myidejava.core.exception.error.code.ErrorCode;
 import com.example.myidejava.core.exception.error.NotFoundException;
-import com.example.myidejava.core.util.docker.MyDockerClient;
+import com.example.myidejava.core.exception.error.code.ErrorCode;
 import com.example.myidejava.domain.docker.CodeSnippet;
 import com.example.myidejava.domain.docker.Container;
 import com.example.myidejava.dto.docker.CodeRequest;
@@ -12,6 +10,9 @@ import com.example.myidejava.dto.docker.CodeSnippetResponse;
 import com.example.myidejava.dto.docker.ContainerResponse;
 import com.example.myidejava.mapper.CodeSnippetMapper;
 import com.example.myidejava.mapper.ContainerMapper;
+import com.example.myidejava.module.docker.DockerClientShortCut;
+import com.example.myidejava.module.docker.executor.CodeExecutorFactory;
+import com.example.myidejava.module.docker.executor.ContainerCodeExecutor;
 import com.example.myidejava.repository.docker.CodeSnippetRepository;
 import com.example.myidejava.repository.docker.ContainerRepository;
 import lombok.RequiredArgsConstructor;
@@ -25,22 +26,17 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Service
 public class ContainerService {
-    private final AppProperty appProperty;
-    private final MyDockerClient myDockerClient;
     private final ContainerRepository containerRepository;
     private final CodeSnippetRepository codeSnippetRepository;
     private final ContainerMapper containerMapper;
     private final CodeSnippetMapper codeSnippetMapper;
-//    private final CodeExecutorFactory codeExecutorFactory;
+    private final DockerClientShortCut dockerClientShortCut;
+    private final CodeExecutorFactory codeExecutorFactory;
 
     public void initialize() {
-        List<ContainerResponse> containers = myDockerClient.getAllContainers();
-        containers.forEach(containerResponse -> {
-            // todo : 만약 컨테이너가 올라와 있지 않다면, docker-compose 실행 하도록 코드 추가.
-            if (appProperty.isContainDockerImageName(containerResponse.getDockerImageName())) {
-                createOrUpdate(containerResponse);
-            }
-        });
+        List<ContainerResponse> containers = dockerClientShortCut.getAllContainers();
+        // todo : 만약 컨테이너가 올라와 있지 않다면, docker-compose 실행 하도록 코드 추가.
+        containers.forEach(this::createOrUpdate);
     }
 
     public void createOrUpdate(ContainerResponse containerResponse) {
@@ -61,7 +57,7 @@ public class ContainerService {
     }
 
     public List<ContainerResponse> getAllContainersOnServer() {
-        return myDockerClient.getAllContainers();
+        return dockerClientShortCut.getAllContainers();
     }
 
     public Container getContainerById(Long containerId) {
@@ -82,9 +78,8 @@ public class ContainerService {
         CodeSnippet codeSnippet = CodeSnippet.create(container, codeRequest, Optional.empty());
         codeSnippetRepository.save(codeSnippet);
         // 코드 실행
-        CodeResponse codeResponse = myDockerClient.executeCode(container, codeRequest);
-//        CodeExecutor codeExecutor = codeExecutorFactory.create(container);
-//        CodeResponse codeResponse = codeExecutor.execute(container, codeRequest.getCode());
+        ContainerCodeExecutor codeExecutor = codeExecutorFactory.create(container);
+        CodeResponse codeResponse = codeExecutor.execute(container, codeRequest);
         // 실행 결과 저장
         codeSnippet.saveResponse(codeResponse.toMap());
         return codeResponse;

@@ -2,19 +2,43 @@ version: "3"
 
 services:
   python-3.8:
-    hostname: python-3.8
-    container_name: python-3.8
+    hostname: ${PYTHON_3_8}
+    container_name: container-${PYTHON_3_8}
     restart: always
     ports:
       - "5010:5000"
     build:
-      context: ./python-3.8
+      context: ./${PYTHON_3_8}
       dockerfile: Dockerfile
 
   python-2.7:
-    hostname: python-2.7
-    container_name: python-2.7
+    hostname: ${PYTHON_2_7}
+    container_name: container-${PYTHON_2_7}
     restart: always
     build:
-      context: ./python-2.7
+      context: ./${PYTHON_2_7}
+      dockerfile: Dockerfile
+
+  php-7.4:
+    hostname: ${PHP_7_4}
+    container_name: container-${PHP_7_4}
+    restart: always
+    build:
+      context: ./${PHP_7_4}
+      dockerfile: Dockerfile
+
+  php-8.2:
+    hostname: ${PHP_8_2}
+    container_name: container-${PHP_8_2}
+    restart: always
+    build:
+      context: ./${PHP_8_2}
+      dockerfile: Dockerfile
+
+  gcc-4.9:
+    hostname: ${GCC_4_9}
+    container_name: container-${GCC_4_9}
+    restart: always
+    build:
+      context: ./${GCC_4_9}
       dockerfile: Dockerfile

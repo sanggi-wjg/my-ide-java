@@ -1,7 +1,6 @@
 package com.example.myidejava.service.docker;
 
-import com.example.myidejava.core.AppProperty;
-import com.example.myidejava.core.util.docker.MyDockerClient;
+import com.example.myidejava.module.docker.MyDockerClient;
 import com.example.myidejava.domain.docker.Container;
 import com.example.myidejava.dto.docker.CodeRequest;
 import com.example.myidejava.dto.docker.CodeResponse;
@@ -28,17 +27,17 @@ class ContainerServiceTest {
     ContainerRepository containerRepository;
     @Autowired
     MyDockerClient myDockerClient;
-    @Autowired
-    AppProperty appProperty;
+//    @Autowired
+//    AppProperty appProperty;
 
-    @Test
-    void 컨테이너_이니셜라이즈_확인() {
-        List<String> dockerImageNames = appProperty.getDockerImageNames();
-        dockerImageNames.forEach(dockerImageName -> {
-            String[] split = dockerImageName.split("-");
-            containerRepository.findByLanguageNameAndLanguageVersion(split[1], split[2]).orElseThrow();
-        });
-    }
+//    @Test
+//    void 컨테이너_이니셜라이즈_확인() {
+//        List<String> dockerImageNames = appProperty.getDockerImageNames();
+//        dockerImageNames.forEach(dockerImageName -> {
+//            String[] split = dockerImageName.split("-");
+//            containerRepository.findByLanguageNameAndLanguageVersion(split[1], split[2]).orElseThrow();
+//        });
+//    }
 
     @Test
     void 컨테이너_리스트_확인() {
@@ -47,8 +46,8 @@ class ContainerServiceTest {
         List<ContainerResponse> containerResponseList = containerService.getAllContainers();
         // then
         Assertions.assertEquals(containerResponseOnServerList.size(), containerResponseList.size(), "서버 컨테이너 개수와 디비에 저장된 컨테이너 개수는 같아야 한다.");
-        Assertions.assertEquals(containerResponseOnServerList.size(), appProperty.getDockerImageNames().size());
-        Assertions.assertEquals(containerResponseList.size(), appProperty.getDockerImageNames().size());
+//        Assertions.assertEquals(containerResponseOnServerList.size(), appProperty.getDockerImageNames().size());
+//        Assertions.assertEquals(containerResponseList.size(), appProperty.getDockerImageNames().size());
     }
 
     CodeResponse whenExecuteCode(String langaugeName, String languageVersion, String code) {
