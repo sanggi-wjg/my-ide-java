@@ -1,6 +1,5 @@
 package com.example.myidejava.service.docker;
 
-import com.example.myidejava.module.docker.MyDockerClient;
 import com.example.myidejava.domain.docker.Container;
 import com.example.myidejava.dto.docker.CodeRequest;
 import com.example.myidejava.dto.docker.CodeResponse;
@@ -25,8 +24,8 @@ class ContainerServiceTest {
     ContainerService containerService;
     @Autowired
     ContainerRepository containerRepository;
-    @Autowired
-    MyDockerClient myDockerClient;
+//    @Autowired
+//    MyDockerClient myDockerClient;
 //    @Autowired
 //    AppProperty appProperty;
 
@@ -52,23 +51,47 @@ class ContainerServiceTest {
 
     CodeResponse whenExecuteCode(String langaugeName, String languageVersion, String code) {
         CodeRequest codeRequest = CodeRequest.builder().code(code).build();
-        Container pythonContainer = containerRepository.findByLanguageNameAndLanguageVersion(langaugeName, languageVersion).orElseThrow();
-        return containerService.executeCode(pythonContainer.getId(), codeRequest);
+        Container container = containerRepository.findByLanguageNameAndLanguageVersion(langaugeName, languageVersion).orElseThrow();
+        return containerService.executeCode(container.getId(), codeRequest);
     }
 
     @Test
-    void 파이썬_3_8_실행_가능한_코드_확인() {
-        // todo container list 가져와서 foreach 로 모든 컨테이너 코드 실행 테스트로 변경
+    void Python_3_8_컨테이너_코드_실행() {
         // given
         String name = "python";
         String version = "3.8";
-        String code = "print(1)";
+        String code = "print(12345)";
         // when
         CodeResponse codeResponse = whenExecuteCode(name, version, code);
         // then
-        Assertions.assertEquals("1\n", codeResponse.getOutput());
+        Assertions.assertEquals("12345\n", codeResponse.getOutput());
         Assertions.assertTrue(codeResponse.getError().isEmpty());
     }
 
+    @Test
+    void Python_2_7_컨테이너_코드_실행() {
+        // given
+        String name = "python";
+        String version = "2.7";
+        String code = "print(12345)";
+        // when
+        CodeResponse codeResponse = whenExecuteCode(name, version, code);
+        // then
+        Assertions.assertEquals("12345\n", codeResponse.getOutput());
+        Assertions.assertTrue(codeResponse.getError().isEmpty());
+    }
+
+    @Test
+    void PHP_7_4_컨테이너_코드_실행() {
+        // given
+        String name = "php";
+        String version = "7.4";
+        String code = "<?php\n print_r(['Hello' => 'World']);";
+        // when
+        CodeResponse codeResponse = whenExecuteCode(name, version, code);
+        // then
+//        Assertions.assertEquals("12345\n", codeResponse.getOutput());
+        Assertions.assertTrue(codeResponse.getError().isEmpty());
+    }
 
 }
