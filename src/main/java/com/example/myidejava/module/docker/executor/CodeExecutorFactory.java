@@ -15,7 +15,7 @@ public class CodeExecutorFactory {
                 return new PythonDockerExecCodeExecutor();
             }
             case PHP_DOCKER_EXEC -> {
-                return null;
+                return new PhpDockerExecCodeExecutor();
             }
             default -> {
                 throw new IllegalStateException("code executor factory is not implemented");

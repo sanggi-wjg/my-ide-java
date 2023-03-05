@@ -4,4 +4,5 @@ public enum CodeExecutorType {
     HTTP,
     PYTHON_DOCKER_EXEC,
     PHP_DOCKER_EXEC,
+    GCC_DOCKER_EXEC,
 }
