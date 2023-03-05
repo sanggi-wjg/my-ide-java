@@ -81,6 +81,7 @@ public class Container extends BaseDateTime {
                 }
             }
             case "php" -> codeExecutorType = CodeExecutorType.PHP_DOCKER_EXEC;
+            case "gcc" -> codeExecutorType = CodeExecutorType.GCC_DOCKER_EXEC;
         }
     }
 

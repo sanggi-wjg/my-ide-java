@@ -2,9 +2,48 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Test View</title>
+
+    <script src="https://code.jquery.com/jquery-3.6.3.min.js"
+            integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
 </head>
 <body>
 
+<label for="container-id">Container ID</label>
+<input type="number" id="container-id" value="1">
+
+<label for="code-box"></label>
+<textarea id="code-box" cols="100" rows="20">
+print([i for i in range(10)])
+</textarea>
+
+<textarea id="code-result-box" cols="100" rows="20"></textarea>
+
+<button onclick="run_code()">요청</button>
+
+<script>
+    function run_code() {
+        const container_id = $("#container-id").val();
+        const code = $("#code-box").val();
+        console.log(code);
+
+        $.ajax({
+            type: 'POST',
+            url: `http://localhost:9000/api/v1/dockers/containers/${container_id}/code-snippets`,
+            data: JSON.stringify({
+                'code': code
+            }),
+            contentType: "application/json",
+            dataType: "text",
+            success: function (response) {
+                $("#code-result-box").html(response);
+                console.log(response);
+            },
+            error: function (e) {
+                console.log(e);
+            }
+        });
+    }
+</script>
 </body>
 </html>
