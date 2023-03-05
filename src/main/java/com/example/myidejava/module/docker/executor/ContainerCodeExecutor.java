@@ -49,6 +49,22 @@ public abstract class ContainerCodeExecutor extends MyDockerClient {
         }
     }
 
+    protected final File copyResourceToContainer(String containerId, String extension, String content) {
+        File tempFile = createTemporaryFile(extension, content);
+        DockerClient dockerClient = getDockerClient();
+        dockerClient.copyArchiveToContainerCmd(containerId)
+                .withHostResource(tempFile.getAbsolutePath())
+                .withRemotePath(WORKDIR)
+                .exec();
+        unlink(tempFile);
+        return tempFile;
+    }
+
+    protected final Map<String, String> createAndStartCommand(String containerId, String[] command){
+        ExecCreateCmdResponse createCmdResponse = createCommand(containerId, command);
+        return startCommand(createCmdResponse.getId());
+    }
+
     protected final ExecCreateCmdResponse createCommand(String containerId, String[] command) {
         DockerClient dockerClient = getDockerClient();
         return dockerClient.execCreateCmd(containerId)
@@ -57,18 +73,6 @@ public abstract class ContainerCodeExecutor extends MyDockerClient {
                 .withTty(false)
                 .withCmd(command)
                 .exec();
-    }
-
-    protected final String copyResourceToContainer(String containerId, String extension, String content) {
-        File file = createTemporaryFile(extension, content);
-        DockerClient dockerClient = getDockerClient();
-        dockerClient.copyArchiveToContainerCmd(containerId)
-                .withHostResource(file.getAbsolutePath())
-                .withRemotePath(WORKDIR)
-                .exec();
-
-        unlink(file);
-        return file.getName();
     }
 
     protected final Map<String, String> startCommand(String createCommandResponseId) {
