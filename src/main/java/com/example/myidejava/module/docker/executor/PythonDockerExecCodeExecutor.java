@@ -8,7 +8,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.command.ExecCreateCmdResponse;
 import com.github.dockerjava.core.command.ExecStartResultCallback;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.io.ByteArrayOutputStream;
@@ -16,9 +15,8 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
-@RequiredArgsConstructor
 @Component
-public class DockerExecCodeExecutor extends ContainerCodeExecutor {
+public class PythonDockerExecCodeExecutor extends ContainerCodeExecutor {
 
     @Override
     public CodeResponse execute(Container container, CodeRequest codeRequest) {
@@ -44,7 +42,7 @@ public class DockerExecCodeExecutor extends ContainerCodeExecutor {
                     .awaitCompletion()
                     .onComplete();
         } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException(e); // todo
         }
         cmdStdout = stdout.toString(StandardCharsets.UTF_8).strip();
 
@@ -55,7 +53,7 @@ public class DockerExecCodeExecutor extends ContainerCodeExecutor {
             map = mapper.readValue(cmdStdout, Map.class);
             System.out.println(map);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException(e);// todo
         }
 
         return CodeResponse.builder()

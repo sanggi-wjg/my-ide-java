@@ -13,10 +13,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Type;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Entity
@@ -63,10 +60,6 @@ public class Container extends BaseDateTime {
     @OneToMany(mappedBy = "container")
     private List<CodeSnippet> codeSnippetList = new ArrayList<>();
 
-    public boolean isTypeDockerExec() {
-        return codeExecutorType.equals(CodeExecutorType.DOCKER_EXEC);
-    }
-
     public boolean isTypeHttp() {
         return codeExecutorType.equals(CodeExecutorType.HTTP);
     }
@@ -79,7 +72,16 @@ public class Container extends BaseDateTime {
     }
 
     public void saveCodeExecutorType() {
-        codeExecutorType = getContainerPorts().isEmpty() ? CodeExecutorType.DOCKER_EXEC : CodeExecutorType.HTTP;
+        switch (languageName) {
+            case "python" -> {
+                if (languageVersion.equals("3.8")) {
+                    codeExecutorType = CodeExecutorType.HTTP;
+                } else {
+                    codeExecutorType = CodeExecutorType.PYTHON_DOCKER_EXEC;
+                }
+            }
+            case "php" -> codeExecutorType = CodeExecutorType.PHP_DOCKER_EXEC;
+        }
     }
 
     public void saveContainerInfo(ContainerResponse containerResponse) {

@@ -7,17 +7,19 @@ import org.springframework.stereotype.Component;
 public class CodeExecutorFactory {
 
     public ContainerCodeExecutor create(Container container) {
-        // todo refactoring
-        if (container.isTypeDockerExec()) {
-            return new DockerExecCodeExecutor();
-
-        } else if (container.isTypeHttp()) {
-            return new HttpCodeExecutor();
-
-        } else {
-            throw new IllegalStateException("code executor factory is not implemented");
+        switch (container.getCodeExecutorType()) {
+            case HTTP -> {
+                return new HttpCodeExecutor();
+            }
+            case PYTHON_DOCKER_EXEC -> {
+                return new PythonDockerExecCodeExecutor();
+            }
+            case PHP_DOCKER_EXEC -> {
+                return null;
+            }
+            default -> {
+                throw new IllegalStateException("code executor factory is not implemented");
+            }
         }
     }
-
-
 }
