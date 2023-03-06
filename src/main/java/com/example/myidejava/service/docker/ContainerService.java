@@ -56,10 +56,7 @@ public class ContainerService {
         return containerMapper.INSTANCE.ofDtoList(containerRepository.findAll());
     }
 
-    public List<ContainerResponse> getAllContainersOnServer() {
-        return dockerClientShortCut.getAllContainers();
-    }
-
+    @Transactional(readOnly = true)
     public Container getContainerById(Long containerId) {
         return containerRepository.findById(containerId).orElseThrow(() -> {
             throw new NotFoundException(ErrorCode.NOT_FOUND_CONTAINER);
@@ -72,8 +69,21 @@ public class ContainerService {
         return codeSnippetMapper.INSTANCE.ofDtoList(container.getCodeSnippetList());
     }
 
+    @Transactional(readOnly = true)
+    public void validateIsRunning(Long containerId) {
+        Container container = getContainerById(containerId);
+        if (!container.getContainerState().equals("running")) {
+            throw new IllegalStateException("todo : is not running");
+        }
+    }
+
+    public List<ContainerResponse> getAllContainersOnServer() {
+        return dockerClientShortCut.getAllContainers();
+    }
+
     public CodeResponse executeCode(Long containerId, CodeRequest codeRequest) {
         Container container = getContainerById(containerId);
+        validateIsRunning(container.getId());
         // 코드 스니펫 생성
         CodeSnippet codeSnippet = CodeSnippet.create(container, codeRequest, Optional.empty());
         codeSnippetRepository.save(codeSnippet);

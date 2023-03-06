@@ -18,13 +18,14 @@ spring:
     database-platform: org.hibernate.dialect.MySQLDialect
     open-in-view: false
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: create
     properties:
       use_sql_comments: true
       hibernate:
         default_batch_fetch_size: 1000
         show_sql: true
         format_sql: true
+    generate-ddl: true
 
   jackson:
     serialization:
@@ -32,16 +33,18 @@ spring:
 
 logging:
   level:
+    web: info
+    root: info
     org:
       springframework:
-        web: debug
-        data:
-          elasticsearch:
-            client:
-              WIRE: trace
-            core: debug
+        web: info
       hibernate:
-        type:
-          descriptor:
-            sql: trace
-    web: debug
+        sql: debug
+        type: info
+        descriptor:
+          sql: trace
+        orm:
+          jdbc:
+            bind: trace
+
+jwt_secret: 359ad650b2a631ab4195e2540afa310cd59010b1 # openssl rand -hex 20

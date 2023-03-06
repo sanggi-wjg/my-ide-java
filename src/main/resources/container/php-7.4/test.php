@@ -1,6 +1,6 @@
 <?php
 
 print_r([
-    "hello" => "World",
+    "Hello" => "World",
     "php" => "7.4",
 ]);
