@@ -1,5 +1,6 @@
 package com.example.myidejava.dto.docker;
 
+import com.example.myidejava.domain.docker.CodeExecutorType;
 import com.github.dockerjava.api.model.Container;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -40,6 +41,9 @@ public class ContainerResponse {
 
     @Schema(description = "도커 컨테이너 Open Port", defaultValue = "8000")
     private Map<String, Object> containerPorts;
+
+    @Schema(description = "도커 컨테이너 코드 실행 타입", defaultValue = "PYTHON_DOCKER_EXEC")
+    private CodeExecutorType codeExecutorType;
 
     public String getLanguageName() {
         return getDockerImageName().split("-")[1];
