@@ -7,10 +7,11 @@
 
 ## Swagger
 ```shell
-http://localhost:9000/swagger-ui/index.html#/Docker%20API/getContainers
+http://localhost:9000/swagger-ui/index.html
 ```
 
 ## Local Test
+* local 환경에서 코드 실행 API 테스트
 ```shell
 test/resources/test_view.html
 ```
