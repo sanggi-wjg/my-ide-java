@@ -1,5 +1,6 @@
 package com.example.myidejava.service.docker;
 
+import com.example.myidejava.core.exception.error.DockerAppException;
 import com.example.myidejava.core.exception.error.NotFoundException;
 import com.example.myidejava.core.exception.error.code.ErrorCode;
 import com.example.myidejava.domain.docker.CodeSnippet;
@@ -70,10 +71,10 @@ public class ContainerService {
     }
 
     @Transactional(readOnly = true)
-    public void validateIsRunning(Long containerId) {
-        Container container = getContainerById(containerId);
-        if (!container.getContainerState().equals("running")) {
-            throw new IllegalStateException("todo : is not running");
+    public void validateIsContainerRunning(Container container) {
+        if (!container.getContainerState().equals("running") ||
+                !dockerClientShortCut.isContainerStateRunning(container.getContainerId())) {
+            throw new DockerAppException(ErrorCode.DOCKER_CONTAINER_IS_NOT_RUNNING);
         }
     }
 
@@ -83,7 +84,7 @@ public class ContainerService {
 
     public CodeResponse executeCode(Long containerId, CodeRequest codeRequest) {
         Container container = getContainerById(containerId);
-        validateIsRunning(container.getId());
+        validateIsContainerRunning(container);
         // 코드 스니펫 생성
         CodeSnippet codeSnippet = CodeSnippet.create(container, codeRequest, Optional.empty());
         codeSnippetRepository.save(codeSnippet);
