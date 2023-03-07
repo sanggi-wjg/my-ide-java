@@ -1,5 +1,7 @@
 package com.example.myidejava.service.member;
 
+import com.example.myidejava.core.exception.error.NotFoundException;
+import com.example.myidejava.core.exception.error.code.ErrorCode;
 import com.example.myidejava.core.security.CustomAuthenticationProvider;
 import com.example.myidejava.core.jwt.JWTUtil;
 import com.example.myidejava.domain.member.Member;
@@ -43,7 +45,7 @@ public class MemberService {
     public LoginResponse authenticate(@Valid LoginRequest loginRequest) {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
         Member member = memberRepository.findByEmail(loginRequest.getEmail()).orElseThrow(() -> {
-            throw new IllegalStateException("todo : not found member entity");
+            throw new NotFoundException(ErrorCode.NOT_FOUND_MEMBER);
         });
         String token = jwtUtil.generateToken(member);
         return LoginResponse.builder().token(token).build();
