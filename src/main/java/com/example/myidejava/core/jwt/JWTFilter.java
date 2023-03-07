@@ -1,6 +1,7 @@
 package com.example.myidejava.core.jwt;
 
 import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.example.myidejava.core.common.CommonConstants;
 import com.example.myidejava.core.security.MyUserDetailService;
 import com.example.myidejava.core.exception.error.code.ErrorCode;
 import jakarta.servlet.FilterChain;
@@ -23,22 +24,17 @@ public class JWTFilter extends OncePerRequestFilter {
     private final MyUserDetailService userDetailService;
     private final JWTUtil jwtUtil;
 
-    // todo : constants refactoring
-    private static final String AUTHORIZATION = "Authorization";
-    private static final String BEARER_WITH_SPACE = "Bearer ";
-    private static final Integer JWT_TOKEN_INDEX = 7;
-
     private boolean isValidAuthorization(String authorization) {
         return authorization != null &&
                 !authorization.isBlank() &&
-                authorization.startsWith(BEARER_WITH_SPACE);
+                authorization.startsWith(CommonConstants.BEARER_WITH_SPACE);
     }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String authorization = request.getHeader(AUTHORIZATION);
+        String authorization = request.getHeader(CommonConstants.AUTHORIZATION);
         if (isValidAuthorization(authorization)) {
-            String jwt = authorization.substring(JWT_TOKEN_INDEX);
+            String jwt = authorization.substring(CommonConstants.JWT_TOKEN_INDEX);
             if (jwt.isBlank() || jwt.isEmpty()) {
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST, ErrorCode.INVALID_AUTHORIZATION_BEARER_HEADER.getMessage());
 
