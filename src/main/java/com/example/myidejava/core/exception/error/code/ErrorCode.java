@@ -22,6 +22,9 @@ public enum ErrorCode {
     FAIL_TO_DECODE_JWT_TOKEN(HttpStatus.UNAUTHORIZED.value(), "AUTH-0002", "JWT Token 디코드 실패 하였습니다."),
     INVALID_AUTHORIZATION_BEARER_HEADER(HttpStatus.UNAUTHORIZED.value(), "AUTH-0003", "Invalid JWT Token in Bearer Header"),
     INVALID_AUTHORIZATION_JWT_TOKEN(HttpStatus.UNAUTHORIZED.value(), "AUTH-0004", "Invalid JWT Token"),
+    ALREADY_REGISTERED_USER_EMAIL(HttpStatus.BAD_REQUEST.value(), "AUTH-0005", "이미 등록된 이메일 입니다."),
+    INVALID_USER_EMAIL(HttpStatus.BAD_REQUEST.value(), "AUTH-0006", "이메일 확인해주세요."),
+    INVALID_USER_EMAIL_OR_PASSWORD(HttpStatus.BAD_REQUEST.value(), "AUTH-0007", "이메일 혹은 비밀번호를 확인해주세요."),
 
     // Util Error
     FAIL_TO_DECODE_JSON(HttpStatus.BAD_REQUEST.value(), "UTIL-0001", "Json Decode 실패 하였습니다."),

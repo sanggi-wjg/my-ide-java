@@ -1,5 +1,6 @@
 package com.example.myidejava.service.member;
 
+import com.example.myidejava.core.exception.error.AuthException;
 import com.example.myidejava.core.exception.error.NotFoundException;
 import com.example.myidejava.core.exception.error.code.ErrorCode;
 import com.example.myidejava.core.security.CustomAuthenticationProvider;
@@ -54,7 +55,7 @@ public class MemberService {
     @Transactional(readOnly = true)
     public void validateEmail(String email) {
         memberRepository.findByEmail(email).ifPresent(member -> {
-            throw new IllegalStateException("todo: already registered");
+            throw new AuthException(ErrorCode.ALREADY_REGISTERED_USER_EMAIL);
         });
     }
 
