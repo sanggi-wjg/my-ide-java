@@ -54,7 +54,7 @@ public class ContainerService {
 
     @Transactional(readOnly = true)
     public List<ContainerResponse> getAllContainers() {
-        return containerMapper.INSTANCE.ofDtoList(containerRepository.findAll());
+        return containerMapper.INSTANCE.toContainerResponse(containerRepository.findAll());
     }
 
     @Transactional(readOnly = true)
@@ -67,7 +67,7 @@ public class ContainerService {
     @Transactional(readOnly = true)
     public List<CodeSnippetResponse> getContainerCodeSnippets(Long containerId) {
         Container container = getContainerById(containerId);
-        return codeSnippetMapper.INSTANCE.ofDtoList(container.getCodeSnippetList());
+        return codeSnippetMapper.INSTANCE.toCodeSnippetResponse(container.getCodeSnippetList());
     }
 
     @Transactional(readOnly = true)

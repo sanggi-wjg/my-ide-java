@@ -25,6 +25,7 @@ spring:
         default_batch_fetch_size: 1000
         show_sql: true
         format_sql: true
+        use_sql_comments: true
     generate-ddl: true
 
   jackson:
@@ -32,6 +33,9 @@ spring:
       indent_output: true
 
 logging:
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{15} - %msg%n"
+
   level:
     web: info
     root: info

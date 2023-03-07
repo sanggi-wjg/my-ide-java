@@ -19,13 +19,6 @@ public class CodeSnippetResponse {
     @Schema(description = "code snippet id", defaultValue = "1")
     private Long id;
 
-//    todo : mapper entity to dto mapping 하는 방법 찾아보기
-//    @Schema(description = "member", defaultValue = ".")
-//    private Member member;
-//
-//    @Schema(description = "container", defaultValue = ".")
-//    private Container container;
-
     @Schema(description = "code request", defaultValue = "print(1)")
     private String request;
 
