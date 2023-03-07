@@ -1,5 +1,7 @@
 package com.example.myidejava.module.docker.executor;
 
+import com.example.myidejava.core.exception.error.DockerAppException;
+import com.example.myidejava.core.exception.error.code.ErrorCode;
 import com.example.myidejava.domain.docker.Container;
 import org.springframework.stereotype.Component;
 
@@ -20,7 +22,7 @@ public class CodeExecutorFactory {
             case GCC_DOCKER_EXEC -> {
                 return new GccDockerExecCodeExecutor();
             }
-            default -> throw new IllegalStateException("code executor factory is not implemented");
+            default -> throw new DockerAppException(ErrorCode.DOCKER_CONTAINER_CODE_EXECUTOR_IS_NOT_IMPLEMENTED);
         }
     }
 }

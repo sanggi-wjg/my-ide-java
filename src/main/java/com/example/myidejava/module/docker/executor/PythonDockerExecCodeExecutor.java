@@ -1,5 +1,8 @@
 package com.example.myidejava.module.docker.executor;
 
+import com.example.myidejava.core.exception.error.DecodeException;
+import com.example.myidejava.core.exception.error.DockerAppException;
+import com.example.myidejava.core.exception.error.code.ErrorCode;
 import com.example.myidejava.domain.docker.Container;
 import com.example.myidejava.dto.docker.CodeRequest;
 import com.example.myidejava.dto.docker.CodeResponse;
@@ -38,7 +41,7 @@ public class PythonDockerExecCodeExecutor extends ContainerCodeExecutor {
         try {
             map = mapper.readValue(stdout.toString(StandardCharsets.UTF_8).strip(), Map.class);
         } catch (JsonProcessingException e) {
-            throw new RuntimeException(e); // todo
+            throw new DecodeException(ErrorCode.FAIL_TO_DECODE_JSON);
         }
         return map;
     }

@@ -14,10 +14,6 @@ import org.springframework.web.client.RestTemplate;
 public class HttpCodeExecutor extends ContainerCodeExecutor {
 
     public CodeResponse execute(Container container, CodeRequest codeRequest) {
-        if (!container.isTypeHttp()) {
-            throw new IllegalStateException("todo : !container.isTypeHttp()");
-        }
-
         ObjectNode jsonNodes = JsonNodeFactory.instance.objectNode();
         jsonNodes.put("code", codeRequest.getCode());
 
