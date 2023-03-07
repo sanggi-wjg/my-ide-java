@@ -1,5 +1,7 @@
 package com.example.myidejava.core.security;
 
+import com.example.myidejava.core.exception.error.AuthException;
+import com.example.myidejava.core.exception.error.code.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -21,11 +23,11 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         String password = (String) authentication.getCredentials();
 
         UserDetails user = userDetailService.loadUserByUsername(email);
-        if (user == null){
-            throw new BadCredentialsException("todo invalid email");
+        if (user == null) {
+            throw new AuthException(ErrorCode.INVALID_USER_EMAIL);
         }
-        if (!passwordEncoder.matches(password, user.getPassword())){
-            throw new BadCredentialsException("todo invalid email or password");
+        if (!passwordEncoder.matches(password, user.getPassword())) {
+            throw new AuthException(ErrorCode.INVALID_USER_EMAIL_OR_PASSWORD);
         }
         return new CustomAuthenticationToken(user.getUsername(), user.getPassword(), user.getAuthorities());
 

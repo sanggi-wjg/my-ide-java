@@ -1,5 +1,7 @@
 package com.example.myidejava.module.docker.executor;
 
+import com.example.myidejava.core.exception.error.UtilException;
+import com.example.myidejava.core.exception.error.code.ErrorCode;
 import com.example.myidejava.domain.docker.Container;
 import com.example.myidejava.dto.docker.CodeRequest;
 import com.example.myidejava.dto.docker.CodeResponse;
@@ -18,9 +20,7 @@ public class PythonDockerExecCodeExecutor extends ContainerCodeExecutor {
 
     @Override
     public CodeResponse execute(Container container, CodeRequest codeRequest) {
-        // todo : refactoring
         String[] command = {"python", "/app/app.py", codeRequest.getCode()};
-
         ExecCreateCmdResponse createCmdResponse = createCommand(container.getContainerId(), command);
         Map<String, String> resultMap = startCommand(createCmdResponse.getId());
 
@@ -38,7 +38,7 @@ public class PythonDockerExecCodeExecutor extends ContainerCodeExecutor {
         try {
             map = mapper.readValue(stdout.toString(StandardCharsets.UTF_8).strip(), Map.class);
         } catch (JsonProcessingException e) {
-            throw new RuntimeException(e); // todo
+            throw new UtilException(ErrorCode.FAIL_TO_DECODE_JSON);
         }
         return map;
     }

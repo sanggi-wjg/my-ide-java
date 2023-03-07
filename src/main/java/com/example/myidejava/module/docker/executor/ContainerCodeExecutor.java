@@ -1,9 +1,12 @@
 package com.example.myidejava.module.docker.executor;
 
+import com.example.myidejava.core.exception.error.DockerAppException;
+import com.example.myidejava.core.exception.error.code.ErrorCode;
 import com.example.myidejava.domain.docker.Container;
 import com.example.myidejava.dto.docker.CodeRequest;
 import com.example.myidejava.dto.docker.CodeResponse;
 import com.example.myidejava.module.docker.MyDockerClient;
+import com.example.myidejava.module.util.FileUtil;
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.command.ExecCreateCmdResponse;
 import com.github.dockerjava.core.command.ExecStartResultCallback;
@@ -16,7 +19,6 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 @Component
 @Slf4j
@@ -26,41 +28,18 @@ public abstract class ContainerCodeExecutor extends MyDockerClient {
 
     public abstract CodeResponse execute(Container container, CodeRequest codeRequest);
 
-    protected final String generateUniqueFilename(String fileExtension) {
-        // todo file path format join
-        return UUID.randomUUID() + "." + fileExtension;
-    }
-
-    protected final File createTemporaryFile(String extension, String content) {
-        String filename = generateUniqueFilename(extension);
-        File file = new File(filename);
-
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
-            writer.write(content);
-        } catch (IOException e) {
-            throw new RuntimeException("todo, " + e.getMessage());
-        }
-        return file;
-    }
-
-    protected final void unlink(File file) {
-        if (file.exists()) {
-            file.delete();
-        }
-    }
-
     protected final File copyResourceToContainer(String containerId, String extension, String content) {
-        File tempFile = createTemporaryFile(extension, content);
+        File tempFile = FileUtil.createTemporaryFile(extension, content);
         DockerClient dockerClient = getDockerClient();
         dockerClient.copyArchiveToContainerCmd(containerId)
                 .withHostResource(tempFile.getAbsolutePath())
                 .withRemotePath(WORKDIR)
                 .exec();
-        unlink(tempFile);
+        FileUtil.unlink(tempFile);
         return tempFile;
     }
 
-    protected final Map<String, String> createAndStartCommand(String containerId, String[] command){
+    protected final Map<String, String> createAndStartCommand(String containerId, String[] command) {
         ExecCreateCmdResponse createCmdResponse = createCommand(containerId, command);
         return startCommand(createCmdResponse.getId());
     }
@@ -88,7 +67,7 @@ public abstract class ContainerCodeExecutor extends MyDockerClient {
                     .awaitCompletion()
                     .onComplete();
         } catch (InterruptedException e) {
-            throw new RuntimeException(e); // todo
+            throw new DockerAppException(ErrorCode.DOCKER_CONTAINER_FAIL_TO_START_COMMAND);
         }
         return resultStringToMap(stdout, stderr);
     }

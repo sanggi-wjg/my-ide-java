@@ -2,6 +2,7 @@ package com.example.myidejava.module.docker;
 
 import com.example.myidejava.dto.docker.ContainerResponse;
 import com.github.dockerjava.api.DockerClient;
+import com.github.dockerjava.api.command.InspectContainerResponse;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -19,6 +20,12 @@ public class DockerClientShortCut extends MyDockerClient {
                 .filter(container -> container.getImage().contains(IDE_CONTAINER_NAME))
                 .forEach(container -> containerResponseList.add(ContainerResponse.containerToDto(container)));
         return containerResponseList;
+    }
+
+    public boolean isContainerStateRunning(String containerId) {
+        DockerClient dockerClient = getDockerClient();
+        InspectContainerResponse containerResponse = dockerClient.inspectContainerCmd(containerId).exec();
+        return Boolean.TRUE.equals(containerResponse.getState().getRunning());
     }
 
 }
