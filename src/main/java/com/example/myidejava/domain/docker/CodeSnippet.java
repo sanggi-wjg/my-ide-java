@@ -4,6 +4,7 @@ import com.example.myidejava.domain.common.BaseDateTime;
 import com.example.myidejava.domain.member.Member;
 import com.example.myidejava.dto.docker.CodeRequest;
 import io.hypersistence.utils.hibernate.type.json.JsonType;
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -47,12 +48,14 @@ public class CodeSnippet extends BaseDateTime {
     @Column(name = "is_success")
     private Boolean isSuccess;
 
-    public static CodeSnippet create(Container container, CodeRequest codeRequest, Optional<Member> member) {
+    public static CodeSnippet create(Container container, CodeRequest codeRequest, @Nullable Member member) {
         CodeSnippetBuilder builder = CodeSnippet.builder()
                 .container(container)
                 .request(codeRequest.getCode())
                 .isSuccess(Boolean.FALSE);
-        member.ifPresent(builder::member);
+        if (member != null) {
+            builder.member(member);
+        }
         return builder.build();
     }
 

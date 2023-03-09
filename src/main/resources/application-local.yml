@@ -5,9 +5,9 @@ spring:
 
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:mysql://${MYSQL_HOST}/IDE
-    username: ${MYSQL_USERNAME}
-    password: ${MYSQL_PASSWORD}
+    url: jdbc:mysql://localhost:33061/IDE
+    username: root
+    password: rootroot
     driver-class-name: com.mysql.cj.jdbc.Driver
     dbcp2:
       validation-query: SELECT 1
@@ -61,4 +61,4 @@ springdoc:
 server:
   port: 9000
 
-jwt_secret: ${JWT_SECRET} # openssl rand -hex 20
+jwt_secret: 359ad650b2a631ab4195e2540afa310cd59010b1 # openssl rand -hex 20
