@@ -4,7 +4,6 @@ import com.example.myidejava.core.exception.error.AuthException;
 import com.example.myidejava.core.exception.error.code.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,7 +13,7 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class CustomAuthenticationProvider implements AuthenticationProvider {
-    private final MyUserDetailService userDetailService;
+    private final UserDetailServiceImpl userDetailService;
     private final PasswordEncoder passwordEncoder;
 
     @Override

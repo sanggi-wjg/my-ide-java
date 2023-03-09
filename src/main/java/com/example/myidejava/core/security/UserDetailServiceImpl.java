@@ -16,8 +16,7 @@ import java.util.Collections;
 
 @Component
 @RequiredArgsConstructor
-public class MyUserDetailService implements UserDetailsService {
-
+public class UserDetailServiceImpl implements UserDetailsService {
     private final MemberRepository memberRepository;
 
     @Override

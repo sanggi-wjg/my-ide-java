@@ -28,13 +28,14 @@ import javax.validation.Valid;
 public class MemberService {
     private final MemberRepository memberRepository;
     private final SocialLoginRepository socialLoginRepository;
+    private final MemberMapper memberMapper;
     private final JWTUtil jwtUtil;
     private final PasswordEncoder passwordEncoder;
     private final CustomAuthenticationProvider authenticationManager;
-    private final MemberMapper memberMapper;
+    private final MemberValidationService memberValidationService;
 
     public MemberResponse registerEmailUser(RegisterRequest registerRequest) {
-        validateEmail(registerRequest.getEmail());
+        memberValidationService.validateEmail(registerRequest.getEmail());
 
         Member member = Member.createEmailUser(registerRequest.getEmail(), registerRequest.getUsername(), passwordEncoder.encode(registerRequest.getPassword()));
         SocialLogin socialLogin = SocialLogin.createEmail(member, jwtUtil.generateToken(member));
@@ -50,13 +51,6 @@ public class MemberService {
         });
         String token = jwtUtil.generateToken(member);
         return LoginResponse.builder().token(token).build();
-    }
-
-    @Transactional(readOnly = true)
-    public void validateEmail(String email) {
-        memberRepository.findByEmail(email).ifPresent(member -> {
-            throw new AuthException(ErrorCode.ALREADY_REGISTERED_USER_EMAIL);
-        });
     }
 
 }
