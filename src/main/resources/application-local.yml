@@ -5,9 +5,9 @@ spring:
 
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:mysql://${MYSQL_HOST}/IDE
-    username: ${MYSQL_USERNAME}
-    password: ${MYSQL_PASSWORD}
+    url: jdbc:mysql://localhost:33061/IDE
+    username: root
+    password: rootroot
     driver-class-name: com.mysql.cj.jdbc.Driver
     dbcp2:
       validation-query: SELECT 1
@@ -24,7 +24,7 @@ spring:
       hibernate:
         default_batch_fetch_size: 1000
         show_sql: true
-        format_sql: true
+        format_sql: false
         globally_quoted_identifiers: true
 
   jackson:
@@ -33,19 +33,20 @@ spring:
 
 logging:
   level:
+    p6spy: info
     web: info
     root: info
     org:
       springframework:
         web: info
       hibernate:
-        sql: debug
+        sql: info
         type: info
         descriptor:
-          sql: trace
+          sql: info
         orm:
           jdbc:
-            bind: trace
+            bind: info
 
 springdoc:
   api-docs:
@@ -61,4 +62,4 @@ springdoc:
 server:
   port: 9000
 
-jwt_secret: ${JWT_SECRET} # openssl rand -hex 20
+jwt_secret: 359ad650b2a631ab4195e2540afa310cd59010b1 # openssl rand -hex 20
