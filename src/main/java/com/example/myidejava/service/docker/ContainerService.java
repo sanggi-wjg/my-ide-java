@@ -1,6 +1,5 @@
 package com.example.myidejava.service.docker;
 
-import com.example.myidejava.core.exception.error.DockerAppException;
 import com.example.myidejava.core.exception.error.NotFoundException;
 import com.example.myidejava.core.exception.error.code.ErrorCode;
 import com.example.myidejava.domain.docker.CodeSnippet;
@@ -21,7 +20,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Transactional
 @RequiredArgsConstructor
@@ -80,7 +78,7 @@ public class ContainerService {
         Container container = getContainerById(containerId);
         containerValidationService.validateIsContainerRunning(container);
         // 코드 스니펫 생성
-        CodeSnippet codeSnippet = CodeSnippet.create(container, codeRequest, Optional.empty());
+        CodeSnippet codeSnippet = CodeSnippet.create(container, codeRequest, null);
         codeSnippetRepository.save(codeSnippet);
         // 코드 실행
         ContainerCodeExecutor codeExecutor = codeExecutorFactory.create(container);
