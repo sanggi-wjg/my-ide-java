@@ -5,6 +5,7 @@ import com.p6spy.engine.spy.P6SpyOptions;
 import com.p6spy.engine.spy.appender.MessageFormattingStrategy;
 import jakarta.annotation.PostConstruct;
 import org.hibernate.engine.jdbc.internal.FormatStyle;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.Locale;
@@ -12,6 +13,9 @@ import java.util.Stack;
 
 @Configuration
 public class P6SpyFormatter implements MessageFormattingStrategy {
+
+    @Value("${logging.level.p6spy_callstack}")
+    private boolean p6spyCallstack;
 
     @PostConstruct
     public void setMessageFormatter() {
@@ -24,7 +28,7 @@ public class P6SpyFormatter implements MessageFormattingStrategy {
         if (sql == null || sql.trim().isEmpty()) {
             return "";
         }
-        return sql + createStack(connectionId, elapsed);
+        return p6spyCallstack ? sql + createStack(connectionId, elapsed) : sql;
     }
 
     private String formatSql(String category, String sql) {
@@ -65,23 +69,5 @@ public class P6SpyFormatter implements MessageFormattingStrategy {
                 .append(" | Execution Time: ").append(elapsed).append(" ms")
                 .append("\tCall Stack: ").append(sb).append("\n").toString();
     }
-
-//    private String stackTrace() {
-//        return Arrays.stream(new Throwable().getStackTrace()).filter(t -> t.toString().startsWith("com.example.myidejava") && !t.toString().contains(ClassUtils.getUserClass(this).getName())).toString();
-//    }
-//
-//    private String formatSql(String category, String sql) {
-//        if (sql != null && !sql.trim().isEmpty() && Category.STATEMENT.getName().equals(category)) {
-//            String trim = sql.trim().toLowerCase(Locale.ROOT);
-//
-//            if (trim.startsWith("create") || trim.startsWith("alter") || trim.startsWith("comment")) {
-//                trim = FormatStyle.DDL.getFormatter().format(sql);
-//            } else {
-//                trim = FormatStyle.BASIC.getFormatter().format(sql);
-//            }
-//            return stackTrace() + trim;
-//        }
-//        return sql;
-//    }
 
 }
