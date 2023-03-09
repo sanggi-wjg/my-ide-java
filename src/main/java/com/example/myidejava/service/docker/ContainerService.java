@@ -33,6 +33,7 @@ public class ContainerService {
     private final CodeSnippetMapper codeSnippetMapper;
     private final DockerClientShortCut dockerClientShortCut;
     private final CodeExecutorFactory codeExecutorFactory;
+    private final ContainerValidationService containerValidationService;
 
     public void initialize() {
         List<ContainerResponse> containers = dockerClientShortCut.getAllContainers();
@@ -70,13 +71,6 @@ public class ContainerService {
         return codeSnippetMapper.INSTANCE.toCodeSnippetResponse(container.getCodeSnippetList());
     }
 
-    @Transactional(readOnly = true)
-    public void validateIsContainerRunning(Container container) {
-        if (!container.getContainerState().equals("running") ||
-                !dockerClientShortCut.isContainerStateRunning(container.getContainerId())) {
-            throw new DockerAppException(ErrorCode.DOCKER_CONTAINER_IS_NOT_RUNNING);
-        }
-    }
 
     public List<ContainerResponse> getAllContainersOnServer() {
         return dockerClientShortCut.getAllContainers();
@@ -84,7 +78,7 @@ public class ContainerService {
 
     public CodeResponse executeCode(Long containerId, CodeRequest codeRequest) {
         Container container = getContainerById(containerId);
-        validateIsContainerRunning(container);
+        containerValidationService.validateIsContainerRunning(container);
         // 코드 스니펫 생성
         CodeSnippet codeSnippet = CodeSnippet.create(container, codeRequest, Optional.empty());
         codeSnippetRepository.save(codeSnippet);

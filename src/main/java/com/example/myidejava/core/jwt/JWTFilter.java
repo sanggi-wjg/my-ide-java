@@ -2,7 +2,7 @@ package com.example.myidejava.core.jwt;
 
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.example.myidejava.core.common.CommonConstants;
-import com.example.myidejava.core.security.MyUserDetailService;
+import com.example.myidejava.core.security.UserDetailServiceImpl;
 import com.example.myidejava.core.exception.error.code.ErrorCode;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -20,8 +20,7 @@ import java.io.IOException;
 @Component
 @RequiredArgsConstructor
 public class JWTFilter extends OncePerRequestFilter {
-
-    private final MyUserDetailService userDetailService;
+    private final UserDetailServiceImpl userDetailService;
     private final JWTUtil jwtUtil;
 
     private boolean isValidAuthorization(String authorization) {

@@ -38,7 +38,7 @@ public class SecurityConfig {
             "/swagger-ui.html"
     };
 
-    private final MyUserDetailService userDetailService;
+    private final UserDetailServiceImpl userDetailService;
     private final JWTFilter jwtFilter;
 
     @Bean
