@@ -23,7 +23,7 @@ spring:
       use_sql_comments: true
       hibernate:
         default_batch_fetch_size: 1000
-        show_sql: true
+        show_sql: false
         format_sql: false
         globally_quoted_identifiers: true
 

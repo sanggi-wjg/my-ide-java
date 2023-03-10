@@ -1,13 +1,14 @@
 package com.example.myidejava.controller.docker;
 
-import com.example.myidejava.dto.docker.CodeResponse;
-import com.example.myidejava.dto.docker.CodeSnippetResponse;
-import com.example.myidejava.dto.docker.ContainerResponse;
-import com.example.myidejava.dto.docker.CodeRequest;
+import com.example.myidejava.dto.docker.*;
 import com.example.myidejava.service.docker.ContainerService;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.SortDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,7 +17,7 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("/api/v1/dockers")
+@RequestMapping("/api/v1")
 @RequiredArgsConstructor
 @Tag(name = "Docker API", description = "Docker 관련 API")
 public class ContainerController {
@@ -34,12 +35,22 @@ public class ContainerController {
         return ResponseEntity.ok(containerService.getAllContainersOnServer());
     }
 
+    @GetMapping("/containers/code-snippets")
+    @ApiResponse(responseCode = "200", description = "모든 코드 실행 정보")
+    public ResponseEntity<CodeSnippetSearchResponse> getCodeSnippets(
+            @PageableDefault(size = 20) @SortDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable
+    ) {
+        return ResponseEntity.ok(containerService.getCodeSnippets(pageable));
+    }
+
     @GetMapping("/containers/{container_id}/code-snippets")
     @ApiResponse(responseCode = "200", description = "도커 컨테이너 코드 실행 정보")
-    public ResponseEntity<List<CodeSnippetResponse>> getCodeSnippets(
-            @PathVariable("container_id") Long containerId
+    public ResponseEntity<CodeSnippetSearchResponse> getCodeSnippetsByContainerId(
+            @PathVariable("container_id") Long containerId,
+            @Valid CodeSnippetSearch codeSnippetSearch,
+            @PageableDefault(size = 20) @SortDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable
     ) {
-        return ResponseEntity.ok(containerService.getContainerCodeSnippets(containerId));
+        return ResponseEntity.ok(containerService.getCodeSnippetsByContainerId(containerId, codeSnippetSearch,pageable));
     }
 
     @PostMapping("/containers/{container_id}/code-snippets")

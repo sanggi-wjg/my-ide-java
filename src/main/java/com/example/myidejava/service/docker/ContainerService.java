@@ -4,18 +4,19 @@ import com.example.myidejava.core.exception.error.NotFoundException;
 import com.example.myidejava.core.exception.error.code.ErrorCode;
 import com.example.myidejava.domain.docker.CodeSnippet;
 import com.example.myidejava.domain.docker.Container;
-import com.example.myidejava.dto.docker.CodeRequest;
-import com.example.myidejava.dto.docker.CodeResponse;
-import com.example.myidejava.dto.docker.CodeSnippetResponse;
-import com.example.myidejava.dto.docker.ContainerResponse;
+import com.example.myidejava.dto.docker.*;
 import com.example.myidejava.mapper.CodeSnippetMapper;
 import com.example.myidejava.mapper.ContainerMapper;
 import com.example.myidejava.module.docker.DockerClientShortCut;
 import com.example.myidejava.module.docker.executor.CodeExecutorFactory;
 import com.example.myidejava.module.docker.executor.ContainerCodeExecutor;
 import com.example.myidejava.repository.docker.CodeSnippetRepository;
+import com.example.myidejava.repository.docker.CodeSnippetSpecification;
 import com.example.myidejava.repository.docker.ContainerRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -64,11 +65,45 @@ public class ContainerService {
     }
 
     @Transactional(readOnly = true)
-    public List<CodeSnippetResponse> getContainerCodeSnippets(Long containerId) {
+    public CodeSnippetSearchResponse getCodeSnippetsByContainerId(Long containerId, CodeSnippetSearch codeSnippetSearch, Pageable pageable) {
         Container container = getContainerById(containerId);
-        return codeSnippetMapper.INSTANCE.toCodeSnippetResponse(container.getCodeSnippetList());
+
+        Specification<CodeSnippet> specification = ((root, query, criteriaBuilder) -> null);
+        specification = specification.and(CodeSnippetSpecification.equalContainer(container));
+        if (codeSnippetSearch != null) {
+            if (codeSnippetSearch.getRequest() != null)
+                specification = specification.and(CodeSnippetSpecification.containRequest(codeSnippetSearch.getRequest()));
+            if (codeSnippetSearch.getIsSuccess() != null)
+                specification = specification.and(CodeSnippetSpecification.equalIsSuccess(codeSnippetSearch.getIsSuccess()));
+        }
+
+        Page<CodeSnippet> codeSnippetPage = codeSnippetRepository.findAll(specification, pageable);
+        List<CodeSnippetResponse> codeSnippetResponseList = codeSnippetMapper.INSTANCE.toCodeSnippetResponse(codeSnippetPage.getContent());
+
+        return CodeSnippetSearchResponse.builder()
+                .codeSnippetResponseList(codeSnippetResponseList)
+                .totalCount(codeSnippetPage.getTotalElements())
+                .totalPage(codeSnippetPage.getTotalPages())
+                .currentCount(codeSnippetPage.getNumberOfElements())
+                .hasPrev(codeSnippetPage.hasPrevious())
+                .hasNext(codeSnippetPage.hasNext())
+                .build();
     }
 
+    @Transactional(readOnly = true)
+    public CodeSnippetSearchResponse getCodeSnippets(Pageable pageable) {
+        Page<CodeSnippet> codeSnippetPage = codeSnippetRepository.findAll(pageable);
+        List<CodeSnippetResponse> codeSnippetResponseList = codeSnippetMapper.INSTANCE.toCodeSnippetResponse(codeSnippetPage.getContent());
+
+        return CodeSnippetSearchResponse.builder()
+                .codeSnippetResponseList(codeSnippetResponseList)
+                .totalCount(codeSnippetPage.getTotalElements())
+                .totalPage(codeSnippetPage.getTotalPages())
+                .currentCount(codeSnippetPage.getNumberOfElements())
+                .hasPrev(codeSnippetPage.hasPrevious())
+                .hasNext(codeSnippetPage.hasNext())
+                .build();
+    }
 
     public List<ContainerResponse> getAllContainersOnServer() {
         return dockerClientShortCut.getAllContainers();
