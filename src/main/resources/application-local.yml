@@ -34,7 +34,6 @@ spring:
 logging:
   level:
     p6spy: info
-    p6spy_callstack: false
     web: info
     root: info
     org:
