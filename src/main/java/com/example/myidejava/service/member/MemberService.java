@@ -1,6 +1,5 @@
 package com.example.myidejava.service.member;
 
-import com.example.myidejava.core.exception.error.AuthException;
 import com.example.myidejava.core.exception.error.NotFoundException;
 import com.example.myidejava.core.exception.error.code.ErrorCode;
 import com.example.myidejava.core.security.CustomAuthenticationProvider;
@@ -34,13 +33,18 @@ public class MemberService {
     private final CustomAuthenticationProvider authenticationManager;
     private final MemberValidationService memberValidationService;
 
-    public MemberResponse registerEmailUser(RegisterRequest registerRequest) {
-        memberValidationService.validateEmail(registerRequest.getEmail());
-
-        Member member = Member.createEmailUser(registerRequest.getEmail(), registerRequest.getUsername(), passwordEncoder.encode(registerRequest.getPassword()));
-        SocialLogin socialLogin = SocialLogin.createEmail(member, jwtUtil.generateToken(member));
+    private Member createUser(RegisterRequest registerRequest) {
+        Member member = Member.create(registerRequest.getEmail(), registerRequest.getUsername(), passwordEncoder.encode(registerRequest.getPassword()));
+        SocialLogin socialLogin = SocialLogin.create(member, jwtUtil.generateToken(member));
         memberRepository.save(member);
         socialLoginRepository.save(socialLogin);
+        return member;
+    }
+
+    public MemberResponse createEmailUser(RegisterRequest registerRequest) {
+        memberValidationService.validateEmail(registerRequest.getEmail());
+
+        Member member = createUser(registerRequest);
         return memberMapper.INSTANCE.toRegisterResponse(member, member.getSocialLoginList());
     }
 

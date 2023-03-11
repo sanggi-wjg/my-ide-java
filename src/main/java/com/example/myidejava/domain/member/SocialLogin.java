@@ -37,8 +37,8 @@ public class SocialLogin extends BaseDateTime {
     @Column(name = "access_token_issued_at", nullable = false)
     private LocalDateTime accessTokenIssuedAt;
 
-    @Column(name = "access_token_ttl", nullable = false)
-    private Integer accessTokenTtl;
+    @Column(name = "access_token_expired_at", nullable = false)
+    private LocalDateTime accessTokenExpiredAt;
 
     @Column(name = "refresh_token", length = 1500)
     private String refreshToken;
@@ -47,14 +47,14 @@ public class SocialLogin extends BaseDateTime {
     @JoinColumn(name = "member_id", nullable = false, foreignKey = @ForeignKey(name = "fk_social_login_member_id"))
     private Member member;
 
-    public static SocialLogin createEmail(Member member, String accessToken){
+    public static SocialLogin create(Member member, String accessToken){
         return SocialLogin.builder()
                 .socialType(SocialType.EMAIL)
                 .uniqueId(UUID.randomUUID().toString())
                 .member(member)
                 .accessToken(accessToken)
                 .accessTokenIssuedAt(LocalDateTime.now())
-                .accessTokenTtl(60)
+                .accessTokenExpiredAt(LocalDateTime.now().plusDays(1))
                 .build();
     }
 

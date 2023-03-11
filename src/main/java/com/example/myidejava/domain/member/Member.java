@@ -1,7 +1,6 @@
 package com.example.myidejava.domain.member;
 
 import com.example.myidejava.domain.common.BaseDateTime;
-import com.example.myidejava.dto.auth.RegisterRequest;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -40,7 +39,7 @@ public class Member extends BaseDateTime {
     @OneToMany(mappedBy = "member")
     private List<SocialLogin> socialLoginList;
 
-    public static Member createEmailUser(String email, String username, String password) {
+    public static Member create(String email, String username, String password) {
         return Member.builder()
                 .email(email)
                 .username(username)

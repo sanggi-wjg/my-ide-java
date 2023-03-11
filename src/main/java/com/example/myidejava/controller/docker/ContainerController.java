@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.SortDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -59,7 +60,7 @@ public class ContainerController {
             @PathVariable("container_id") Long containerId,
             @RequestBody @Valid CodeRequest codeRequest
     ) {
-        return ResponseEntity.ok(containerService.executeCode(containerId, codeRequest));
+        return ResponseEntity.status(HttpStatus.CREATED).body(containerService.executeCode(containerId, codeRequest));
     }
 
 

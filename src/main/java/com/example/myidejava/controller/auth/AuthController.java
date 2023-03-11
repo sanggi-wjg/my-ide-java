@@ -27,7 +27,7 @@ public class AuthController {
     @PostMapping("/register")
     @ApiResponse(responseCode = "201", description = "이메일 유저 등록")
     public ResponseEntity<MemberResponse> register(@RequestBody @Valid RegisterRequest registerRequest) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(memberService.registerEmailUser(registerRequest));
+        return ResponseEntity.status(HttpStatus.CREATED).body(memberService.createEmailUser(registerRequest));
     }
 
     @PostMapping("/login")
@@ -35,4 +35,12 @@ public class AuthController {
     public ResponseEntity<LoginResponse> login(@RequestBody @Valid LoginRequest loginRequest) {
         return ResponseEntity.ok(memberService.authenticate(loginRequest));
     }
+
+    @PostMapping("/token-login")
+    @ApiResponse(responseCode = "200", description = "토큰 로그인")
+    public ResponseEntity<LoginResponse> tokenLogin(@RequestBody @Valid LoginRequest loginRequest) {
+        // todo 토큰 로그인
+        return ResponseEntity.ok(memberService.authenticate(loginRequest));
+    }
+
 }
