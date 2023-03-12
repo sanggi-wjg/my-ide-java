@@ -37,7 +37,7 @@ public class Member extends BaseDateTime {
     private Boolean isActive;
 
     @OneToMany(mappedBy = "member")
-    private List<SocialLogin> socialLoginList;
+    private List<SocialLogin> socialLogins;
 
     public static Member create(String email, String username, String password) {
         return Member.builder()
@@ -45,7 +45,7 @@ public class Member extends BaseDateTime {
                 .username(username)
                 .password(password)
                 .isActive(Boolean.TRUE)
-                .socialLoginList(new ArrayList<>())
+                .socialLogins(new ArrayList<>())
                 .build();
     }
 

@@ -13,19 +13,22 @@ public class DockerClientShortCut extends MyDockerClient {
     private static final String IDE_CONTAINER_NAME = "container";
 
     public List<ContainerResponse> getAllContainers() {
-        List<ContainerResponse> containerResponseList = new ArrayList<>();
+        List<ContainerResponse> containerResponses = new ArrayList<>();
         DockerClient dockerClient = getDockerClient();
 
         dockerClient.listContainersCmd().withShowAll(true).exec().stream()
                 .filter(container -> container.getImage().contains(IDE_CONTAINER_NAME))
-                .forEach(container -> containerResponseList.add(ContainerResponse.containerToDto(container)));
-        return containerResponseList;
+                .forEach(container -> containerResponses.add(ContainerResponse.containerToDto(container)));
+        return containerResponses;
+    }
+
+    public InspectContainerResponse inspectContainer(String containerId) {
+        DockerClient dockerClient = getDockerClient();
+        return dockerClient.inspectContainerCmd(containerId).exec();
     }
 
     public boolean isContainerStateRunning(String containerId) {
-        DockerClient dockerClient = getDockerClient();
-        InspectContainerResponse containerResponse = dockerClient.inspectContainerCmd(containerId).exec();
-        return Boolean.TRUE.equals(containerResponse.getState().getRunning());
+        return Boolean.TRUE.equals(inspectContainer(containerId).getState().getRunning());
     }
 
 }

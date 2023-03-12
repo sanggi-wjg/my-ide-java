@@ -13,7 +13,7 @@ public interface ContainerMapper {
 
     ContainerMapper INSTANCE = Mappers.getMapper(ContainerMapper.class);
 
-    @Mapping(target = "codeSnippetList", ignore = true)
+    @Mapping(target = "codeSnippets", ignore = true)
     Container toEntity(ContainerResponse containerResponse);
 
     List<ContainerResponse> toContainerResponse(List<Container> containers);

@@ -14,7 +14,7 @@ public interface MemberMapper {
 
     MemberMapper INSTANCE = Mappers.getMapper(MemberMapper.class);
 
-    @Mapping(source = "socialLoginList", target = "socialLoginResponseList")
-    MemberResponse toRegisterResponse(Member member, List<SocialLogin> socialLoginList);
+    @Mapping(source = "socialLogins", target = "socialLoginResponses")
+    MemberResponse toRegisterResponse(Member member, List<SocialLogin> socialLogins);
 
 }

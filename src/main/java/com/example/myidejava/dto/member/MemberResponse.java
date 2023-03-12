@@ -28,6 +28,6 @@ public class MemberResponse {
     private Boolean isActive;
 
     @Schema(description = "소셜 로그인 서비스", defaultValue = "array")
-    private List<SocialLoginResponse> socialLoginResponseList;
+    private List<SocialLoginResponse> socialLoginResponses;
 
 }

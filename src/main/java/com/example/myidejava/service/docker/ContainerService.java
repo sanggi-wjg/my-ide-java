@@ -78,10 +78,10 @@ public class ContainerService {
         }
 
         Page<CodeSnippet> codeSnippetPage = codeSnippetRepository.findAll(specification, pageable);
-        List<CodeSnippetResponse> codeSnippetResponseList = codeSnippetMapper.INSTANCE.toCodeSnippetResponse(codeSnippetPage.getContent());
+        List<CodeSnippetResponse> codeSnippetResponses = codeSnippetMapper.INSTANCE.toCodeSnippetResponse(codeSnippetPage.getContent());
 
         return CodeSnippetSearchResponse.builder()
-                .codeSnippetResponseList(codeSnippetResponseList)
+                .codeSnippetResponses(codeSnippetResponses)
                 .totalCount(codeSnippetPage.getTotalElements())
                 .totalPage(codeSnippetPage.getTotalPages())
                 .currentCount(codeSnippetPage.getNumberOfElements())
@@ -93,10 +93,10 @@ public class ContainerService {
     @Transactional(readOnly = true)
     public CodeSnippetSearchResponse getCodeSnippets(Pageable pageable) {
         Page<CodeSnippet> codeSnippetPage = codeSnippetRepository.findAll(pageable);
-        List<CodeSnippetResponse> codeSnippetResponseList = codeSnippetMapper.INSTANCE.toCodeSnippetResponse(codeSnippetPage.getContent());
+        List<CodeSnippetResponse> codeSnippetResponses = codeSnippetMapper.INSTANCE.toCodeSnippetResponse(codeSnippetPage.getContent());
 
         return CodeSnippetSearchResponse.builder()
-                .codeSnippetResponseList(codeSnippetResponseList)
+                .codeSnippetResponses(codeSnippetResponses)
                 .totalCount(codeSnippetPage.getTotalElements())
                 .totalPage(codeSnippetPage.getTotalPages())
                 .currentCount(codeSnippetPage.getNumberOfElements())

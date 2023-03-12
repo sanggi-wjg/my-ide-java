@@ -19,5 +19,5 @@ public class CodeSnippetSearchResponse {
     private Integer currentCount;
     private Boolean hasPrev;
     private Boolean hasNext;
-    private List<CodeSnippetResponse> codeSnippetResponseList;
+    private List<CodeSnippetResponse> codeSnippetResponses;
 }

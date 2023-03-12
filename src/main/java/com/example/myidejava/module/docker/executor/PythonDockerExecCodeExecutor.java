@@ -22,11 +22,11 @@ public class PythonDockerExecCodeExecutor extends ContainerCodeExecutor {
     public CodeResponse execute(Container container, CodeRequest codeRequest) {
         String[] command = {"python", "/app/app.py", codeRequest.getCode()};
         ExecCreateCmdResponse createCmdResponse = createCommand(container.getContainerId(), command);
-        Map<String, String> resultMap = startCommand(createCmdResponse.getId());
+        Map<String, String> result = startCommand(createCmdResponse.getId());
 
         return CodeResponse.builder()
-                .output(resultMap.get("output"))
-                .error(resultMap.get("error"))
+                .output(result.get("output"))
+                .error(result.get("error"))
                 .build();
     }
 

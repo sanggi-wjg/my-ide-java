@@ -26,11 +26,11 @@ public class GccDockerExecCodeExecutor extends ContainerCodeExecutor {
         createAndStartCommand(container.getContainerId(), gccCommand);
 
         String[] command = {gccCompileFilename};
-        Map<String, String> resultMap = createAndStartCommand(container.getContainerId(), command);
+        Map<String, String> result = createAndStartCommand(container.getContainerId(), command);
 
         return CodeResponse.builder()
-                .output(resultMap.get("output"))
-                .error(resultMap.get("error"))
+                .output(result.get("output"))
+                .error(result.get("error"))
                 .build();
     }
 }

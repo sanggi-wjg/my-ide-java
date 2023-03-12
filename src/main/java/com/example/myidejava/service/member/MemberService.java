@@ -45,7 +45,7 @@ public class MemberService {
         memberValidationService.validateEmail(registerRequest.getEmail());
 
         Member member = createUser(registerRequest);
-        return memberMapper.INSTANCE.toRegisterResponse(member, member.getSocialLoginList());
+        return memberMapper.INSTANCE.toRegisterResponse(member, member.getSocialLogins());
     }
 
     public LoginResponse authenticate(@Valid LoginRequest loginRequest) {

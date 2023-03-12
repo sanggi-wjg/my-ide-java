@@ -15,11 +15,11 @@ public class PhpDockerExecCodeExecutor extends ContainerCodeExecutor {
     public CodeResponse execute(Container container, CodeRequest codeRequest) {
         File file = copyResourceToContainer(container.getContainerId(), "php", codeRequest.getCode());
         String[] command = {"php", "/app/" + file.getName()};
-        Map<String, String> resultMap = createAndStartCommand(container.getContainerId(), command);
+        Map<String, String> result = createAndStartCommand(container.getContainerId(), command);
 
         return CodeResponse.builder()
-                .output(resultMap.get("output"))
-                .error(resultMap.get("error"))
+                .output(result.get("output"))
+                .error(result.get("error"))
                 .build();
     }
 }

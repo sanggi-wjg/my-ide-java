@@ -58,7 +58,7 @@ public class Container extends BaseDateTime {
     private CodeExecutorType codeExecutorType;
 
     @OneToMany(mappedBy = "container")
-    private List<CodeSnippet> codeSnippetList = new ArrayList<>();
+    private List<CodeSnippet> codeSnippets = new ArrayList<>();
 
     public boolean isTypeHttp() {
         return codeExecutorType.equals(CodeExecutorType.HTTP);
