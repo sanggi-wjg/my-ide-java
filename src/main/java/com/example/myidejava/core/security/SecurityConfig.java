@@ -27,6 +27,7 @@ public class SecurityConfig {
             "/",
             "/health",
             "/api/v1/auth/login",
+            "/api/v1/auth/token-login",
             "/api/v1/auth/register",
             // Swagger Docs
             "/v3/api-docs",
@@ -52,9 +53,9 @@ public class SecurityConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeHttpRequests(requests -> requests
-//                                .requestMatchers(REQUEST_WHITELIST).permitAll()
-//                                .anyRequest().authenticated()
-                                .anyRequest().permitAll()
+                                .requestMatchers(REQUEST_WHITELIST).permitAll()
+                                .anyRequest().authenticated()
+//                                .anyRequest().permitAll()
                 )
                 .userDetailsService(userDetailService)
                 .exceptionHandling()

@@ -1,8 +1,11 @@
 package com.example.myidejava.controller.docker;
 
+import com.example.myidejava.core.common.CommonConstants;
 import com.example.myidejava.dto.docker.*;
 import com.example.myidejava.service.docker.ContainerService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -11,6 +14,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.SortDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -31,8 +35,9 @@ public class ContainerController {
     }
 
     @GetMapping("/containers/on-server")
+    @Operation(security = { @SecurityRequirement(name = CommonConstants.SWAGGER_AUTHORIZE_NAME) })
     @ApiResponse(responseCode = "200", description = "서버 도커 컨테이너 리스트")
-    public ResponseEntity<List<ContainerResponse>> containersOnServer() {
+    public ResponseEntity<List<ContainerResponse>> containersOnServer(Authentication authentication) {
         return ResponseEntity.ok(containerService.getAllContainersOnServer());
     }
 
@@ -51,16 +56,18 @@ public class ContainerController {
             @Valid CodeSnippetSearch codeSnippetSearch,
             @PageableDefault(size = 20) @SortDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable
     ) {
-        return ResponseEntity.ok(containerService.getCodeSnippetsByContainerId(containerId, codeSnippetSearch,pageable));
+        return ResponseEntity.ok(containerService.getCodeSnippetsByContainerId(containerId, codeSnippetSearch, pageable));
     }
 
     @PostMapping("/containers/{container_id}/code-snippets")
     @ApiResponse(responseCode = "201", description = "도커 컨테이너 안에서 코드 실행")
     public ResponseEntity<CodeResponse> executeCodeOnContainer(
             @PathVariable("container_id") Long containerId,
-            @RequestBody @Valid CodeRequest codeRequest
+            @RequestBody @Valid CodeRequest codeRequest,
+            Authentication authentication
     ) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(containerService.executeCode(containerId, codeRequest));
+        CodeResponse codeResponse = containerService.executeCode(containerId, codeRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).body(codeResponse);
     }
 
 
