@@ -25,7 +25,7 @@ public class P6SpyFormatter implements MessageFormattingStrategy {
             return "";
         }
         return new StringBuilder()
-                .append("\n( ").append(elapsed).append(" ms)")
+                .append(elapsed).append(" ms,")
                 .append("\tConnection Id: ").append(connectionId)
                 .append(sql).toString();
 //        return sql + createStack(connectionId, elapsed);
