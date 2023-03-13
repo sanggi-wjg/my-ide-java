@@ -23,20 +23,17 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @RequiredArgsConstructor
 @Configuration
 public class SecurityConfig {
-    private static final String[] REQUEST_WHITELIST = {
-            "/",
-            "/health",
-            "/api/v1/auth/login",
-            "/api/v1/auth/token-login",
-            "/api/v1/auth/register",
+    private static final String[] NEED_AUTHENTICATE = {
+            // container
+            "/api/v1/containers/on-server",
             // Swagger Docs
-            "/v3/api-docs",
-            "/v3/api-docs/**",
-            "/swagger-resources/**",
-            "/swagger-ui/**",
-            "/webjars/**",
-            "/swagger/**",
-            "/swagger-ui.html"
+//            "/v3/api-docs",
+//            "/v3/api-docs/**",
+//            "/swagger-resources/**",
+//            "/swagger-ui/**",
+//            "/webjars/**",
+//            "/swagger/**",
+//            "/swagger-ui.html"
     };
 
     private final UserDetailServiceImpl userDetailService;
@@ -53,8 +50,8 @@ public class SecurityConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeHttpRequests(requests -> requests
-                                .requestMatchers(REQUEST_WHITELIST).permitAll()
-                                .anyRequest().authenticated()
+                                .requestMatchers(NEED_AUTHENTICATE).authenticated()
+                                .anyRequest().permitAll()
 //                                .anyRequest().permitAll()
                 )
                 .userDetailsService(userDetailService)
