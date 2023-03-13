@@ -15,7 +15,7 @@ public class ContainerValidationService {
     private final DockerClientShortCut dockerClientShortCut;
 
     public void validateIsContainerRunning(Container container) {
-        boolean isStateRunning = container.getContainerState().equals("running");
+        boolean isStateRunning = container.isStateRunning();
         boolean isContainerStateRunning = dockerClientShortCut.isContainerStateRunning(container.getContainerId());
 
         if (!isStateRunning || !isContainerStateRunning) {

@@ -64,6 +64,10 @@ public class Container extends BaseDateTime {
         return codeExecutorType.equals(CodeExecutorType.HTTP);
     }
 
+    public boolean isStateRunning(){
+        return getContainerState().equals("running");
+    }
+
     public String getHttpUrlAddress() {
         if (!isTypeHttp()) {
             throw new DockerAppException(ErrorCode.DOCKER_CONTAINER_IS_NOT_HTTP_TYPE);
