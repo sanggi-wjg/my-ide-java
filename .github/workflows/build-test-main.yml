@@ -35,7 +35,9 @@ jobs:
           cache-read-only: true
 
       - name: Test Executing
-        run: ./gradlew --info test
+        run: |
+          ./gradlew -Dspring.profiles.active=test bootRun
+          ./gradlew --info test
 
       - name: Upload Jacoco Report
         if: ${{ failure() }}
