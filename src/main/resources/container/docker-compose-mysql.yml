@@ -6,6 +6,7 @@ services:
     ports:
       - 33061:3306 # HOST:CONTAINER
     environment:
+      MYSQL_DATABASE: IDE_TEST
       MYSQL_ROOT_PASSWORD: rootroot
     command:
       - --character-set-server=utf8mb4

@@ -35,7 +35,7 @@ jobs:
           cache-read-only: true
 
       - name: Test Executing
-        run: ./gradlew build && ./gradlew --info test
+        run: ./gradlew --info test
 
       - name: Upload Jacoco Report
         if: ${{ failure() }}
