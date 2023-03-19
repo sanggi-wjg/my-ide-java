@@ -14,8 +14,8 @@ jobs:
     steps:
       - name: Build Essential
         run: |
-          apt update && apt upgrade -y
-          apt install -y docker.io docker-compose
+          sudo apt update && apt upgrade -y
+          sudo apt install -y docker.io docker-compose
 
       - name: Checkout code
         uses: actions/checkout@v3
