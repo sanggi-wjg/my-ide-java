@@ -57,14 +57,14 @@ class ContainerServiceTest {
 
     @Test
     void test_getContainerById() {
-        Long containerId = 1L;
-        Container container = containerService.getContainerById(containerId);
-        Assertions.assertEquals(container.getId(), containerId);
+        Container findContainer = containerRepository.findAll().get(0);
+        Container container = containerService.getContainerById(findContainer.getId());
+        Assertions.assertEquals(container.getId(), findContainer.getId());
     }
 
     @Test
     void test_getContainerById_raise() {
-        Long containerId = 9999L;
+        Long containerId = 99999L;
         Assertions.assertThrows(NotFoundException.class, () -> containerService.getContainerById(containerId));
     }
 

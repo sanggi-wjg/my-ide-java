@@ -33,7 +33,7 @@ spring:
 
 logging:
   level:
-    p6spy: info
+    p6spy: error
     web: info
     root: info
     org:
