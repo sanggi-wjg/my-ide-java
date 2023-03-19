@@ -25,18 +25,11 @@ jobs:
           java-version: '17'
           distribution: 'corretto'
 
-      - name: Grant Gradle
-        run: chmod +x ./gradlew
-
-      - name: Setup Gradle
+      - name: 🚀 Gradle
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: build
+          arguments: test
           cache-read-only: true
-
-      - name: Test Executing
-        run: |
-          ./gradlew --info test
 
       - name: Upload Jacoco Report
         if: ${{ failure() }}
