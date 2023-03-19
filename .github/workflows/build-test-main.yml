@@ -36,7 +36,6 @@ jobs:
 
       - name: Test Executing
         run: |
-          ./gradlew -Dspring.profiles.active=test bootRun
           ./gradlew --info test
 
       - name: Upload Jacoco Report
