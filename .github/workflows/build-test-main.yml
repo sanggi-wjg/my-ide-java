@@ -25,11 +25,16 @@ jobs:
           java-version: '17'
           distribution: 'corretto'
 
+      - name: Gradle
+        run: |
+          chmod + x ./gradlew 
+          ./gradlew -Dspring.profiles.active=test bootRun  
+
       - name: 🚀 Gradle
         uses: gradle/gradle-build-action@v2
         with:
           arguments: test
-          cache-read-only: true
+          cache-read-only: ${{ github.ref != 'refs/heads/main' && github.ref != 'refs/heads/release' }}
 
       - name: Upload Jacoco Report
         if: ${{ failure() }}
