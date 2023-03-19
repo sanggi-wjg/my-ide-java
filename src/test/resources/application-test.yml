@@ -5,7 +5,7 @@ spring:
 
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:mysql://localhost:33061/IDE_TEST
+    url: jdbc:mysql://0.0.0.0:33061/IDE_TEST
     username: root
     password: rootroot
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -23,7 +23,7 @@ spring:
       use_sql_comments: true
       hibernate:
         default_batch_fetch_size: 1000
-        show_sql: false
+        show_sql: true
         format_sql: false
         globally_quoted_identifiers: true
 
@@ -46,7 +46,7 @@ logging:
           sql: info
         orm:
           jdbc:
-            bind: info
+            bind: trace
 
 springdoc:
   api-docs:
