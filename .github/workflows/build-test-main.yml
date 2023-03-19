@@ -25,11 +25,6 @@ jobs:
           java-version: '17'
           distribution: 'corretto'
 
-      - name: Gradle
-        run: |
-          chmod +x ./gradlew 
-          ./gradlew -Dspring.profiles.active=test bootRun  
-
       - name: 🚀 Gradle
         uses: gradle/gradle-build-action@v2
         with:
