@@ -12,11 +12,11 @@ jobs:
 #      packages: write
 
     steps:
-      - name: Build Essential
-        run: |
-          sudo apt-get update && sudo apt-get upgrade -y
-          sudo apt-get install -y moby-containerd moby-runc
-          sudo apt-get update && sudo apt-get install -y docker.io docker-compose
+#      - name: Build Essential
+#        run: |
+#          sudo apt-get update && sudo apt-get upgrade -y
+#          sudo apt-get install -y moby-containerd moby-runc
+#          sudo apt-get update && sudo apt-get install -y docker.io docker-compose
 
       - name: Checkout code
         uses: actions/checkout@v3
