@@ -8,34 +8,30 @@
 
 
 ## Install
-* First of all, Install docker and docker-compose
+### First of all, Install docker and docker-compose.
+
+### Execute docker-compose command. 
 ```shell
-# Create Symbolic link `docker.sock` to root share directory
-cd ~ && mkdir share/
-ln -s /var/run/docker.sock ~/share/docker.sock
-
-./gradlew build
-
-docker build -t my-ide .
-docker run -d -p 9000:9000 --name my-ide  my-ide -v ~/share:/var/run
-
-# remove
-docker rm my-ide && docker rmi my-ide
+docker-compose -f src/resources/container/docker-compose.yml up -d
 ```
 
-
-## Swagger
-```shell
-http://localhost:9000/swagger-ui/index.html
-```
+### Then, start project
 
 
-## Local Test
+## Usage
+### Swagger
+* http://localhost:9000/swagger-ui/index.html
+
+### Local Test view
 * local 환경에서 코드 실행 API 테스트
-```shell
-test/resources/test_view.html
-```
+  * test/resources/test_view.html
 
+### GitHub action script test using act
+* https://github.com/nektos/act
+```shell
+act -l
+act --container-architecture linux/amd64
+```
 
 ### Ref
 * JWT 구현 참조
