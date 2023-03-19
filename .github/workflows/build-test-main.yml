@@ -27,7 +27,7 @@ jobs:
 
       - name: Gradle
         run: |
-          chmod + x ./gradlew 
+          chmod +x ./gradlew 
           ./gradlew -Dspring.profiles.active=test bootRun  
 
       - name: 🚀 Gradle
