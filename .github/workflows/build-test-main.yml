@@ -7,15 +7,14 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
+#    permissions:
+#      contents: read
+#      packages: write
 
     steps:
       - name: Build Essential
         run: |
-#          sudo apt update && apt upgrade -y
-          sudo apt install -y docker.io docker-compose
+          sudo apt install -y docker.io docker-compose #sudo apt update && apt upgrade -y
 
       - name: Checkout code
         uses: actions/checkout@v3
