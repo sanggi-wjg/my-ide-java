@@ -46,11 +46,11 @@ public class ContainerResponse {
     private CodeExecutorType codeExecutorType;
 
     public String getLanguageName() {
-        return getDockerImageName().split("-")[1];
+        return getDockerImageName().replace("_", "-").split("-")[1];
     }
 
     public String getLanguageVersion() {
-        return getDockerImageName().split("-")[2];
+        return getDockerImageName().replace("_", "-").split("-")[2];
     }
 
     public static ContainerResponse containerToDto(Container container) {
