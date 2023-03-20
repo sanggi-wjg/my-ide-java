@@ -48,11 +48,16 @@ public class MemberService {
         return memberMapper.INSTANCE.toRegisterResponse(member, member.getSocialLogins());
     }
 
-    public LoginResponse authenticate(@Valid LoginRequest loginRequest) {
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
-        Member member = memberRepository.findByEmail(loginRequest.getEmail()).orElseThrow(() -> {
+    @Transactional(readOnly = true)
+    public Member getMemberByEmail(String email){
+        return memberRepository.findByEmail(email).orElseThrow(() -> {
             throw new NotFoundException(ErrorCode.NOT_FOUND_MEMBER);
         });
+    }
+
+    public LoginResponse authenticate(@Valid LoginRequest loginRequest) {
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
+        Member member = getMemberByEmail(loginRequest.getEmail());
         String token = jwtUtil.generateToken(member);
         return LoginResponse.builder().token(token).build();
     }

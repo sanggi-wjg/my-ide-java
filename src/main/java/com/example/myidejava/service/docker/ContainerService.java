@@ -4,6 +4,7 @@ import com.example.myidejava.core.exception.error.NotFoundException;
 import com.example.myidejava.core.exception.error.code.ErrorCode;
 import com.example.myidejava.domain.docker.CodeSnippet;
 import com.example.myidejava.domain.docker.Container;
+import com.example.myidejava.domain.member.Member;
 import com.example.myidejava.dto.docker.*;
 import com.example.myidejava.mapper.CodeSnippetMapper;
 import com.example.myidejava.mapper.ContainerMapper;
@@ -13,10 +14,12 @@ import com.example.myidejava.module.docker.executor.ContainerCodeExecutor;
 import com.example.myidejava.repository.docker.CodeSnippetRepository;
 import com.example.myidejava.repository.docker.CodeSnippetSpecification;
 import com.example.myidejava.repository.docker.ContainerRepository;
+import com.example.myidejava.service.member.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,6 +31,7 @@ import java.util.List;
 public class ContainerService {
     private final ContainerRepository containerRepository;
     private final CodeSnippetRepository codeSnippetRepository;
+    private final MemberService memberService;
     private final ContainerMapper containerMapper;
     private final CodeSnippetMapper codeSnippetMapper;
     private final DockerClientShortCut dockerClientShortCut;
@@ -109,11 +113,16 @@ public class ContainerService {
         return dockerClientShortCut.getAllContainers();
     }
 
-    public CodeResponse executeCode(Long containerId, CodeRequest codeRequest) {
+    public CodeResponse executeCode(Long containerId, CodeRequest codeRequest, Authentication authentication) {
         Container container = getContainerById(containerId);
         containerValidationService.validateIsContainerRunning(container);
         // 코드 스니펫 생성
-        CodeSnippet codeSnippet = CodeSnippet.create(container, codeRequest, null);
+        CodeSnippet codeSnippet;
+        if (authentication != null) {
+            codeSnippet = CodeSnippet.create(container, codeRequest, memberService.getMemberByEmail(authentication.getName()));
+        } else {
+            codeSnippet = CodeSnippet.create(container, codeRequest, null);
+        }
         codeSnippetRepository.save(codeSnippet);
         // 코드 실행
         ContainerCodeExecutor codeExecutor = codeExecutorFactory.create(container);
