@@ -1,6 +1,7 @@
 package com.example.myidejava.controller.docker;
 
 import com.example.myidejava.core.common.CommonConstants;
+import com.example.myidejava.domain.member.Member;
 import com.example.myidejava.dto.docker.*;
 import com.example.myidejava.service.docker.ContainerService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -15,9 +16,14 @@ import org.springframework.data.web.SortDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.security.Principal;
+import java.util.Collection;
 import java.util.List;
 
 
@@ -66,7 +72,7 @@ public class ContainerController {
             @RequestBody @Valid CodeRequest codeRequest,
             Authentication authentication
     ) {
-        CodeResponse codeResponse = containerService.executeCode(containerId, codeRequest);
+        CodeResponse codeResponse = containerService.executeCode(containerId, codeRequest, authentication);
         return ResponseEntity.status(HttpStatus.CREATED).body(codeResponse);
     }
 

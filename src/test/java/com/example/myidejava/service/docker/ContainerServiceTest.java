@@ -5,7 +5,6 @@ import com.example.myidejava.domain.docker.Container;
 import com.example.myidejava.dto.docker.*;
 import com.example.myidejava.repository.docker.ContainerRepository;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +12,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.util.Assert;
 
 import java.util.List;
 
@@ -34,7 +32,7 @@ class ContainerServiceTest {
     CodeResponse whenExecuteCode(String[] given) {
         CodeRequest codeRequest = CodeRequest.builder().code(given[2]).build();
         Container container = containerRepository.findByLanguageNameAndLanguageVersion(given[0], given[1]).orElseThrow();
-        return containerService.executeCode(container.getId(), codeRequest);
+        return containerService.executeCode(container.getId(), codeRequest, null);
     }
 
     @Test
