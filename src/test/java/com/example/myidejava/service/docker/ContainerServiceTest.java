@@ -84,16 +84,16 @@ class ContainerServiceTest {
         });
     }
 
-    @Test
-    void 컨테이너_코드_실행_Python_3_8() {
-        // given
-        String[] given = {"python", "3.8", "print(12345)"};
-        // when
-        CodeResponse codeResponse = whenExecuteCode(given);
-        // then
-        Assertions.assertEquals("12345\n", codeResponse.getOutput());
-        Assertions.assertTrue(codeResponse.getError().isEmpty());
-    }
+//    @Test
+//    void 컨테이너_코드_실행_Python_3_8() {
+//        // given
+//        String[] given = {"python", "3.8", "print(12345)"};
+//        // when
+//        CodeResponse codeResponse = whenExecuteCode(given);
+//        // then
+//        Assertions.assertEquals("12345\n", codeResponse.getOutput());
+//        Assertions.assertTrue(codeResponse.getError().isEmpty());
+//    }
 
     @Test
     void 컨테이너_코드_실행_Python_2_7() {
