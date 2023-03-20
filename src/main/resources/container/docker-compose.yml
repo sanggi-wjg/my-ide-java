@@ -4,6 +4,7 @@ services:
   python-3.8:
     hostname: ${PYTHON_3_8}
     container_name: container-${PYTHON_3_8}
+    image: container-${PYTHON_3_8}
     restart: always
     ports:
       - "5010:5000"
@@ -14,6 +15,7 @@ services:
   python-2.7:
     hostname: ${PYTHON_2_7}
     container_name: container-${PYTHON_2_7}
+    image: container-${PYTHON_2_7}
     restart: always
     build:
       context: ./${PYTHON_2_7}
@@ -22,6 +24,7 @@ services:
   php-7.4:
     hostname: ${PHP_7_4}
     container_name: container-${PHP_7_4}
+    image: container-${PHP_7_4}
     restart: always
     build:
       context: ./${PHP_7_4}
@@ -30,6 +33,7 @@ services:
   php-8.2:
     hostname: ${PHP_8_2}
     container_name: container-${PHP_8_2}
+    image: container-${PHP_8_2}
     restart: always
     build:
       context: ./${PHP_8_2}
@@ -38,6 +42,7 @@ services:
   gcc-4.9:
     hostname: ${GCC_4_9}
     container_name: container-${GCC_4_9}
+    image: container-${GCC_4_9}
     restart: always
     build:
       context: ./${GCC_4_9}

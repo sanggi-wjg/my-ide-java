@@ -2,21 +2,13 @@ name: ✅ Build Test
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, feature/** ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
 
     steps:
-      - name: Build Essential
-        run: |
-          sudo apt update && apt upgrade -y
-          sudo apt install -y docker.io docker-compose
-
       - name: Checkout code
         uses: actions/checkout@v3
 
@@ -24,6 +16,8 @@ jobs:
         run: |
           docker-compose -f src/main/resources/container/docker-compose.yml up -d
           docker-compose -f src/main/resources/container/docker-compose-mysql.yml up -d
+          docker images
+          docker ps -a
 
       - name: Set up JDK 17
         uses: actions/setup-java@v3
@@ -31,17 +25,11 @@ jobs:
           java-version: '17'
           distribution: 'corretto'
 
-      - name: Grant Gradle
-        run: chmod +x ./gradlew
-
-      - name: Setup Gradle
+      - name: 🚀 Gradle
         uses: gradle/gradle-build-action@v2
         with:
           arguments: build
-          cache-read-only: true
-
-      - name: Test Executing
-        run: ./gradlew --info -Dspring.profiles.active=dev test
+          cache-read-only: ${{ github.ref != 'refs/heads/main' && github.ref != 'refs/heads/release' }}
 
       - name: Upload Jacoco Report
         if: ${{ failure() }}

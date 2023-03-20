@@ -5,7 +5,7 @@ spring:
 
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:mysql://localhost:33061/IDE_TEST
+    url: jdbc:mysql://0.0.0.0:33061/IDE_TEST
     username: root
     password: rootroot
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -18,14 +18,14 @@ spring:
     database-platform: org.hibernate.dialect.MySQLDialect
     open-in-view: false
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     properties:
-      use_sql_comments: true
+      use_sql_comments: false
       hibernate:
         default_batch_fetch_size: 1000
-        show_sql: false
+        show_sql: true
         format_sql: false
-        globally_quoted_identifiers: true
+        globally_quoted_identifiers: false
 
   jackson:
     serialization:
@@ -33,7 +33,7 @@ spring:
 
 logging:
   level:
-    p6spy: info
+    p6spy: error
     web: info
     root: info
     org:
@@ -46,7 +46,7 @@ logging:
           sql: info
         orm:
           jdbc:
-            bind: info
+            bind: trace
 
 springdoc:
   api-docs:

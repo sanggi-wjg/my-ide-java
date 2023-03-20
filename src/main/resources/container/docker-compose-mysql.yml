@@ -4,11 +4,10 @@ services:
     image: mysql:8.0
     container_name: mysql
     ports:
-      - 33061:3306 # HOST:CONTAINER
+      - 33061:3306
     environment:
+      MYSQL_DATABASE: IDE_TEST
       MYSQL_ROOT_PASSWORD: rootroot
     command:
       - --character-set-server=utf8mb4
       - --collation-server=utf8mb4_general_ci
-    volumes:
-      - /data:/var/lib/mysql
