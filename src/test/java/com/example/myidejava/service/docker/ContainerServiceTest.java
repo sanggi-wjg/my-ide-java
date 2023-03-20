@@ -86,6 +86,7 @@ class ContainerServiceTest {
 
 //    @Test
 //    void 컨테이너_코드_실행_Python_3_8() {
+//      todo action gradle test 에서 에러 발생함
 //        // given
 //        String[] given = {"python", "3.8", "print(12345)"};
 //        // when
