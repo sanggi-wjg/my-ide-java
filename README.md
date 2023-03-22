@@ -8,12 +8,82 @@
 
 
 ## Install & Start
-* First of all, Install docker and docker-compose on your server or local.
-* Execute docker-compose command. 
+* To begin, Install Docker and Docker Compose on your server or local machine.
+* Once installed successfully, run the below docker-compose command.
 ```shell
 docker-compose -f src/resources/container/docker-compose.yml up -d
 ```
-* After Gradle build, Execute MainApplication(MyIdeJavaApplication) with `local` as active profile.
+* After Gradle build, execute MainApplication(MyIdeJavaApplication) with the `local` profile as Spring Boot active profiles.
+
+
+## Concept Description 
+I wanted to explore different ways of executing actual code in Docker containers.  
+So I proceeded with three ways.
+
+
+### Python 3.8
+Implement using an HTTP request with container.
+
+```mermaid
+sequenceDiagram
+  box Client
+  participant SpringBoot
+  participant DockerClient
+  end
+  
+  box Docker Container
+  participant Container
+  end
+  
+  SpringBoot->>DockerClient: Transfer Code 
+  DockerClient->>Container: HTTP Post Request to Flask route
+  Container->>DockerClient: Run a Code then respond result whatever success or failure as HTTP Response
+  DockerClient->>SpringBoot: Transfer result
+```
+
+
+### Python 2.7
+Run a file, that is already implemented with a queue, on container.
+
+```mermaid
+sequenceDiagram
+  box Client
+  participant SpringBoot
+  participant DockerClient
+  end
+  
+  box Docker Container
+  participant Container
+  end
+  
+  SpringBoot->>DockerClient: Transfer Code 
+  DockerClient->>Container: Container file로 전달 받은 Code를 arguments로 하여 파일 실행, Read Queue에 전달
+  Container->>DockerClient: Code를 실행하고 성공 or 실패한 출력 결과 Writer Queue가 출력
+  DockerClient->>SpringBoot: Transfer result
+```
+
+
+### PHP 8.2, PHP 7.4, GCC 4.9
+After create temp file, transfer the file to container.  
+Then, run a file on container.
+
+```mermaid
+sequenceDiagram
+  box Client
+  participant SpringBoot
+  participant DockerClient
+  end
+  
+  box Docker Container
+  participant Container
+  end
+  
+  SpringBoot->>DockerClient: Transfer Code 
+  DockerClient->>Container: 임시 파일을 생성하고 Container로 생성한 파일 전달
+  Container->>DockerClient: 전달 받은 파일을 실행하고 성공 or 실패한 출력 결과 출력
+  DockerClient->>SpringBoot: Transfer result
+```
+
 
 
 ## Usage
@@ -22,12 +92,14 @@ docker-compose -f src/resources/container/docker-compose.yml up -d
 
 ![](.README_images/1241e6dc.png)
 
+
 ### Local Test view
-* local 환경에서 코드 실행 API 테스트
+* Test viewfile for API Test on local
   * test/resources/test_view.html
 
 ![](.README_images/faf642de.png)
 ![](.README_images/a4616146.png)
+
 
 
 ### GitHub action script test using act
@@ -36,6 +108,7 @@ docker-compose -f src/resources/container/docker-compose.yml up -d
 act -l
 act --container-architecture linux/amd64
 ```
+
 
 ### Ref
 * JWT 구현 참조
