@@ -13,7 +13,7 @@
 ```shell
 docker-compose -f src/resources/container/docker-compose.yml up -d
 ```
-* After build, Execute MainApplication(MyIdeJavaApplication).
+* After Gradle build, Execute MainApplication(MyIdeJavaApplication) with `local` as active profile.
 
 
 ## Usage
