@@ -12,10 +12,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: 🚀 Docker-Compose UP
+      - name: 🚀 Docker-Compose UP  🚀
         run: |
-          docker-compose -f src/main/resources/container/docker-compose.yml up -d
-          docker-compose -f src/main/resources/container/docker-compose-mysql.yml up -d
+          docker-compose --env-file .env.install -f docker-compose-install.yml up  -d
+          docker-compose -f docker-compose-build-test.yml up -d
           docker images
           docker ps -a
 
@@ -25,7 +25,7 @@ jobs:
           java-version: '17'
           distribution: 'corretto'
 
-      - name: 🚀 Gradle
+      - name: 🚀 Gradle  🚀
         uses: gradle/gradle-build-action@v2
         with:
           arguments: build
