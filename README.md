@@ -10,6 +10,7 @@
 ## TODO
 * [ ] RabbitMQ or Kafka 연동
 * [ ] Redis는 할까 말까 고민 중...
+* [ ] Gradle 멀티 모듈로 변경
 
 
 ## Install & Start

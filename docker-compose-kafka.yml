@@ -1,0 +1,88 @@
+version: '3'
+
+services:
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.3.0
+    hostname: zookeeper
+    container_name: zookeeper
+    environment:
+      TZ: Asia/Seoul
+      ZOOKEEPER_SERVER_ID: 1
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+
+  kafka-1:
+    image: confluentinc/cp-kafka:7.3.0
+    container_name: kafka-1
+    depends_on:
+      - zookeeper
+    ports:
+      - "9091:9091"
+    environment:
+      TZ: Asia/Seoul
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+#      KAFKA_LISTENERS: INTERNAL://kafka-1:29091,EXTERNAL://localhost:9091  # 리스너 들의 목록이고, 호스트/ip 로 구성한다. 해당 옵션을 사용하지 않으면 모든 인터페이스에서 수신 할 수 있다. 기본값. 0.0.0.0
+      KAFKA_ADVERTISED_LISTENERS: LISTENER_DOCKER_INTERNAL://kafka-1:29091,LISTENER_DOCKER_EXTERNAL://localhost:9091
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: LISTENER_DOCKER_INTERNAL:PLAINTEXT,LISTENER_DOCKER_EXTERNAL:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: LISTENER_DOCKER_INTERNAL
+      KAFKA_DEFAULT_REPLICATION_FACTOR: 1
+#      KAFKA_NUM_PARTITIONS: 3
+      KAFKA_HEAP_OPTS: '-Xmx512M -Xms512M'
+
+  kafka-2:
+    image: confluentinc/cp-kafka:7.3.0
+    container_name: kafka-2
+    ports:
+      - '9092:9092'
+    depends_on:
+      - zookeeper
+    environment:
+      TZ: Asia/Seoul
+      KAFKA_BROKER_ID: 2
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+#      KAFKA_LISTENERS: LISTENER_DOCKER_INTERNAL://kafka-2:29092,EXTERNAL://localhost:9092
+      KAFKA_ADVERTISED_LISTENERS: LISTENER_DOCKER_INTERNAL://kafka-2:29092,LISTENER_DOCKER_EXTERNAL://localhost:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: LISTENER_DOCKER_INTERNAL:PLAINTEXT,LISTENER_DOCKER_EXTERNAL:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: LISTENER_DOCKER_INTERNAL
+      KAFKA_DEFAULT_REPLICATION_FACTOR: 1
+#      KAFKA_NUM_PARTITIONS: 3
+      KAFKA_HEAP_OPTS: '-Xmx512M -Xms512M'
+
+  kafka-3:
+    image: confluentinc/cp-kafka:7.3.0
+    container_name: kafka-3
+    ports:
+      - '9093:9093'
+    depends_on:
+      - zookeeper
+    environment:
+      TZ: Asia/Seoul
+      KAFKA_BROKER_ID: 3
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+#      KAFKA_LISTENERS: LISTENER_DOCKER_INTERNAL://kafka-3:29093,EXTERNAL://localhost:9093
+      KAFKA_ADVERTISED_LISTENERS: LISTENER_DOCKER_INTERNAL://kafka-3:29093,LISTENER_DOCKER_EXTERNAL://localhost:9093
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: LISTENER_DOCKER_INTERNAL:PLAINTEXT,LISTENER_DOCKER_EXTERNAL:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: LISTENER_DOCKER_INTERNAL
+      KAFKA_DEFAULT_REPLICATION_FACTOR: 1
+#      KAFKA_NUM_PARTITIONS: 3
+      KAFKA_HEAP_OPTS: '-Xmx512M -Xms512M'
+
+  kafka-ui:
+    image: provectuslabs/kafka-ui
+    container_name: kafka-ui
+    depends_on:
+      - kafka-1
+      - kafka-2
+      - kafka-3
+    ports:
+      - "8081:8080"
+    restart: always
+    environment:
+      - TZ=Asia/Seoul
+#      - KAFKA_CLUSTERS_0_NAME=Local-Single
+#      - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka:29091
+#      - KAFKA_CLUSTERS_0_ZOOKEEPER=zookeeper:2181
+      - KAFKA_CLUSTERS_0_NAME=Local-Cluster
+      - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka-1:29091,kafka-2:29092,kafka-3:29093
+      - KAFKA_CLUSTERS_0_ZOOKEEPER=zookeeper:2181
