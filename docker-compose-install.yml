@@ -9,7 +9,7 @@ services:
     ports:
       - "5010:5000"
     build:
-      context: ./${PYTHON_3_8}
+      context: container/${PYTHON_3_8}
       dockerfile: Dockerfile
 
   python-2.7:
@@ -18,7 +18,7 @@ services:
     image: container-${PYTHON_2_7}
     restart: always
     build:
-      context: ./${PYTHON_2_7}
+      context: container/${PYTHON_2_7}
       dockerfile: Dockerfile
 
   php-7.4:
@@ -27,7 +27,7 @@ services:
     image: container-${PHP_7_4}
     restart: always
     build:
-      context: ./${PHP_7_4}
+      context: container/${PHP_7_4}
       dockerfile: Dockerfile
 
   php-8.2:
@@ -36,7 +36,7 @@ services:
     image: container-${PHP_8_2}
     restart: always
     build:
-      context: ./${PHP_8_2}
+      context: container/${PHP_8_2}
       dockerfile: Dockerfile
 
   gcc-4.9:
@@ -45,5 +45,5 @@ services:
     image: container-${GCC_4_9}
     restart: always
     build:
-      context: ./${GCC_4_9}
+      context: container/${GCC_4_9}
       dockerfile: Dockerfile

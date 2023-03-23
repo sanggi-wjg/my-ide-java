@@ -2,16 +2,21 @@
 
 
 ## Development Environment
-* Java 17
+* Java 17 (corretto)
 * Spring boot 3.0.2
 * JPA Hibernate 6.1.6
+
+
+## TODO
+* [ ] RabbitMQ or Kafka 연동
+* [ ] Redis는 할까 말까 고민 중...
 
 
 ## Install & Start
 * To begin, Install Docker and Docker Compose on your server or local machine.
 * Once installed successfully, run the below docker-compose command.
 ```shell
-docker-compose -f src/resources/container/docker-compose.yml up -d
+docker-compose --env-file .env.install -f docker-compose-install.yml up  -d
 ```
 * After Gradle build, execute MainApplication(MyIdeJavaApplication) with the `local` profile as Spring Boot active profiles.
 

@@ -40,7 +40,6 @@ public class ContainerService {
 
     public void initialize() {
         List<ContainerResponse> containers = dockerClientShortCut.getAllContainers();
-        // todo : 만약 컨테이너가 올라와 있지 않다면, docker-compose 실행 하도록 코드 추가.
         containers.forEach(this::createOrUpdate);
     }
 
