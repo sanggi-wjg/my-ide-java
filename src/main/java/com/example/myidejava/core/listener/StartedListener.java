@@ -18,10 +18,10 @@ public class StartedListener implements ApplicationListener<ApplicationStartedEv
 
     @Override
     public void onApplicationEvent(ApplicationStartedEvent event) {
-        logger.info("=== [Started Listener] =================================================================");
-        logger.info("[Started Listener] Initialize Containers");
+        logger.info("[STARTED_LISTENER] [HEAD] =================================================================");
+        logger.info("[STARTED_LISTENER] [BODY] Initialize Containers");
         containerService.initialize();
-        logger.info("==== [Started Listener] =================================================================");
+        logger.info("[STARTED_LISTENER] [TALI] =================================================================");
     }
 
 }

@@ -31,6 +31,10 @@ spring:
     serialization:
       indent_output: true
 
+  kafka:
+    consumer:
+      auto-offset-reset: earliest
+
 logging:
   level:
     p6spy: info
