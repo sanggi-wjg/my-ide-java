@@ -29,7 +29,7 @@ class ContainerServiceTest {
     @Autowired
     ContainerRepository containerRepository;
 
-    CodeResponse whenExecuteCode(String[] given) {
+    CodeSnippetResponse whenExecuteCode(String[] given) {
         CodeRequest codeRequest = CodeRequest.builder().code(given[2]).build();
         Container container = containerRepository.findByLanguageNameAndLanguageVersion(given[0], given[1]).orElseThrow();
         return containerService.executeCode(container.getId(), codeRequest, null);
@@ -88,10 +88,10 @@ class ContainerServiceTest {
 //        // given
 //        String[] given = {"python", "3.8", "print(12345)"};
 //        // when
-//        CodeResponse codeResponse = whenExecuteCode(given);
+//        CodeSnippetResponse codeSnippetResponse = whenExecuteCode(given);
 //        // then
-//        Assertions.assertEquals("12345\n", codeResponse.getOutput());
-//        Assertions.assertTrue(codeResponse.getError().isEmpty());
+//        Assertions.assertEquals("12345\n", codeSnippetResponse.getResponse().get("output"));
+//        Assertions.assertTrue(codeSnippetResponse.getError().isEmpty());
 //    }
 
     @Test
@@ -99,10 +99,10 @@ class ContainerServiceTest {
         // given
         String[] given = {"python", "2.7", "print(12345)"};
         // when
-        CodeResponse codeResponse = whenExecuteCode(given);
+        CodeSnippetResponse codeSnippetResponse = whenExecuteCode(given);
         // then
-        Assertions.assertEquals("12345\n", codeResponse.getOutput());
-        Assertions.assertTrue(codeResponse.getError().isEmpty());
+        Assertions.assertEquals("12345\n", codeSnippetResponse.getResponse().get("output"));
+        Assertions.assertEquals("", codeSnippetResponse.getResponse().get("error"));
     }
 
     @Test
@@ -110,11 +110,11 @@ class ContainerServiceTest {
         // given
         String[] given = {"php", "7.4", "<?php\n print_r(['Hello' => 'World']);"};
         // when
-        CodeResponse codeResponse = whenExecuteCode(given);
+        CodeSnippetResponse codeSnippetResponse = whenExecuteCode(given);
         // then
-        assertThat(codeResponse.getOutput(), containsString("Hello"));
-        assertThat(codeResponse.getOutput(), containsString("World"));
-        Assertions.assertTrue(codeResponse.getError().isEmpty());
+        assertThat(codeSnippetResponse.getResponse().get("output").toString(), containsString("Hello"));
+        assertThat(codeSnippetResponse.getResponse().get("output").toString(), containsString("World"));
+        Assertions.assertEquals("", codeSnippetResponse.getResponse().get("error"));
     }
 
     @Test
@@ -122,11 +122,11 @@ class ContainerServiceTest {
         // given
         String[] given = {"php", "8.2", "<?php\n print_r(['Hello' => 'World']);"};
         // when
-        CodeResponse codeResponse = whenExecuteCode(given);
+        CodeSnippetResponse codeSnippetResponse = whenExecuteCode(given);
         // then
-        assertThat(codeResponse.getOutput(), containsString("Hello"));
-        assertThat(codeResponse.getOutput(), containsString("World"));
-        Assertions.assertTrue(codeResponse.getError().isEmpty());
+        assertThat(codeSnippetResponse.getResponse().get("output").toString(), containsString("Hello"));
+        assertThat(codeSnippetResponse.getResponse().get("output").toString(), containsString("World"));
+        Assertions.assertEquals("", codeSnippetResponse.getResponse().get("error"));
     }
 
     @Test
@@ -134,11 +134,11 @@ class ContainerServiceTest {
         // given
         String[] given = {"gcc", "4.9", "#include <stdio.h>\n\nint main()\n{\n    printf(\"Hello World\");\n    return 0;\n}"};
         // when
-        CodeResponse codeResponse = whenExecuteCode(given);
+        CodeSnippetResponse codeSnippetResponse = whenExecuteCode(given);
         // then
-        assertThat(codeResponse.getOutput(), containsString("Hello"));
-        assertThat(codeResponse.getOutput(), containsString("World"));
-        Assertions.assertTrue(codeResponse.getError().isEmpty());
+        assertThat(codeSnippetResponse.getResponse().get("output").toString(), containsString("Hello"));
+        assertThat(codeSnippetResponse.getResponse().get("output").toString(), containsString("World"));
+        Assertions.assertEquals("", codeSnippetResponse.getResponse().get("error"));
     }
 
 }

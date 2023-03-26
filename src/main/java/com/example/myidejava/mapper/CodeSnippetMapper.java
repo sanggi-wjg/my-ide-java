@@ -12,6 +12,7 @@ public interface CodeSnippetMapper {
 
     CodeSnippetMapper INSTANCE = Mappers.getMapper(CodeSnippetMapper.class);
 
-    List<CodeSnippetResponse> toCodeSnippetResponse(List<CodeSnippet> codeSnippets);
+    CodeSnippetResponse toCodeSnippetResponse(CodeSnippet codeSnippets);
+    List<CodeSnippetResponse> toCodeSnippetResponses(List<CodeSnippet> codeSnippets);
 
 }

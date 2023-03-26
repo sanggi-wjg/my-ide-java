@@ -1,7 +1,6 @@
 package com.example.myidejava.controller.docker;
 
 import com.example.myidejava.core.common.CommonConstants;
-import com.example.myidejava.domain.member.Member;
 import com.example.myidejava.dto.docker.*;
 import com.example.myidejava.service.docker.ContainerService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -16,14 +15,9 @@ import org.springframework.data.web.SortDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.security.Principal;
-import java.util.Collection;
 import java.util.List;
 
 
@@ -67,13 +61,13 @@ public class ContainerController {
 
     @PostMapping("/containers/{container_id}/code-snippets")
     @ApiResponse(responseCode = "201", description = "도커 컨테이너 안에서 코드 실행")
-    public ResponseEntity<CodeResponse> executeCodeOnContainer(
+    public ResponseEntity<CodeSnippetResponse> executeCodeOnContainer(
             @PathVariable("container_id") Long containerId,
             @RequestBody @Valid CodeRequest codeRequest,
             Authentication authentication
     ) {
-        CodeResponse codeResponse = containerService.executeCode(containerId, codeRequest, authentication);
-        return ResponseEntity.status(HttpStatus.CREATED).body(codeResponse);
+        CodeSnippetResponse codeSnippetResponse = containerService.executeCode(containerId, codeRequest, authentication);
+        return ResponseEntity.status(HttpStatus.CREATED).body(codeSnippetResponse);
     }
 
 

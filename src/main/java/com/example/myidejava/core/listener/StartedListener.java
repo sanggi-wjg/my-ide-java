@@ -21,7 +21,7 @@ public class StartedListener implements ApplicationListener<ApplicationStartedEv
         logger.info("[STARTED_LISTENER] [HEAD] =================================================================");
         logger.info("[STARTED_LISTENER] [BODY] Initialize Containers");
         containerService.initialize();
-        logger.info("[STARTED_LISTENER] [TALI] =================================================================");
+        logger.info("[STARTED_LISTENER] [TAIL] =================================================================");
     }
 
 }

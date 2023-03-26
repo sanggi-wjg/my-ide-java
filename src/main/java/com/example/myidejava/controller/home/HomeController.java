@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@Tag(name = "홈")
+@Tag(name = "홈", description = "Hello World")
 public class HomeController {
 
     @GetMapping("/")

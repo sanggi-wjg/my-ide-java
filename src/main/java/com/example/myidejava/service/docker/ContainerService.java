@@ -4,13 +4,14 @@ import com.example.myidejava.core.exception.error.NotFoundException;
 import com.example.myidejava.core.exception.error.code.ErrorCode;
 import com.example.myidejava.domain.docker.CodeSnippet;
 import com.example.myidejava.domain.docker.Container;
-import com.example.myidejava.domain.member.Member;
 import com.example.myidejava.dto.docker.*;
 import com.example.myidejava.mapper.CodeSnippetMapper;
 import com.example.myidejava.mapper.ContainerMapper;
 import com.example.myidejava.module.docker.DockerClientShortCut;
 import com.example.myidejava.module.docker.executor.CodeExecutorFactory;
 import com.example.myidejava.module.docker.executor.ContainerCodeExecutor;
+import com.example.myidejava.module.kafka.MyKafkaProducer;
+import com.example.myidejava.module.kafka.MyKafkaTopics;
 import com.example.myidejava.repository.docker.CodeSnippetRepository;
 import com.example.myidejava.repository.docker.CodeSnippetSpecification;
 import com.example.myidejava.repository.docker.ContainerRepository;
@@ -37,6 +38,7 @@ public class ContainerService {
     private final DockerClientShortCut dockerClientShortCut;
     private final CodeExecutorFactory codeExecutorFactory;
     private final ContainerValidationService containerValidationService;
+    private final MyKafkaProducer kafkaProducer;
 
     public void initialize() {
         List<ContainerResponse> containers = dockerClientShortCut.getAllContainers();
@@ -81,7 +83,7 @@ public class ContainerService {
         }
 
         Page<CodeSnippet> codeSnippetPage = codeSnippetRepository.findAll(specification, pageable);
-        List<CodeSnippetResponse> codeSnippetResponses = codeSnippetMapper.INSTANCE.toCodeSnippetResponse(codeSnippetPage.getContent());
+        List<CodeSnippetResponse> codeSnippetResponses = codeSnippetMapper.INSTANCE.toCodeSnippetResponses(codeSnippetPage.getContent());
 
         return CodeSnippetSearchResponse.builder()
                 .codeSnippetResponses(codeSnippetResponses)
@@ -96,7 +98,7 @@ public class ContainerService {
     @Transactional(readOnly = true)
     public CodeSnippetSearchResponse getCodeSnippets(Pageable pageable) {
         Page<CodeSnippet> codeSnippetPage = codeSnippetRepository.findAll(pageable);
-        List<CodeSnippetResponse> codeSnippetResponses = codeSnippetMapper.INSTANCE.toCodeSnippetResponse(codeSnippetPage.getContent());
+        List<CodeSnippetResponse> codeSnippetResponses = codeSnippetMapper.INSTANCE.toCodeSnippetResponses(codeSnippetPage.getContent());
 
         return CodeSnippetSearchResponse.builder()
                 .codeSnippetResponses(codeSnippetResponses)
@@ -112,7 +114,7 @@ public class ContainerService {
         return dockerClientShortCut.getAllContainers();
     }
 
-    public CodeResponse executeCode(Long containerId, CodeRequest codeRequest, Authentication authentication) {
+    public CodeSnippetResponse executeCode(Long containerId, CodeRequest codeRequest, Authentication authentication) {
         Container container = getContainerById(containerId);
         containerValidationService.validateIsContainerRunning(container);
         // 코드 스니펫 생성
@@ -128,7 +130,23 @@ public class ContainerService {
         CodeResponse codeResponse = codeExecutor.execute(container, codeRequest);
         // 실행 결과 저장
         codeSnippet.saveResponse(codeResponse.toMap());
-        return codeResponse;
+        return codeSnippetMapper.INSTANCE.toCodeSnippetResponse(codeSnippet);
+    }
+
+    public CodeSnippetResponse requestCodeSnippetToExecute(Long containerId, CodeRequest codeRequest, Authentication authentication) {
+        // todo refactoring
+        Container container = getContainerById(containerId);
+        containerValidationService.validateIsContainerRunning(container);
+        // 코드 스니펫 생성
+        CodeSnippet codeSnippet;
+        if (authentication != null) {
+            codeSnippet = CodeSnippet.create(container, codeRequest, memberService.getMemberByEmail(authentication.getName()));
+        } else {
+            codeSnippet = CodeSnippet.create(container, codeRequest, null);
+        }
+        codeSnippetRepository.save(codeSnippet);
+        kafkaProducer.send("CODE_SNIPPET", codeSnippet.getId().toString(), "execute");
+        return codeSnippetMapper.INSTANCE.toCodeSnippetResponse(codeSnippet);
     }
 
 }
