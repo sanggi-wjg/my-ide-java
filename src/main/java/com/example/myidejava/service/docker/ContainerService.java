@@ -39,7 +39,7 @@ public class ContainerService {
     private final MyKafkaProducer kafkaProducer;
 
     public void initialize() {
-        List<ContainerResponse> containers = dockerClientShortCut.getContainers();
+        List<ContainerResponse> containers = dockerClientShortCut.getDockerContainers();
         containers.forEach(this::createOrUpdate);
     }
 
@@ -63,17 +63,18 @@ public class ContainerService {
     }
 
     @Transactional(readOnly = true)
-    public ContainerResponse getContainer(Long containerId) {
+    public ContainerResponse getContainerResponse(Long containerId) {
         return containerMapper.INSTANCE.toContainerResponse(getContainerById(containerId));
     }
 
     @Transactional(readOnly = true)
-    public List<ContainerResponse> getContainers() {
+    public List<ContainerResponse> getContainerResponses() {
         return containerMapper.INSTANCE.toContainerResponses(containerRepository.findAll());
     }
 
-    public List<ContainerResponse> getContainersOnServer() {
-        return dockerClientShortCut.getContainers();
+    @Transactional(readOnly = true)
+    public List<ContainerResponse> getContainerResponsesOnServer() {
+        return dockerClientShortCut.getDockerContainers();
     }
 
     public CodeSnippetResponse executeCode(Long containerId, CodeRequest codeRequest, Authentication authentication) {

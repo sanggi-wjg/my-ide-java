@@ -42,8 +42,8 @@ class ContainerServiceTest {
     @DisplayName("initialize 성공")
     void test_initialize() {
         // when
-        List<ContainerResponse> containerResponseList = containerService.getContainers();
-        List<ContainerResponse> containerResponseListOnServer = containerService.getContainersOnServer();
+        List<ContainerResponse> containerResponseList = containerService.getContainerResponses();
+        List<ContainerResponse> containerResponseListOnServer = containerService.getContainerResponsesOnServer();
         // then
         Assertions.assertEquals(containerResponseListOnServer.size(), containerResponseList.size(), "서버 컨테이너 개수와 디비에 저장된 컨테이너 개수는 같아야 한다.");
         containerResponseList.forEach(containerResponse -> {
@@ -65,7 +65,7 @@ class ContainerServiceTest {
         Container findContainer = containerRepository.findAll().get(0);
         // when
         Container container = containerService.getContainerById(findContainer.getId());
-        ContainerResponse containerResponse = containerService.getContainer(container.getId());
+        ContainerResponse containerResponse = containerService.getContainerResponse(container.getId());
         // then
         Assertions.assertEquals(container.getId(), findContainer.getId());
         Assertions.assertEquals(containerResponse.getId(), findContainer.getId());
@@ -79,17 +79,17 @@ class ContainerServiceTest {
         Long containerId = 0L;
         // when then
         Assertions.assertThrows(NotFoundException.class, () -> containerService.getContainerById(containerId));
-        Assertions.assertThrows(NotFoundException.class, () -> containerService.getContainer(containerId));
+        Assertions.assertThrows(NotFoundException.class, () -> containerService.getContainerResponse(containerId));
     }
 
     @Test
     @DisplayName("getContainers 성공")
     void test_getContainers() {
         // given
-        List<ContainerResponse> containers = containerService.getContainers();
+        List<ContainerResponse> containers = containerService.getContainerResponses();
         // when then
         containers.forEach(containerResponse -> {
-            CodeSnippetSearchResponse codeSnippetSearchResponse = codeSnippetService.getCodeSnippetsBySearch(
+            CodeSnippetSearchResponse codeSnippetSearchResponse = codeSnippetService.getCodeSnippetSearchResponse(
                     new CodeSnippetSearch(1L,"print", 1),
                     PageRequest.of(0, 5, Sort.by("createdAt"))
             );

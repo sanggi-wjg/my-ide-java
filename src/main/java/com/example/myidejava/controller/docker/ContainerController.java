@@ -29,14 +29,14 @@ public class ContainerController {
     @GetMapping("/containers")
     @ApiResponse(responseCode = "200", description = "도커 컨테이너 리스트")
     public ResponseEntity<List<ContainerResponse>> containers() {
-        return ResponseEntity.ok(containerService.getContainers());
+        return ResponseEntity.ok(containerService.getContainerResponses());
     }
 
     @GetMapping("/containers/on-server")
     @Operation(security = {@SecurityRequirement(name = CommonConstants.SWAGGER_AUTHORIZE_NAME)})
     @ApiResponse(responseCode = "200", description = "서버 도커 컨테이너 리스트")
     public ResponseEntity<List<ContainerResponse>> containersOnServer(Authentication authentication) {
-        return ResponseEntity.ok(containerService.getContainersOnServer());
+        return ResponseEntity.ok(containerService.getContainerResponsesOnServer());
     }
 
     @GetMapping("/containers/{container_id}")
@@ -44,7 +44,7 @@ public class ContainerController {
     public ResponseEntity<ContainerResponse> container(
             @PathVariable("container_id") Long containerId
     ) {
-        return ResponseEntity.ok(containerService.getContainer(containerId));
+        return ResponseEntity.ok(containerService.getContainerResponse(containerId));
     }
 
     @PostMapping("/containers/{container_id}/code")
