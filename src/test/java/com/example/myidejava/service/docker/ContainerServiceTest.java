@@ -5,11 +5,13 @@ import com.example.myidejava.domain.docker.Container;
 import com.example.myidejava.dto.docker.*;
 import com.example.myidejava.repository.docker.ContainerRepository;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -37,10 +39,11 @@ class ContainerServiceTest {
     }
 
     @Test
+    @DisplayName("initialize 성공")
     void test_initialize() {
         // when
-        List<ContainerResponse> containerResponseListOnServer = containerService.getContainersOnServer();
         List<ContainerResponse> containerResponseList = containerService.getContainers();
+        List<ContainerResponse> containerResponseListOnServer = containerService.getContainersOnServer();
         // then
         Assertions.assertEquals(containerResponseListOnServer.size(), containerResponseList.size(), "서버 컨테이너 개수와 디비에 저장된 컨테이너 개수는 같아야 한다.");
         containerResponseList.forEach(containerResponse -> {
@@ -56,34 +59,46 @@ class ContainerServiceTest {
     }
 
     @Test
-    void test_getContainerById() {
+    @DisplayName("getContainerById 성공")
+    void test_getContainer() {
+        // given
         Container findContainer = containerRepository.findAll().get(0);
+        // when
         Container container = containerService.getContainerById(findContainer.getId());
+        ContainerResponse containerResponse = containerService.getContainer(container.getId());
+        // then
         Assertions.assertEquals(container.getId(), findContainer.getId());
+        Assertions.assertEquals(containerResponse.getId(), findContainer.getId());
+        Assertions.assertEquals(container.getId(), containerResponse.getId());
     }
 
     @Test
+    @DisplayName("getContainerById 실패")
     void test_getContainerById_raise() {
-        Long containerId = 99999L;
+        // given
+        Long containerId = 0L;
+        // when then
         Assertions.assertThrows(NotFoundException.class, () -> containerService.getContainerById(containerId));
+        Assertions.assertThrows(NotFoundException.class, () -> containerService.getContainer(containerId));
     }
 
     @Test
-    void test_getCodeSnippetsByContainerId() {
-        // todo refactoring
+    @DisplayName("getContainers 성공")
+    void test_getContainers() {
         // given
         List<ContainerResponse> containers = containerService.getContainers();
         // when then
         containers.forEach(containerResponse -> {
             CodeSnippetSearchResponse codeSnippetSearchResponse = codeSnippetService.getCodeSnippetsBySearch(
                     new CodeSnippetSearch(1L,"print", 1),
-                    PageRequest.of(0, 5)
+                    PageRequest.of(0, 5, Sort.by("createdAt"))
             );
             Assertions.assertNotNull(codeSnippetSearchResponse.getCodeSnippetResponses());
         });
     }
 
 //    @Test
+//@DisplayName("initialize 성공")
 //    void 컨테이너_코드_실행_Python_3_8() {
 //      todo action gradle test 에서 에러 발생함
 //        // given
@@ -96,6 +111,7 @@ class ContainerServiceTest {
 //    }
 
     @Test
+    @DisplayName("컨테이너_코드_실행_Python_2_7")
     void 컨테이너_코드_실행_Python_2_7() {
         // given
         String[] given = {"python", "2.7", "print(12345)"};
@@ -107,6 +123,7 @@ class ContainerServiceTest {
     }
 
     @Test
+    @DisplayName("컨테이너_코드_실행_PHP_7_4")
     void 컨테이너_코드_실행_PHP_7_4() {
         // given
         String[] given = {"php", "7.4", "<?php\n print_r(['Hello' => 'World']);"};
@@ -119,6 +136,7 @@ class ContainerServiceTest {
     }
 
     @Test
+    @DisplayName("컨테이너_코드_실행_PHP_8_2")
     void 컨테이너_코드_실행_PHP_8_2() {
         // given
         String[] given = {"php", "8.2", "<?php\n print_r(['Hello' => 'World']);"};
@@ -131,6 +149,7 @@ class ContainerServiceTest {
     }
 
     @Test
+    @DisplayName("컨테이너_코드_실행_GCC_4_9")
     void 컨테이너_코드_실행_GCC_4_9() {
         // given
         String[] given = {"gcc", "4.9", "#include <stdio.h>\n\nint main()\n{\n    printf(\"Hello World\");\n    return 0;\n}"};
