@@ -37,7 +37,8 @@ public class CodeSnippetService {
 
     @Transactional(readOnly = true)
     public CodeSnippetResponse getCodeSnippet(Long codeSnippetId) {
-        return codeSnippetMapper.INSTANCE.toCodeSnippetResponse(getCodeSnippetById(codeSnippetId));
+        CodeSnippet codeSnippet = getCodeSnippetById(codeSnippetId);
+        return codeSnippetMapper.INSTANCE.toCodeSnippetResponse(codeSnippet);
     }
 
     @Transactional(readOnly = true)

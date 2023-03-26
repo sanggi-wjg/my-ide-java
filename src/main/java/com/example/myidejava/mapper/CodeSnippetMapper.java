@@ -10,9 +10,9 @@ import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface CodeSnippetMapper {
-
     CodeSnippetMapper INSTANCE = Mappers.getMapper(CodeSnippetMapper.class);
 
+    @Mapping(source = "container", target = "containerResponse")
     CodeSnippetResponse toCodeSnippetResponse(CodeSnippet codeSnippets);
     List<CodeSnippetResponse> toCodeSnippetResponses(List<CodeSnippet> codeSnippets);
 

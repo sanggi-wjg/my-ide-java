@@ -10,7 +10,6 @@ import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface ContainerMapper {
-
     ContainerMapper INSTANCE = Mappers.getMapper(ContainerMapper.class);
 
     @Mapping(target = "codeSnippets", ignore = true)

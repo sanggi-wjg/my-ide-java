@@ -19,8 +19,8 @@ public class CodeSnippetResponse {
     @Schema(description = "code snippet id", defaultValue = "1")
     private Long id;
 
-//    @Schema(description = "container", defaultValue = "")
-//    private ContainerResponse containerResponse;
+    @Schema(description = "container", defaultValue = "")
+    private ContainerResponse containerResponse;
 
     @Schema(description = "code request", defaultValue = "print(1)")
     private String request;

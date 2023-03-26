@@ -16,7 +16,7 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/api/v2")
 @RequiredArgsConstructor
-@Tag(name = "도커 컨테이너 API", description = "[카프카] 도커 컨테이너 관련")
+@Tag(name = "[카프카] 도커 컨테이너 API", description = "[카프카] 도커 컨테이너 관련")
 public class ContainerKafkaController {
     private final ContainerService containerService;
 
