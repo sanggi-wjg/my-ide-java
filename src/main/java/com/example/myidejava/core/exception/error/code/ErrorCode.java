@@ -10,6 +10,7 @@ public enum ErrorCode {
     // Not Found
     NOT_FOUND_CONTAINER(HttpStatus.NOT_FOUND.value(), "NOT_FOUND-0001", "컨테이너를 찾을 수 없습니다."),
     NOT_FOUND_MEMBER(HttpStatus.NOT_FOUND.value(), "NOT_FOUND-0002", "유저를 찾을 수 없습니다."),
+    NOT_FOUND_CODE_SNIPPET(HttpStatus.NOT_FOUND.value(), "NOT_FOUND-0003", "코드 스니펫을 찾을 수 없습니다."),
 
     // Docker App Error
     DOCKER_CONTAINER_IS_NOT_HTTP_TYPE(HttpStatus.BAD_REQUEST.value(), "DOCKER-APP-0001", "도커 컨테이너 타입이 HTTP가 아닙니다."),

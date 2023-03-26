@@ -99,6 +99,13 @@ sequenceDiagram
 ![](.README_images/1241e6dc.png)
 
 
+### Kafka UI
+* http://localhost:8081/
+
+![](.README_images/bbb374b1.png)
+![](.README_images/a70674d0.png)
+
+
 ### Local Test view
 * Test viewfile for API Test on local
   * test/resources/test_view.html

@@ -16,19 +16,20 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/api/v2")
 @RequiredArgsConstructor
-@Tag(name = "도커 컨테이너 API", description = "도커 컨테이너 관련")
+@Tag(name = "도커 컨테이너 API", description = "[카프카] 도커 컨테이너 관련")
 public class ContainerKafkaController {
     private final ContainerService containerService;
 
-    @PostMapping("/containers/{container_id}/code-snippets")
+    @PostMapping("/containers/{container_id}/code")
     @ApiResponse(responseCode = "202", description = "도커 컨테이너 안에서 코드 실행")
     public ResponseEntity<CodeSnippetResponse> executeCodeOnContainer(
             @PathVariable("container_id") Long containerId,
             @RequestBody @Valid CodeRequest codeRequest,
             Authentication authentication
     ) {
-        CodeSnippetResponse codeSnippetResponse = containerService.requestCodeSnippetToExecute(containerId, codeRequest, authentication);
-        return ResponseEntity.accepted().body(codeSnippetResponse);
+        return ResponseEntity.accepted().body(
+                containerService.requestCodeSnippetToExecute(containerId, codeRequest, authentication)
+        );
     }
 
 

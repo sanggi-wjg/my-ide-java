@@ -16,6 +16,7 @@ public interface ContainerMapper {
     @Mapping(target = "codeSnippets", ignore = true)
     Container toEntity(ContainerResponse containerResponse);
 
-    List<ContainerResponse> toContainerResponse(List<Container> containers);
+    ContainerResponse toContainerResponse(Container container);
+    List<ContainerResponse> toContainerResponses(List<Container> containers);
 
 }

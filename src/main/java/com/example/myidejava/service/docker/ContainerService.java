@@ -4,22 +4,20 @@ import com.example.myidejava.core.exception.error.NotFoundException;
 import com.example.myidejava.core.exception.error.code.ErrorCode;
 import com.example.myidejava.domain.docker.CodeSnippet;
 import com.example.myidejava.domain.docker.Container;
-import com.example.myidejava.dto.docker.*;
+import com.example.myidejava.dto.docker.CodeRequest;
+import com.example.myidejava.dto.docker.CodeResponse;
+import com.example.myidejava.dto.docker.CodeSnippetResponse;
+import com.example.myidejava.dto.docker.ContainerResponse;
 import com.example.myidejava.mapper.CodeSnippetMapper;
 import com.example.myidejava.mapper.ContainerMapper;
 import com.example.myidejava.module.docker.DockerClientShortCut;
 import com.example.myidejava.module.docker.executor.CodeExecutorFactory;
 import com.example.myidejava.module.docker.executor.ContainerCodeExecutor;
 import com.example.myidejava.module.kafka.MyKafkaProducer;
-import com.example.myidejava.module.kafka.MyKafkaTopics;
 import com.example.myidejava.repository.docker.CodeSnippetRepository;
-import com.example.myidejava.repository.docker.CodeSnippetSpecification;
 import com.example.myidejava.repository.docker.ContainerRepository;
 import com.example.myidejava.service.member.MemberService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,7 +39,7 @@ public class ContainerService {
     private final MyKafkaProducer kafkaProducer;
 
     public void initialize() {
-        List<ContainerResponse> containers = dockerClientShortCut.getAllContainers();
+        List<ContainerResponse> containers = dockerClientShortCut.getContainers();
         containers.forEach(this::createOrUpdate);
     }
 
@@ -58,11 +56,6 @@ public class ContainerService {
     }
 
     @Transactional(readOnly = true)
-    public List<ContainerResponse> getAllContainers() {
-        return containerMapper.INSTANCE.toContainerResponse(containerRepository.findAll());
-    }
-
-    @Transactional(readOnly = true)
     public Container getContainerById(Long containerId) {
         return containerRepository.findById(containerId).orElseThrow(() -> {
             throw new NotFoundException(ErrorCode.NOT_FOUND_CONTAINER);
@@ -70,48 +63,17 @@ public class ContainerService {
     }
 
     @Transactional(readOnly = true)
-    public CodeSnippetSearchResponse getCodeSnippetsByContainerId(Long containerId, CodeSnippetSearch codeSnippetSearch, Pageable pageable) {
-        Container container = getContainerById(containerId);
-
-        Specification<CodeSnippet> specification = ((root, query, criteriaBuilder) -> null);
-        specification = specification.and(CodeSnippetSpecification.equalContainer(container));
-        if (codeSnippetSearch != null) {
-            if (codeSnippetSearch.getRequest() != null)
-                specification = specification.and(CodeSnippetSpecification.containRequest(codeSnippetSearch.getRequest()));
-            if (codeSnippetSearch.getIsSuccess() != null)
-                specification = specification.and(CodeSnippetSpecification.equalIsSuccess(codeSnippetSearch.getIsSuccess()));
-        }
-
-        Page<CodeSnippet> codeSnippetPage = codeSnippetRepository.findAll(specification, pageable);
-        List<CodeSnippetResponse> codeSnippetResponses = codeSnippetMapper.INSTANCE.toCodeSnippetResponses(codeSnippetPage.getContent());
-
-        return CodeSnippetSearchResponse.builder()
-                .codeSnippetResponses(codeSnippetResponses)
-                .totalCount(codeSnippetPage.getTotalElements())
-                .totalPage(codeSnippetPage.getTotalPages())
-                .currentCount(codeSnippetPage.getNumberOfElements())
-                .hasPrev(codeSnippetPage.hasPrevious())
-                .hasNext(codeSnippetPage.hasNext())
-                .build();
+    public ContainerResponse getContainer(Long containerId) {
+        return containerMapper.INSTANCE.toContainerResponse(getContainerById(containerId));
     }
 
     @Transactional(readOnly = true)
-    public CodeSnippetSearchResponse getCodeSnippets(Pageable pageable) {
-        Page<CodeSnippet> codeSnippetPage = codeSnippetRepository.findAll(pageable);
-        List<CodeSnippetResponse> codeSnippetResponses = codeSnippetMapper.INSTANCE.toCodeSnippetResponses(codeSnippetPage.getContent());
-
-        return CodeSnippetSearchResponse.builder()
-                .codeSnippetResponses(codeSnippetResponses)
-                .totalCount(codeSnippetPage.getTotalElements())
-                .totalPage(codeSnippetPage.getTotalPages())
-                .currentCount(codeSnippetPage.getNumberOfElements())
-                .hasPrev(codeSnippetPage.hasPrevious())
-                .hasNext(codeSnippetPage.hasNext())
-                .build();
+    public List<ContainerResponse> getContainers() {
+        return containerMapper.INSTANCE.toContainerResponses(containerRepository.findAll());
     }
 
-    public List<ContainerResponse> getAllContainersOnServer() {
-        return dockerClientShortCut.getAllContainers();
+    public List<ContainerResponse> getContainersOnServer() {
+        return dockerClientShortCut.getContainers();
     }
 
     public CodeSnippetResponse executeCode(Long containerId, CodeRequest codeRequest, Authentication authentication) {
@@ -147,6 +109,18 @@ public class ContainerService {
         codeSnippetRepository.save(codeSnippet);
         kafkaProducer.send("CODE_SNIPPET", codeSnippet.getId().toString(), "execute");
         return codeSnippetMapper.INSTANCE.toCodeSnippetResponse(codeSnippet);
+    }
+
+    public void execute(Long codeSnippetId) {
+        // todo refactoring
+        CodeSnippet codeSnippet = codeSnippetRepository.findById(codeSnippetId).orElseThrow(() -> {
+            throw new NotFoundException(ErrorCode.NOT_FOUND_CODE_SNIPPET);
+        });
+        Container container = codeSnippet.getContainer();
+        ContainerCodeExecutor codeExecutor = codeExecutorFactory.create(container);
+        CodeResponse codeResponse = codeExecutor.execute(container, CodeRequest.builder().code(codeSnippet.getRequest()).build());
+        // 실행 결과 저장
+        codeSnippet.saveResponse(codeResponse.toMap());
     }
 
 }

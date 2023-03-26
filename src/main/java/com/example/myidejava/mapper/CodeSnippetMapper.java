@@ -3,6 +3,7 @@ package com.example.myidejava.mapper;
 import com.example.myidejava.domain.docker.CodeSnippet;
 import com.example.myidejava.dto.docker.CodeSnippetResponse;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 import java.util.List;
