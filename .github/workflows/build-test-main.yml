@@ -21,8 +21,8 @@ jobs:
         continue-on-error: true
 
       - run: |
-          docker-compose --env-file .env.docker up  -d
-          docker-compose -f docker-compose-build-test.yml up -d
+          docker-compose --env-file .env.docker up -d --build
+          docker-compose -f docker-compose-build-test.yml up -d --build
           docker images
           docker ps -a
 
