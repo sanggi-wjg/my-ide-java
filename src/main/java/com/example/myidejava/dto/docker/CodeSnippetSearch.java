@@ -13,6 +13,11 @@ import javax.validation.constraints.Min;
 @AllArgsConstructor
 @Schema(description = "코드 스니펫 검색")
 public class CodeSnippetSearch {
+
+    @Nullable
+    @Schema(description = "Container 모델 ID", defaultValue = "1")
+    private Long containerId;
+
     @Nullable
     @Schema(description = "코드 실행 요청", defaultValue = "print(1)")
     private String request;

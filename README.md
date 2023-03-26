@@ -10,13 +10,14 @@
 ## TODO
 * [ ] RabbitMQ or Kafka 연동
 * [ ] Redis는 할까 말까 고민 중...
+* [ ] Gradle 멀티 모듈로 변경
 
 
 ## Install & Start
 * To begin, Install Docker and Docker Compose on your server or local machine.
 * Once installed successfully, run the below docker-compose command.
 ```shell
-docker-compose --env-file .env.install -f docker-compose-install.yml up  -d
+docker-compose --env-file .env.docker up -d
 ```
 * After Gradle build, execute MainApplication(MyIdeJavaApplication) with the `local` profile as Spring Boot active profiles.
 
@@ -96,6 +97,13 @@ sequenceDiagram
 * http://localhost:9000/swagger-ui/index.html
 
 ![](.README_images/1241e6dc.png)
+
+
+### Kafka UI
+* http://localhost:8081/
+
+![](.README_images/bbb374b1.png)
+![](.README_images/a70674d0.png)
 
 
 ### Local Test view

@@ -10,12 +10,12 @@ import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface ContainerMapper {
-
     ContainerMapper INSTANCE = Mappers.getMapper(ContainerMapper.class);
 
     @Mapping(target = "codeSnippets", ignore = true)
     Container toEntity(ContainerResponse containerResponse);
 
-    List<ContainerResponse> toContainerResponse(List<Container> containers);
+    ContainerResponse toContainerResponse(Container container);
+    List<ContainerResponse> toContainerResponses(List<Container> containers);
 
 }

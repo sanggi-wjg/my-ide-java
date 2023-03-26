@@ -88,6 +88,11 @@ dependencies {
     compileOnly 'javax:javaee-api:8.0'
     implementation 'javax.inject:javax.inject:1'
     implementation 'net.java.dev.jna:jna:5.8.0'
+
+    // kafka : https://docs.spring.io/spring-kafka/reference/html/
+    implementation 'org.springframework.kafka:spring-kafka:3.0.5'
+    implementation 'org.apache.kafka:kafka-clients:3.3.2'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.14.2'
 }
 
 //dependencyManagement {
