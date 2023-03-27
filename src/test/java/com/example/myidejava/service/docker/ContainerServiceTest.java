@@ -2,7 +2,9 @@ package com.example.myidejava.service.docker;
 
 import com.example.myidejava.core.exception.error.NotFoundException;
 import com.example.myidejava.domain.docker.Container;
-import com.example.myidejava.dto.docker.*;
+import com.example.myidejava.dto.docker.CodeRequest;
+import com.example.myidejava.dto.docker.CodeSnippetResponse;
+import com.example.myidejava.dto.docker.ContainerResponse;
 import com.example.myidejava.repository.docker.ContainerRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -10,8 +12,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -39,7 +39,7 @@ class ContainerServiceTest {
     }
 
     @Test
-    @DisplayName("initialize 성공")
+    @DisplayName("Initialize 성공")
     void test_initialize() {
         // when
         List<ContainerResponse> containerResponseList = containerService.getContainerResponses();
@@ -83,32 +83,39 @@ class ContainerServiceTest {
     }
 
     @Test
-    @DisplayName("getContainers 성공")
-    void test_getContainers() {
+    @DisplayName("getContainerResponse 성공")
+    void test_getContainerResponses() {
         // given
         List<ContainerResponse> containers = containerService.getContainerResponses();
-        // when then
         containers.forEach(containerResponse -> {
-            CodeSnippetSearchResponse codeSnippetSearchResponse = codeSnippetService.getCodeSnippetSearchResponse(
-                    new CodeSnippetSearch(1L,"print", 1),
-                    PageRequest.of(0, 5, Sort.by("createdAt"))
-            );
-            Assertions.assertNotNull(codeSnippetSearchResponse.getCodeSnippetResponses());
+            // when
+            ContainerResponse response = containerService.getContainerResponse(containerResponse.getId());
+            // then
+            Assertions.assertNotNull(response.getId());
+            Assertions.assertNotNull(response.getContainerId());
+            Assertions.assertNotNull(response.getDockerImageName());
+            Assertions.assertNotNull(response.getLanguageName());
+            Assertions.assertNotNull(response.getLanguageVersion());
+            Assertions.assertNotNull(response.getLanguageVersion());
+            Assertions.assertNotNull(response.getContainerStatus());
+            Assertions.assertNotNull(response.getContainerState());
+            Assertions.assertNotNull(response.getContainerPorts());
+            Assertions.assertNotNull(response.getCodeExecutorType());
         });
     }
 
-//    @Test
-//@DisplayName("initialize 성공")
-//    void 컨테이너_코드_실행_Python_3_8() {
-//      todo action gradle test 에서 에러 발생함
-//        // given
-//        String[] given = {"python", "3.8", "print(12345)"};
-//        // when
-//        CodeSnippetResponse codeSnippetResponse = whenExecuteCode(given);
-//        // then
-//        Assertions.assertEquals("12345\n", codeSnippetResponse.getResponse().get("output"));
-//        Assertions.assertTrue(codeSnippetResponse.getError().isEmpty());
-//    }
+    @Test
+    @DisplayName("컨테이너_코드_실행_Python_3_8")
+    void 컨테이너_코드_실행_Python_3_8() {
+        // todo action gradle test 에서 에러 발생함
+        // given
+        String[] given = {"python", "3.8", "print(12345)"};
+        // when
+        CodeSnippetResponse codeSnippetResponse = whenExecuteCode(given);
+        // then
+        Assertions.assertEquals("12345\n", codeSnippetResponse.getResponse().get("output"));
+        Assertions.assertEquals("", codeSnippetResponse.getResponse().get("error"));
+    }
 
     @Test
     @DisplayName("컨테이너_코드_실행_Python_2_7")
