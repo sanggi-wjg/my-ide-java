@@ -2,7 +2,6 @@ package com.example.myidejava.service.docker;
 
 import com.example.myidejava.core.exception.error.NotFoundException;
 import com.example.myidejava.domain.docker.CodeSnippet;
-import com.example.myidejava.domain.docker.Container;
 import com.example.myidejava.dto.docker.CodeRequest;
 import com.example.myidejava.dto.docker.CodeSnippetResponse;
 import com.example.myidejava.dto.docker.CodeSnippetSearch;
@@ -20,8 +19,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-
-import java.util.List;
 
 @ActiveProfiles("test")
 @ExtendWith(SpringExtension.class)
