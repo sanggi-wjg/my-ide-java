@@ -22,6 +22,10 @@ repositories {
     mavenCentral()
 }
 
+jacoco {
+    toolVersion = "0.8.8"
+}
+
 ext {
     set('snippetsDir', file("build/generated-snippets"))
 //    set('springShellVersion', "3.0.0")
@@ -121,3 +125,17 @@ hibernate {
     }
 }
 
+test {
+    useJUnitPlatform()
+    finalizedBy jacocoTestReport
+}
+
+jacocoTestReport {
+    executionData(fileTree(project.rootDir.absolutePath).include("**/build/jacoco/*.exec"))
+
+    reports {
+        html.enabled true
+        xml.enabled true
+        csv.enabled false
+    }
+}
