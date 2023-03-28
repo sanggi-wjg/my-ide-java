@@ -117,6 +117,9 @@ sequenceDiagram
 
 ### Codecov
 * https://app.codecov.io/gh/sanggi-wjg/my-ide-java
+  * ref
+    * https://about.codecov.io/blog/setting-up-codecov-with-java-and-gradle/
+    * https://jane514.tistory.com/12
 
 
 ### Local Test view

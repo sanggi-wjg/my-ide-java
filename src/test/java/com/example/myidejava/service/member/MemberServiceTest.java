@@ -1,7 +1,9 @@
 package com.example.myidejava.service.member;
 
 import com.example.myidejava.core.exception.error.AuthException;
+import com.example.myidejava.core.exception.error.NotFoundException;
 import com.example.myidejava.core.jwt.JWTUtil;
+import com.example.myidejava.dto.auth.LoginRequest;
 import com.example.myidejava.dto.auth.RegisterRequest;
 import com.example.myidejava.dto.member.MemberResponse;
 import com.example.myidejava.module.util.FileUtil;
@@ -33,8 +35,9 @@ class MemberServiceTest {
     @DisplayName("createEmailUser")
     void test_createEmailUser() {
         // given
-        String email =  UUID.randomUUID().toString();
-        RegisterRequest registerRequest = RegisterRequest.builder().email(email).username(email).password("passw0rd").build();
+        String email = UUID.randomUUID().toString();
+        String password = "passw0rd";
+        RegisterRequest registerRequest = RegisterRequest.builder().email(email).username(email).password(password).build();
         // when
         MemberResponse memberResponse = memberService.createEmailUser(registerRequest);
         // then
@@ -46,23 +49,35 @@ class MemberServiceTest {
             String accessToken = socialLoginResponse.getAccessToken();
             jwtUtil.validateToken(accessToken);
             assertEquals(email, jwtUtil.validateThenRetrieveEmail(accessToken));
+            memberService.getMemberByEmail(email);
+            memberService.authenticate(LoginRequest.builder().email(email).password(password).build());
         });
+    }
+
+    @Test
+    @DisplayName("authenticate 실패")
+    void test_authenticate_raise() {
+        // given
+        String email = UUID.randomUUID().toString();
+        // when then
+        Assertions.assertThrows(AuthException.class, () -> memberService.authenticate(LoginRequest.builder().email(email).password("passw0rd").build()));
     }
 
     @Test
     @DisplayName("validateEmail")
     void test_validateEmail() {
         // given
-        String email =  UUID.randomUUID().toString();
+        String email = UUID.randomUUID().toString();
         // when then
         memberValidationService.validateEmail(email);
+        Assertions.assertThrows(NotFoundException.class, () -> memberService.getMemberByEmail(email));
     }
 
     @Test
     @DisplayName("validateEmail Failure")
     void test_validateEmail_raise() {
         // given
-        String email =  UUID.randomUUID().toString();
+        String email = UUID.randomUUID().toString();
         RegisterRequest registerRequest = RegisterRequest.builder().email(email).username(email).password("passw0rd").build();
         // when
         MemberResponse memberResponse = memberService.createEmailUser(registerRequest);

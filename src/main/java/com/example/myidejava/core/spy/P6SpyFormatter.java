@@ -8,7 +8,6 @@ import org.hibernate.engine.jdbc.internal.FormatStyle;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.Locale;
-import java.util.Stack;
 
 @Configuration
 public class P6SpyFormatter implements MessageFormattingStrategy {
@@ -47,27 +46,27 @@ public class P6SpyFormatter implements MessageFormattingStrategy {
         return sql;
     }
 
-    private String createStack(int connectionId, long elapsed) {
-        Stack<String> callStack = new Stack<>();
-        StackTraceElement[] stackTrace = new Throwable().getStackTrace();
-
-        for (StackTraceElement stackTraceElement : stackTrace) {
-            String trace = stackTraceElement.toString();
-
-            if (trace.startsWith("com.example.myidejava") && !trace.startsWith("com.example.myidejava.core.spy.P6SpyFormatter")) {
-                callStack.push(trace);
-            }
-        }
-
-        StringBuilder sb = new StringBuilder();
-        int order = 1;
-        while (!callStack.isEmpty()) {
-            sb.append("\n\t\t").append(order++).append(". ").append(callStack.pop());
-        }
-
-        return new StringBuilder().append("\n\tConnection ID:").append(connectionId)
-                .append(" | Execution Time: ").append(elapsed).append(" ms")
-                .append("\t | Call Stack: ").append(sb).append("\n").toString();
-    }
+//    private String createStack(int connectionId, long elapsed) {
+//        Stack<String> callStack = new Stack<>();
+//        StackTraceElement[] stackTrace = new Throwable().getStackTrace();
+//
+//        for (StackTraceElement stackTraceElement : stackTrace) {
+//            String trace = stackTraceElement.toString();
+//
+//            if (trace.startsWith("com.example.myidejava") && !trace.startsWith("com.example.myidejava.core.spy.P6SpyFormatter")) {
+//                callStack.push(trace);
+//            }
+//        }
+//
+//        StringBuilder sb = new StringBuilder();
+//        int order = 1;
+//        while (!callStack.isEmpty()) {
+//            sb.append("\n\t\t").append(order++).append(". ").append(callStack.pop());
+//        }
+//
+//        return new StringBuilder().append("\n\tConnection ID:").append(connectionId)
+//                .append(" | Execution Time: ").append(elapsed).append(" ms")
+//                .append("\t | Call Stack: ").append(sb).append("\n").toString();
+//    }
 
 }
