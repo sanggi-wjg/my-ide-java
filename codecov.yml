@@ -4,9 +4,10 @@
 comment:
   layout: "reach,diff,flags,files,footer"
   behavior: default
-  require_changes: true
+  require_changes: false
   require_base: no
   require_head: yes
-#  branches:
-#    - main
-#    - feature/**
+  branches:
+    - main
+    - feature
+    - feature/**
