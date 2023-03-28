@@ -5,6 +5,7 @@ plugins {
     id 'org.hibernate.orm' version '6.1.6.Final'
     id 'org.graalvm.buildtools.native' version '0.9.18'
     id 'org.asciidoctor.convert' version '1.5.8'
+    id 'jacoco'
 }
 
 group = 'com.example'
@@ -90,6 +91,7 @@ dependencies {
     implementation 'net.java.dev.jna:jna:5.8.0'
 
     // kafka : https://docs.spring.io/spring-kafka/reference/html/
+//    https://developer.confluent.io/get-started/spring-boot/#build-consumer
     implementation 'org.springframework.kafka:spring-kafka:3.0.5'
     implementation 'org.apache.kafka:kafka-clients:3.3.2'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.14.2'

@@ -33,7 +33,7 @@ public class CodeSnippetController {
             @Valid CodeSnippetSearch codeSnippetSearch,
             @PageableDefault(size = 20) @SortDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable
     ) {
-        return ResponseEntity.ok(codeSnippetService.getCodeSnippetsBySearch(codeSnippetSearch, pageable));
+        return ResponseEntity.ok(codeSnippetService.getCodeSnippetSearchResponse(codeSnippetSearch, pageable));
     }
 
     @GetMapping("/code-snippets/{code_snippet_id}")
@@ -41,7 +41,7 @@ public class CodeSnippetController {
     public ResponseEntity<CodeSnippetResponse> codeSnippetById(
             @PathVariable("code_snippet_id") Long codeSnippetId
     ) {
-        return ResponseEntity.ok(codeSnippetService.getCodeSnippet(codeSnippetId));
+        return ResponseEntity.ok(codeSnippetService.getCodeSnippetResponse(codeSnippetId));
     }
 
 }

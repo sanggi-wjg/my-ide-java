@@ -36,13 +36,13 @@ public class CodeSnippetService {
     }
 
     @Transactional(readOnly = true)
-    public CodeSnippetResponse getCodeSnippet(Long codeSnippetId) {
+    public CodeSnippetResponse getCodeSnippetResponse(Long codeSnippetId) {
         CodeSnippet codeSnippet = getCodeSnippetById(codeSnippetId);
         return codeSnippetMapper.INSTANCE.toCodeSnippetResponse(codeSnippet);
     }
 
     @Transactional(readOnly = true)
-    public CodeSnippetSearchResponse getCodeSnippetsBySearch(CodeSnippetSearch codeSnippetSearch, Pageable pageable) {
+    public CodeSnippetSearchResponse getCodeSnippetSearchResponse(CodeSnippetSearch codeSnippetSearch, Pageable pageable) {
         Specification<CodeSnippet> specification = ((root, query, criteriaBuilder) -> null);
         if (codeSnippetSearch != null) {
             if (codeSnippetSearch.getContainerId() != null) {

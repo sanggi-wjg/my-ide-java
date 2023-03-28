@@ -1,4 +1,4 @@
-name: ✅ Build Test
+name: ✅ Build and Test
 
 on:
   push:
@@ -14,7 +14,7 @@ jobs:
 
       - name: 🚀 Docker-Compose UP  🚀
         run: |
-          docker-compose --env-file .env.docker up  -d
+          docker-compose --env-file .env.docker up -d
           docker-compose -f docker-compose-build-test.yml up -d
           docker images
           docker ps -a

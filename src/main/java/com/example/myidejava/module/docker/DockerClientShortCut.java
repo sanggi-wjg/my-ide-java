@@ -12,7 +12,7 @@ import java.util.List;
 public class DockerClientShortCut extends MyDockerClient {
     private static final String IDE_CONTAINER_NAME = "container";
 
-    public List<ContainerResponse> getContainers() {
+    public List<ContainerResponse> getDockerContainers() {
         List<ContainerResponse> containerResponses = new ArrayList<>();
         DockerClient dockerClient = getDockerClient();
 
