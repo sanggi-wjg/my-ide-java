@@ -5,6 +5,7 @@ plugins {
     id 'org.hibernate.orm' version '6.1.6.Final'
     id 'org.graalvm.buildtools.native' version '0.9.18'
     id 'org.asciidoctor.convert' version '1.5.8'
+    id 'jacoco'
 }
 
 group = 'com.example'

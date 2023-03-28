@@ -1,5 +1,8 @@
 # MY IDE (version. JAVA)
 
+[![✅ Build and Test](https://github.com/sanggi-wjg/my-ide-java/actions/workflows/build-test-main.yml/badge.svg?branch=main)](https://github.com/sanggi-wjg/my-ide-java/actions/workflows/build-test-main.yml)
+[![CodeFactor](https://www.codefactor.io/repository/github/sanggi-wjg/my-ide-java/badge)](https://www.codefactor.io/repository/github/sanggi-wjg/my-ide-java)
+
 
 ## Development Environment
 * Java 17 (corretto)
@@ -104,6 +107,13 @@ sequenceDiagram
 
 ![](.README_images/bbb374b1.png)
 ![](.README_images/a70674d0.png)
+
+
+## Jacoco
+* gradle > Tasks > verification > test `(For Result of Test)`
+  * build > reports > tests > index.html
+* gradle > Tasks > verification > jacocoTestReport `(For Coverage)`
+  * build > jacoco > test > html  > index.html
 
 
 ### Local Test view

@@ -20,8 +20,6 @@ class ContainerValidationServiceTest {
     ContainerRepository containerRepository;
     @Autowired
     ContainerValidationService containerValidationService;
-//    @MockBean
-//    DockerClientShortCut dockerClientShortCut;
 
     @Test
     @DisplayName("validateIsContainerRunning 성공")
