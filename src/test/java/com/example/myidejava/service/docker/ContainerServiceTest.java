@@ -5,6 +5,8 @@ import com.example.myidejava.domain.docker.Container;
 import com.example.myidejava.dto.docker.CodeRequest;
 import com.example.myidejava.dto.docker.CodeSnippetResponse;
 import com.example.myidejava.dto.docker.ContainerResponse;
+import com.example.myidejava.module.docker.executor.CodeExecutorFactory;
+import com.example.myidejava.module.docker.executor.ContainerCodeExecutor;
 import com.example.myidejava.repository.docker.ContainerRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -31,6 +33,8 @@ class ContainerServiceTest {
     CodeSnippetService codeSnippetService;
     @Autowired
     ContainerRepository containerRepository;
+    @Autowired
+    CodeExecutorFactory codeExecutorFactory;
 
     CodeSnippetResponse whenExecuteCode(String[] given) {
         CodeRequest codeRequest = CodeRequest.builder().code(given[2]).build();
@@ -55,6 +59,7 @@ class ContainerServiceTest {
             Assertions.assertNotNull(containerResponse.getContainerState());
             Assertions.assertNotNull(containerResponse.getCodeExecutorType());
             Assertions.assertEquals("running", containerResponse.getContainerState());
+            Assertions.assertNotNull(codeExecutorFactory.create(containerService.getContainerById(containerResponse.getId())));
         });
     }
 

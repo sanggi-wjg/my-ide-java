@@ -6,7 +6,6 @@ import com.example.myidejava.core.jwt.JWTUtil;
 import com.example.myidejava.dto.auth.LoginRequest;
 import com.example.myidejava.dto.auth.RegisterRequest;
 import com.example.myidejava.dto.member.MemberResponse;
-import com.example.myidejava.module.util.FileUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -60,7 +59,7 @@ class MemberServiceTest {
         // given
         String email = UUID.randomUUID().toString();
         // when then
-        Assertions.assertThrows(AuthException.class, () -> memberService.authenticate(LoginRequest.builder().email(email).password("passw0rd").build()));
+        Assertions.assertThrowsExactly(AuthException.class, () -> memberService.authenticate(LoginRequest.builder().email(email).password("passw0rd").build()));
     }
 
     @Test
@@ -70,7 +69,7 @@ class MemberServiceTest {
         String email = UUID.randomUUID().toString();
         // when then
         memberValidationService.validateEmail(email);
-        Assertions.assertThrows(NotFoundException.class, () -> memberService.getMemberByEmail(email));
+        Assertions.assertThrowsExactly(NotFoundException.class, () -> memberService.getMemberByEmail(email));
     }
 
     @Test
@@ -81,8 +80,10 @@ class MemberServiceTest {
         RegisterRequest registerRequest = RegisterRequest.builder().email(email).username(email).password("passw0rd").build();
         // when
         MemberResponse memberResponse = memberService.createEmailUser(registerRequest);
+        String accessToken = memberResponse.getSocialLoginResponses().get(0).getAccessToken();
         // then
-        Assertions.assertThrows(AuthException.class, () -> memberValidationService.validateEmail(memberResponse.getEmail()));
+        Assertions.assertThrowsExactly(AuthException.class, () -> memberValidationService.validateEmail(memberResponse.getEmail()));
+        Assertions.assertThrowsExactly(AuthException.class, () -> jwtUtil.validateToken(accessToken + email));
     }
 
 }
