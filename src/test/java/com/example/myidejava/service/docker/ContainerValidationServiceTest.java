@@ -20,6 +20,8 @@ class ContainerValidationServiceTest {
     ContainerRepository containerRepository;
     @Autowired
     ContainerValidationService containerValidationService;
+//    @MockBean
+//    DockerClientShortCut dockerClientShortCut;
 
     @Test
     @DisplayName("validateIsContainerRunning 성공")
@@ -27,5 +29,20 @@ class ContainerValidationServiceTest {
         List<Container> containers = containerRepository.findAll();
         containers.forEach(container -> containerValidationService.validateIsContainerRunning(container));
     }
+
+//    @Test
+//    @DisplayName("validateIsContainerRunning 실패 mock")
+//    void test_validateIsContainerRunning_WhenIsNotRunning() {
+//        // given
+//        // when
+//        Mockito.when(dockerClientShortCut.isContainerStateRunning(Mockito.anyString()))
+//                .thenReturn(false);
+//        // then
+//        List<Container> containers = containerRepository.findAll();
+//        containers.forEach(container ->
+//                Assertions.assertThrows(DockerAppException.class, () -> containerValidationService.validateIsContainerRunning(container))
+//        );
+//        Mockito.verify(dockerClientShortCut, Mockito.times(containers.size())).isContainerStateRunning(Mockito.anyString());
+//    }
 
 }
