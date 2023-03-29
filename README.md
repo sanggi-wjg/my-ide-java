@@ -12,6 +12,7 @@
 ![Java](https://img.shields.io/badge/Java-34495E.svg?style=for-the-badge&logo=Java&logoColor=white)
 ![SpringBoot](https://img.shields.io/badge/SpringBoot-76b44d.svg?style=for-the-badge&logo=SpringBoot&logoColor=white)
 ![MySQL](https://img.shields.io/badge/MySQL-206188.svg?style=for-the-badge&logo=MySQL&logoColor=white)
+![Apache Kafka](https://img.shields.io/badge/Apache%20Kafka-000?style=for-the-badge&logo=apachekafka)
 
 ```shell
 Java 17 (corretto)
@@ -24,7 +25,7 @@ JPA Hibernate 6.1.6
 * [ ] Kafka 연동 추가 작업 및 리팩토링
 * [ ] Redis는 할까? 말까? 할까? 말까?
 * [ ] Gradle 멀티 모듈 변경
-
+* [ ] new feature push 하면 PR 자동 생성?
 
 ## Install & Start
 * To begin, Install Docker and Docker Compose on your server or local machine.
