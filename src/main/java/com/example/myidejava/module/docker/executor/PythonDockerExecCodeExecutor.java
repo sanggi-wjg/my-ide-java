@@ -19,8 +19,8 @@ import java.util.Map;
 public class PythonDockerExecCodeExecutor extends ContainerCodeExecutor {
 
     @Override
-    public CodeResponse execute(Container container, CodeRequest codeRequest) {
-        String[] command = {"python", "/app/app.py", codeRequest.getCode()};
+    public CodeResponse execute(Container container, String codeRequest) {
+        String[] command = {"python", "/app/app.py", codeRequest};
         ExecCreateCmdResponse createCmdResponse = createCommand(container.getContainerId(), command);
         Map<String, String> result = startCommand(createCmdResponse.getId());
 

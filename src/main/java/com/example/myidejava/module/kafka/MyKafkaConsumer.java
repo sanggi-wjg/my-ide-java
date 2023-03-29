@@ -24,7 +24,7 @@ public class MyKafkaConsumer {
             @Header(KafkaHeaders.RECEIVED_KEY) String key
     ) {
         logger.info("[KAFKA-CONSUMER] Consume Event, Topic: {}, Key: {}, Value: {}", topic, key, value);
-        containerService.execute(Long.parseLong(key));
+        containerService.executeCodeByCodeSnippetId(Long.parseLong(key));
     }
 
 }

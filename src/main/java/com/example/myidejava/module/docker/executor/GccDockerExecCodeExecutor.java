@@ -17,9 +17,9 @@ public class GccDockerExecCodeExecutor extends ContainerCodeExecutor {
     }
 
     @Override
-    public CodeResponse execute(Container container, CodeRequest codeRequest) {
+    public CodeResponse execute(Container container, String codeRequest) {
         // todo 컨테이너로 파일 copy 했으니 container 안에 파일 지우는 쉘 스크립트나 지우는 로직 추가 필요
-        File file = copyResourceToContainer(container.getContainerId(), "c", codeRequest.getCode());
+        File file = copyResourceToContainer(container.getContainerId(), "c", codeRequest);
 
         String gccCompileFilename = getGccCompileFilename(file.getName());
         String[] gccCommand = {"gcc", "-o", gccCompileFilename, "/app/" + file.getName()};

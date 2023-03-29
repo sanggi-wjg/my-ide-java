@@ -26,7 +26,7 @@ public abstract class ContainerCodeExecutor extends MyDockerClient {
     private final Logger logger = LoggerFactory.getLogger(getClass());
     protected static final String WORKDIR = "/app";
 
-    public abstract CodeResponse execute(Container container, CodeRequest codeRequest);
+    public abstract CodeResponse execute(Container container, String codeRequest);
 
     protected final File copyResourceToContainer(String containerId, String extension, String content) {
         File tempFile = FileUtil.createTemporaryFile(extension, content);

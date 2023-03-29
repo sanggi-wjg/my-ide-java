@@ -13,9 +13,9 @@ import org.springframework.web.client.RestTemplate;
 @Component
 public class HttpCodeExecutor extends ContainerCodeExecutor {
 
-    public CodeResponse execute(Container container, CodeRequest codeRequest) {
+    public CodeResponse execute(Container container, String codeRequest) {
         ObjectNode jsonNodes = JsonNodeFactory.instance.objectNode();
-        jsonNodes.put("code", codeRequest.getCode());
+        jsonNodes.put("code", codeRequest);
 
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<JsonNode> response = restTemplate.postForEntity(container.getHttpUrlAddress(), jsonNodes, JsonNode.class);
