@@ -65,8 +65,8 @@ class CodeSnippetServiceTest {
     }
 
     @Test
-    @DisplayName("CodeSnippetSearch 검색")
-    void test_getCodeSnippetSearchResponse() {
+    @DisplayName("CodeSnippetSearch 검색 - 1")
+    void test_getCodeSnippetSearchResponse_1() {
         // given
 //        CodeSnippetSearch codeSnippetSearch = new CodeSnippetSearch(1L, "print", 1);
         CodeSnippetSearch codeSnippetSearch = new CodeSnippetSearch();
@@ -80,6 +80,30 @@ class CodeSnippetServiceTest {
         Assertions.assertNotNull(codeSnippetSearchResponse.getCurrentCount());
         Assertions.assertNotNull(codeSnippetSearchResponse.getHasPrev());
         Assertions.assertNotNull(codeSnippetSearchResponse.getHasNext());
+    }
+
+    @Test
+    @DisplayName("CodeSnippetSearch 검색 - 2")
+    void test_getCodeSnippetSearchResponse_2() {
+        // given
+        CodeSnippetSearch codeSnippetSearch = CodeSnippetSearch.builder().containerId(1L).build();
+        PageRequest pageRequest = PageRequest.of(0, 10, Sort.by("createdAt"));
+        // when
+        CodeSnippetSearchResponse codeSnippetSearchResponse = codeSnippetService.getCodeSnippetSearchResponse(codeSnippetSearch, pageRequest);
+        // then
+        Assertions.assertNotNull(codeSnippetSearchResponse.getCodeSnippetResponses());
+    }
+
+    @Test
+    @DisplayName("CodeSnippetSearch 검색 - 3")
+    void test_getCodeSnippetSearchResponse_3() {
+        // given
+        CodeSnippetSearch codeSnippetSearch = CodeSnippetSearch.builder().containerId(1L).request("print").isSuccess(1).build();
+        PageRequest pageRequest = PageRequest.of(0, 10, Sort.by("createdAt"));
+        // when
+        CodeSnippetSearchResponse codeSnippetSearchResponse = codeSnippetService.getCodeSnippetSearchResponse(codeSnippetSearch, pageRequest);
+        // then
+        Assertions.assertNotNull(codeSnippetSearchResponse.getCodeSnippetResponses());
     }
 
 }

@@ -9,6 +9,7 @@ import javax.validation.constraints.Min;
 
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Schema(description = "코드 스니펫 검색")
