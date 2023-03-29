@@ -4,16 +4,26 @@
 [![CodeFactor](https://www.codefactor.io/repository/github/sanggi-wjg/my-ide-java/badge)](https://www.codefactor.io/repository/github/sanggi-wjg/my-ide-java)
 [![codecov](https://codecov.io/gh/sanggi-wjg/my-ide-java/branch/main/graph/badge.svg?token=8NSYRJXPMS)](https://codecov.io/gh/sanggi-wjg/my-ide-java)
 
+### Codecov coverage
+<img src="https://codecov.io/gh/sanggi-wjg/my-ide-java/branch/main/graphs/tree.svg?token=8NSYRJXPMS" alt="">
+
+
 ## Development Environment
-* Java 17 (corretto)
-* Spring boot 3.0.2
-* JPA Hibernate 6.1.6
+![Java](https://img.shields.io/badge/Java-34495E.svg?style=for-the-badge&logo=Java&logoColor=white)
+![SpringBoot](https://img.shields.io/badge/SpringBoot-76b44d.svg?style=for-the-badge&logo=SpringBoot&logoColor=white)
+![MySQL](https://img.shields.io/badge/MySQL-206188.svg?style=for-the-badge&logo=MySQL&logoColor=white)
+
+```shell
+Java 17 (corretto)
+Spring boot 3.0.2
+JPA Hibernate 6.1.6
+```
 
 
 ## TODO
-* [ ] RabbitMQ or Kafka 연동
-* [ ] Redis는 할까 말까 고민 중...
-* [ ] Gradle 멀티 모듈로 변경
+* [ ] Kafka 연동 추가 작업 및 리팩토링
+* [ ] Redis는 할까? 말까? 할까? 말까?
+* [ ] Gradle 멀티 모듈 변경
 
 
 ## Install & Start
