@@ -13,7 +13,6 @@ import com.example.myidejava.mapper.ContainerMapper;
 import com.example.myidejava.module.docker.DockerClientShortCut;
 import com.example.myidejava.module.docker.executor.CodeExecutorFactory;
 import com.example.myidejava.module.docker.executor.ContainerCodeExecutor;
-import com.example.myidejava.module.kafka.MyKafkaProducer;
 import com.example.myidejava.repository.docker.CodeSnippetRepository;
 import com.example.myidejava.repository.docker.ContainerRepository;
 import com.example.myidejava.service.member.MemberService;
@@ -36,7 +35,7 @@ public class ContainerService {
     private final DockerClientShortCut dockerClientShortCut;
     private final CodeExecutorFactory codeExecutorFactory;
     private final ContainerValidationService containerValidationService;
-    private final MyKafkaProducer kafkaProducer;
+//    private final MyKafkaProducer kafkaProducer;
 
     public void initialize() {
         List<ContainerResponse> containers = dockerClientShortCut.getDockerContainers();
@@ -107,7 +106,6 @@ public class ContainerService {
 
     public CodeSnippetResponse requestCodeSnippetToExecute(Long containerId, CodeRequest codeRequest, Authentication authentication) {
         CodeSnippet codeSnippet = createCodeSnippetForExecuteCode(containerId, codeRequest, authentication);
-        kafkaProducer.send("CODE_SNIPPET", codeSnippet.getId().toString(), "execute");
         return codeSnippetMapper.INSTANCE.toCodeSnippetResponse(codeSnippet);
     }
 

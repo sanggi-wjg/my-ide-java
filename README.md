@@ -146,7 +146,7 @@ sequenceDiagram
 * https://github.com/nektos/act
 ```shell
 act -l
-act --container-architecture linux/amd64
+act -j build-test --container-architecture linux/amd64
 ```
 
 

@@ -15,9 +15,11 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class MyKafkaConsumer {
     private final Logger logger = LoggerFactory.getLogger(getClass());
+    //    @Value("${spring.kafka.consumer.group-id}")
+    //    private String groupId;
     private final ContainerService containerService;
 
-    @KafkaListener(id = "my_ide", topics = "CODE_SNIPPET", groupId = "spring-boot-my-ide", autoStartup = "true")
+    @KafkaListener(id = KafkaConfig.TOPIC_CODE_SNIPPET_ID, topics = KafkaConfig.TOPIC_CODE_SNIPPET, groupId = "spring-boot-my-ide", autoStartup = "true")
     public void listen(
             String value,
             @Header(KafkaHeaders.RECEIVED_TOPIC) String topic,

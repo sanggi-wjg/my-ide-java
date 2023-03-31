@@ -2,6 +2,7 @@ package com.example.myidejava.controller.docker;
 
 import com.example.myidejava.dto.docker.CodeRequest;
 import com.example.myidejava.dto.docker.CodeSnippetResponse;
+import com.example.myidejava.module.kafka.KafkaConfig;
 import com.example.myidejava.module.kafka.MyKafkaProducer;
 import com.example.myidejava.service.docker.ContainerService;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -19,7 +20,7 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 @Tag(name = "[카프카] 도커 컨테이너 API", description = "도커 컨테이너 관련")
 public class ContainerKafkaController {
-
+    private final MyKafkaProducer kafkaProducer;
     private final ContainerService containerService;
 
     @PostMapping("/containers/{container_id}/code")
@@ -29,7 +30,9 @@ public class ContainerKafkaController {
             @RequestBody @Valid CodeRequest codeRequest,
             Authentication authentication
     ) {
-        return ResponseEntity.accepted().body(containerService.requestCodeSnippetToExecute(containerId, codeRequest, authentication));
+        CodeSnippetResponse codeSnippetResponse = containerService.requestCodeSnippetToExecute(containerId, codeRequest, authentication);
+        kafkaProducer.send(KafkaConfig.TOPIC_CODE_SNIPPET, codeSnippetResponse.getId().toString(), "execute");
+        return ResponseEntity.accepted().body(codeSnippetResponse);
     }
 
 
