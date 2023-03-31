@@ -54,9 +54,7 @@ public class ContainerController {
             @RequestBody @Valid CodeRequest codeRequest,
             Authentication authentication
     ) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(
-                containerService.executeCode(containerId, codeRequest, authentication)
-        );
+        return ResponseEntity.status(HttpStatus.CREATED).body(containerService.executeCode(containerId, codeRequest, authentication));
     }
 
 }

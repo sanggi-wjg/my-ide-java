@@ -13,7 +13,6 @@ import com.example.myidejava.mapper.ContainerMapper;
 import com.example.myidejava.module.docker.DockerClientShortCut;
 import com.example.myidejava.module.docker.executor.CodeExecutorFactory;
 import com.example.myidejava.module.docker.executor.ContainerCodeExecutor;
-import com.example.myidejava.module.kafka.MyKafkaProducer;
 import com.example.myidejava.repository.docker.CodeSnippetRepository;
 import com.example.myidejava.repository.docker.ContainerRepository;
 import com.example.myidejava.service.member.MemberService;
@@ -36,7 +35,7 @@ public class ContainerService {
     private final DockerClientShortCut dockerClientShortCut;
     private final CodeExecutorFactory codeExecutorFactory;
     private final ContainerValidationService containerValidationService;
-    private final MyKafkaProducer kafkaProducer;
+//    private final MyKafkaProducer kafkaProducer;
 
     public void initialize() {
         List<ContainerResponse> containers = dockerClientShortCut.getDockerContainers();
@@ -77,7 +76,7 @@ public class ContainerService {
         return dockerClientShortCut.getDockerContainers();
     }
 
-    public CodeSnippetResponse executeCode(Long containerId, CodeRequest codeRequest, Authentication authentication) {
+    public CodeSnippet createCodeSnippetForExecuteCode(Long containerId, CodeRequest codeRequest, Authentication authentication) {
         Container container = getContainerById(containerId);
         containerValidationService.validateIsContainerRunning(container);
         // 코드 스니펫 생성
@@ -88,40 +87,33 @@ public class ContainerService {
             codeSnippet = CodeSnippet.create(container, codeRequest, null);
         }
         codeSnippetRepository.save(codeSnippet);
+        return codeSnippet;
+    }
+
+    public void executeCodeByCodeSnippet(CodeSnippet codeSnippet) {
         // 코드 실행
-        ContainerCodeExecutor codeExecutor = codeExecutorFactory.create(container);
-        CodeResponse codeResponse = codeExecutor.execute(container, codeRequest);
+        ContainerCodeExecutor codeExecutor = codeExecutorFactory.create(codeSnippet.getContainer());
+        CodeResponse codeResponse = codeExecutor.execute(codeSnippet.getContainer(), codeSnippet.getRequest());
         // 실행 결과 저장
         codeSnippet.saveResponse(codeResponse.toMap());
+    }
+
+    public CodeSnippetResponse executeCode(Long containerId, CodeRequest codeRequest, Authentication authentication) {
+        CodeSnippet codeSnippet = createCodeSnippetForExecuteCode(containerId, codeRequest, authentication);
+        executeCodeByCodeSnippet(codeSnippet);
         return codeSnippetMapper.INSTANCE.toCodeSnippetResponse(codeSnippet);
     }
 
     public CodeSnippetResponse requestCodeSnippetToExecute(Long containerId, CodeRequest codeRequest, Authentication authentication) {
-        // todo refactoring
-        Container container = getContainerById(containerId);
-        containerValidationService.validateIsContainerRunning(container);
-        // 코드 스니펫 생성
-        CodeSnippet codeSnippet;
-        if (authentication != null) {
-            codeSnippet = CodeSnippet.create(container, codeRequest, memberService.getMemberByEmail(authentication.getName()));
-        } else {
-            codeSnippet = CodeSnippet.create(container, codeRequest, null);
-        }
-        codeSnippetRepository.save(codeSnippet);
-        kafkaProducer.send("CODE_SNIPPET", codeSnippet.getId().toString(), "execute");
+        CodeSnippet codeSnippet = createCodeSnippetForExecuteCode(containerId, codeRequest, authentication);
         return codeSnippetMapper.INSTANCE.toCodeSnippetResponse(codeSnippet);
     }
 
-    public void execute(Long codeSnippetId) {
-        // todo refactoring
+    public void executeCodeByCodeSnippetId(Long codeSnippetId) {
         CodeSnippet codeSnippet = codeSnippetRepository.findById(codeSnippetId).orElseThrow(() -> {
             throw new NotFoundException(ErrorCode.NOT_FOUND_CODE_SNIPPET);
         });
-        Container container = codeSnippet.getContainer();
-        ContainerCodeExecutor codeExecutor = codeExecutorFactory.create(container);
-        CodeResponse codeResponse = codeExecutor.execute(container, CodeRequest.builder().code(codeSnippet.getRequest()).build());
-        // 실행 결과 저장
-        codeSnippet.saveResponse(codeResponse.toMap());
+        executeCodeByCodeSnippet(codeSnippet);
     }
 
 }

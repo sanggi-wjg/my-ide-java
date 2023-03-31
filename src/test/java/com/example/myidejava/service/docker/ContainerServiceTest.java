@@ -42,6 +42,14 @@ class ContainerServiceTest {
         return containerService.executeCode(container.getId(), codeRequest, null);
     }
 
+    CodeSnippetResponse whenRequestExecuteCode(String[] given) {
+        CodeRequest codeRequest = CodeRequest.builder().code(given[2]).build();
+        Container container = containerRepository.findByLanguageNameAndLanguageVersion(given[0], given[1]).orElseThrow();
+        CodeSnippetResponse codeSnippetResponse = containerService.requestCodeSnippetToExecute(container.getId(), codeRequest, null);
+        containerService.executeCodeByCodeSnippetId(codeSnippetResponse.getId());
+        return codeSnippetResponse;
+    }
+
     @Test
     @DisplayName("Initialize 성공")
     void test_initialize() {
@@ -129,6 +137,7 @@ class ContainerServiceTest {
         String[] given = {"python", "2.7", "print(12345)"};
         // when
         CodeSnippetResponse codeSnippetResponse = whenExecuteCode(given);
+        CodeSnippetResponse codeSnippetResponse2 = whenRequestExecuteCode(given);
         // then
         Assertions.assertEquals("12345\n", codeSnippetResponse.getResponse().get("output"));
         Assertions.assertEquals("", codeSnippetResponse.getResponse().get("error"));

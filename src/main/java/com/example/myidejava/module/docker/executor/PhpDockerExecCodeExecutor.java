@@ -12,8 +12,8 @@ import java.util.Map;
 public class PhpDockerExecCodeExecutor extends ContainerCodeExecutor {
 
     @Override
-    public CodeResponse execute(Container container, CodeRequest codeRequest) {
-        File file = copyResourceToContainer(container.getContainerId(), "php", codeRequest.getCode());
+    public CodeResponse execute(Container container, String codeRequest) {
+        File file = copyResourceToContainer(container.getContainerId(), "php", codeRequest);
         String[] command = {"php", "/app/" + file.getName()};
         Map<String, String> result = createAndStartCommand(container.getContainerId(), command);
 
