@@ -34,6 +34,7 @@ class CodeSnippetControllerTest {
     @Test
     @DisplayName("GET /api/v1/code-snippets")
     void codeSnippetById() throws Exception {
+        // todo
         mvc.perform(get("/api/v1/code-snippets/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
