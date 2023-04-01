@@ -25,6 +25,9 @@ public class CodeExecutorFactory {
             case GO_DOCKER_EXEC -> {
                 return new GoDockerExecCodeExecutor();
             }
+            case JDK_DOCKER_EXEC -> {
+                return new JdkDockerExecCodeExecutor();
+            }
             default -> throw new DockerAppException(ErrorCode.DOCKER_CONTAINER_CODE_EXECUTOR_IS_NOT_IMPLEMENTED);
         }
     }

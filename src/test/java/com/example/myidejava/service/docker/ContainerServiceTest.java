@@ -133,6 +133,7 @@ class ContainerServiceTest {
     @Test
     @DisplayName("컨테이너 코드 실행 Python 2.7")
     void 컨테이너_코드_실행_Python_2_7() {
+        // todo 테스트 코드 리팩토링
         // given
         String[] given = {"python", "2.7", "print(12345)"};
         // when
@@ -192,6 +193,19 @@ class ContainerServiceTest {
         // then
         assertThat(codeSnippetResponse.getResponse().get("output").toString(), containsString("Hello"));
         assertThat(codeSnippetResponse.getResponse().get("output").toString(), containsString("Go"));
+        Assertions.assertEquals("", codeSnippetResponse.getResponse().get("error"));
+    }
+
+    @Test
+    @DisplayName("컨테이너 코드 실행 JDK")
+    void 컨테이너_코드_실행_JDK() {
+        // given
+        String[] given = {"jdk", "15", "public class Test {\n    public static void main(String[] args) {\n        System.out.println(\"Hello, Java!\");\n    }\n}"};
+        // when
+        CodeSnippetResponse codeSnippetResponse = whenExecuteCode(given);
+        // then
+        assertThat(codeSnippetResponse.getResponse().get("output").toString(), containsString("Hello"));
+        assertThat(codeSnippetResponse.getResponse().get("output").toString(), containsString("Java"));
         Assertions.assertEquals("", codeSnippetResponse.getResponse().get("error"));
     }
 

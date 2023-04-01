@@ -28,7 +28,7 @@ public abstract class ContainerCodeExecutor extends MyDockerClient {
 
     public abstract CodeResponse execute(Container container, String codeRequest);
 
-    protected final File copyResourceToContainer(String containerId, String extension, String content) {
+    protected File copyResourceToContainer(String containerId, String extension, String content) {
         File tempFile = FileUtil.createTemporaryFile(extension, content);
         DockerClient dockerClient = getDockerClient();
         dockerClient.copyArchiveToContainerCmd(containerId)
