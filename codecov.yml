@@ -9,8 +9,6 @@ comment:
   require_head: yes
   branches:
     - main
-    - feature
-    - feature/**
 
 ignore:
   - "**/core/exception/**"
