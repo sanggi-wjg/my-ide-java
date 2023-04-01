@@ -48,6 +48,33 @@ services:
       context: container/${GCC_4_9}
       dockerfile: Dockerfile
 
+  go-1.19:
+    hostname: ${GO_1_19}
+    container_name: container-${GO_1_19}
+    image: container-${GO_1_19}
+    restart: always
+    build:
+      context: container/${GO_1_19}
+      dockerfile: Dockerfile
+
+  jdk-11:
+    hostname: ${JDK_11}
+    container_name: container-${JDK_11}
+    image: container-${JDK_11}
+    restart: always
+    build:
+      context: container/${JDK_11}
+      dockerfile: Dockerfile
+
+  jdk-15:
+    hostname: ${JDK_15}
+    container_name: container-${JDK_15}
+    image: container-${JDK_15}
+    restart: always
+    build:
+      context: container/${JDK_15}
+      dockerfile: Dockerfile
+
   zookeeper:
     image: confluentinc/cp-zookeeper:7.3.0
     hostname: zookeeper

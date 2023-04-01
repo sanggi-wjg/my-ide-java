@@ -12,3 +12,4 @@ comment:
 
 ignore:
   - "**/core/exception/**"
+  - "container/**"

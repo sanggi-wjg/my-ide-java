@@ -31,7 +31,7 @@ Apache Kafka
 * To begin, Install Docker and Docker Compose on your server or local machine.
 * Once installed successfully, run the below docker-compose command.
 ```shell
-docker-compose --env-file .env.docker up -d
+docker-compose --env-file container/.env.docker up -d
 ```
 * After Gradle build, execute MainApplication(MyIdeJavaApplication) with the `local` profile as Spring Boot active profiles.
 

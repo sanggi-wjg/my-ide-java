@@ -9,22 +9,54 @@
 </head>
 <body>
 
+<label for="container-box"></label>
+<div id="container-box">
+</div>
+<button onclick="get_containers()">요청</button>
+<hr/>
+
 <label for="container-id">Container ID</label>
 <input type="number" id="container-id" value="1">
 <br/>
 
 <label for="code-box"></label>
-<textarea id="code-box" cols="100" rows="20">
+<textarea id="code-box" cols="50" rows="20">
 print([i for i in range(10)])
 </textarea>
 <br/>
+<!-- todo 버튼으로 샘플 소스 변경 -->
 
 <label for="code-result-box"></label>
-<textarea id="code-result-box" cols="100" rows="20"></textarea>
+<textarea id="code-result-box" cols="50" rows="20"></textarea>
 
 <button onclick="run_code()">요청</button>
 
 <script>
+    function get_containers() {
+        const container_box = $("#container-box");
+        container_box.html();
+
+        $.ajax({
+            type: 'GET',
+            url: `http://localhost:9000/api/v1/containers`,
+            // data: JSON.stringify({
+            //     'code': code
+            // }),
+            contentType: "application/json",
+            dataType: "text",
+            success: function (response) {
+                let result = '';
+                JSON.parse(response).forEach(function (res){
+                    result += `${res.id}, ${res.languageName}-${res.languageVersion}<br/>`;
+                });
+                container_box.html(result);
+            },
+            error: function (e) {
+                console.log(e);
+            }
+        });
+    }
+
     function run_code() {
         const container_id = $("#container-id").val();
         const code = $("#code-box").val();

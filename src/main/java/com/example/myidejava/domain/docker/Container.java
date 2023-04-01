@@ -64,7 +64,7 @@ public class Container extends BaseDateTime {
         return codeExecutorType.equals(CodeExecutorType.HTTP);
     }
 
-    public boolean isStateRunning(){
+    public boolean isStateRunning() {
         return getContainerState().equals("running");
     }
 
@@ -86,6 +86,9 @@ public class Container extends BaseDateTime {
             }
             case "php" -> codeExecutorType = CodeExecutorType.PHP_DOCKER_EXEC;
             case "gcc" -> codeExecutorType = CodeExecutorType.GCC_DOCKER_EXEC;
+            case "go" -> codeExecutorType = CodeExecutorType.GO_DOCKER_EXEC;
+            case "jdk" -> codeExecutorType = CodeExecutorType.JDK_DOCKER_EXEC;
+            default -> throw new IllegalStateException(languageName + ", language is not defined executor type");
         }
     }
 

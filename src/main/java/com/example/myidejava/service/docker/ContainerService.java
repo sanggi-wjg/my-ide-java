@@ -35,7 +35,6 @@ public class ContainerService {
     private final DockerClientShortCut dockerClientShortCut;
     private final CodeExecutorFactory codeExecutorFactory;
     private final ContainerValidationService containerValidationService;
-//    private final MyKafkaProducer kafkaProducer;
 
     public void initialize() {
         List<ContainerResponse> containers = dockerClientShortCut.getDockerContainers();
