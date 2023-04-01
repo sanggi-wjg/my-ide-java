@@ -4,8 +4,8 @@
 [![CodeFactor](https://www.codefactor.io/repository/github/sanggi-wjg/my-ide-java/badge)](https://www.codefactor.io/repository/github/sanggi-wjg/my-ide-java)
 [![codecov](https://codecov.io/gh/sanggi-wjg/my-ide-java/branch/main/graph/badge.svg?token=8NSYRJXPMS)](https://codecov.io/gh/sanggi-wjg/my-ide-java)
 
-### Codecov coverage
-<img src="https://codecov.io/gh/sanggi-wjg/my-ide-java/branch/main/graphs/tree.svg?token=8NSYRJXPMS" alt="">
+[//]: # (### Codecov coverage)
+[//]: # (<img src="https://codecov.io/gh/sanggi-wjg/my-ide-java/branch/main/graphs/tree.svg?token=8NSYRJXPMS" alt="">)
 
 
 ## Development Environment
@@ -18,6 +18,8 @@
 Java 17 (corretto)
 Spring boot 3.0.2
 JPA Hibernate 6.1.6
+MySQL 8.0
+Apache Kafka
 ```
 
 

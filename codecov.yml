@@ -11,3 +11,6 @@ comment:
     - main
     - feature
     - feature/**
+
+ignore:
+  - "**/core/exception/**"
