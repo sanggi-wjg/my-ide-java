@@ -24,10 +24,8 @@ Apache Kafka
 
 
 ## TODO
-* [ ] Kafka 연동 추가 작업 및 리팩토링
 * [ ] Redis는 할까? 말까? 할까? 말까?
 * [ ] Gradle 멀티 모듈 변경
-* [ ] new feature push 하면 PR 자동 생성?
 
 ## Install & Start
 * To begin, Install Docker and Docker Compose on your server or local machine.
