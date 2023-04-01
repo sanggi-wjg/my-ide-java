@@ -25,7 +25,7 @@ public class JWTUtil {
         return Algorithm.HMAC256(secret);
     }
 
-    private String getIssueHost() {
+    public String getIssueHost() {
         try {
             return InetAddress.getLocalHost().getHostName();
         } catch (UnknownHostException e) {

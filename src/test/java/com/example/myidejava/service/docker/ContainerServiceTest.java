@@ -59,6 +59,10 @@ class ContainerServiceTest {
         // then
         Assertions.assertEquals(containerResponseListOnServer.size(), containerResponseList.size(), "서버 컨테이너 개수와 디비에 저장된 컨테이너 개수는 같아야 한다.");
         containerResponseList.forEach(containerResponse -> {
+            Container container = containerRepository.findByLanguageNameAndLanguageVersion(containerResponse.getLanguageName(), containerResponse.getLanguageVersion()).orElseThrow();
+            container.saveContainerInfo(containerResponse);
+        });
+        containerResponseList.forEach(containerResponse -> {
             Assertions.assertNotNull(containerResponse.getContainerId());
             Assertions.assertNotNull(containerResponse.getDockerImageName());
             Assertions.assertNotNull(containerResponse.getLanguageName());
