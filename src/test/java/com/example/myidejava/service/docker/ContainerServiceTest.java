@@ -118,7 +118,7 @@ class ContainerServiceTest {
     }
 
 //    @Test
-//    @DisplayName("컨테이너_코드_실행_Python_3_8")
+//    @DisplayName("컨테이너 코드 실행 Python 3.8")
 //    void 컨테이너_코드_실행_Python_3_8() {
 //        // todo action gradle test 에서 에러 발생함
 //        // given
@@ -131,7 +131,7 @@ class ContainerServiceTest {
 //    }
 
     @Test
-    @DisplayName("컨테이너_코드_실행_Python_2_7")
+    @DisplayName("컨테이너 코드 실행 Python 2.7")
     void 컨테이너_코드_실행_Python_2_7() {
         // given
         String[] given = {"python", "2.7", "print(12345)"};
@@ -144,7 +144,7 @@ class ContainerServiceTest {
     }
 
     @Test
-    @DisplayName("컨테이너_코드_실행_PHP_7_4")
+    @DisplayName("컨테이너 코드 실행 PHP 7.4")
     void 컨테이너_코드_실행_PHP_7_4() {
         // given
         String[] given = {"php", "7.4", "<?php\n print_r(['Hello' => 'World']);"};
@@ -157,7 +157,7 @@ class ContainerServiceTest {
     }
 
     @Test
-    @DisplayName("컨테이너_코드_실행_PHP_8_2")
+    @DisplayName("컨테이너 코드 실행 PHP 8.2")
     void 컨테이너_코드_실행_PHP_8_2() {
         // given
         String[] given = {"php", "8.2", "<?php\n print_r(['Hello' => 'World']);"};
@@ -170,7 +170,7 @@ class ContainerServiceTest {
     }
 
     @Test
-    @DisplayName("컨테이너_코드_실행_GCC_4_9")
+    @DisplayName("컨테이너 코드 실행 GCC 4.9")
     void 컨테이너_코드_실행_GCC_4_9() {
         // given
         String[] given = {"gcc", "4.9", "#include <stdio.h>\n\nint main()\n{\n    printf(\"Hello World\");\n    return 0;\n}"};
@@ -179,6 +179,19 @@ class ContainerServiceTest {
         // then
         assertThat(codeSnippetResponse.getResponse().get("output").toString(), containsString("Hello"));
         assertThat(codeSnippetResponse.getResponse().get("output").toString(), containsString("World"));
+        Assertions.assertEquals("", codeSnippetResponse.getResponse().get("error"));
+    }
+
+    @Test
+    @DisplayName("컨테이너 코드 실행 Go 1.19")
+    void 컨테이너_코드_실행_GO_1_19() {
+        // given
+        String[] given = {"go", "1.19", "package main\n\nimport \"fmt\"\n\nfunc main() {\n\tfmt.Println(\"Hello, Go!\")\n}"};
+        // when
+        CodeSnippetResponse codeSnippetResponse = whenExecuteCode(given);
+        // then
+        assertThat(codeSnippetResponse.getResponse().get("output").toString(), containsString("Hello"));
+        assertThat(codeSnippetResponse.getResponse().get("output").toString(), containsString("Go"));
         Assertions.assertEquals("", codeSnippetResponse.getResponse().get("error"));
     }
 
