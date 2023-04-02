@@ -75,6 +75,15 @@ services:
       context: container/${JDK_15}
       dockerfile: Dockerfile
 
+  jdk-17:
+    hostname: ${JDK_17}
+    container_name: container-${JDK_17}
+    image: container-${JDK_17}
+    restart: always
+    build:
+      context: container/${JDK_17}
+      dockerfile: Dockerfile
+
   zookeeper:
     image: confluentinc/cp-zookeeper:7.3.0
     hostname: zookeeper
