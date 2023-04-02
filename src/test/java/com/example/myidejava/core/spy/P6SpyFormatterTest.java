@@ -14,7 +14,6 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 class P6SpyFormatterTest {
-
     @Autowired
     P6SpyFormatter p6SpyFormatter;
 
@@ -23,6 +22,24 @@ class P6SpyFormatterTest {
     void test_formatMessage() {
         String message = p6SpyFormatter.formatMessage(
                 1, "", 1L, "statement", "", "SELECT * FROM something", ""
+        );
+        assertNotNull(message);
+    }
+
+    @Test
+    @DisplayName("formatMessage-2")
+    void test_formatMessage_2() {
+        String message = p6SpyFormatter.formatMessage(
+                2, "", 1L, "statement", "", "", ""
+        );
+        assertEquals("", message);
+    }
+
+    @Test
+    @DisplayName("formatMessage-3")
+    void test_formatMessage_3() {
+        String message = p6SpyFormatter.formatMessage(
+                3, "", 1L, "statement", "", "create table", ""
         );
         assertNotNull(message);
     }

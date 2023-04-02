@@ -27,11 +27,12 @@ Apache Kafka
 * [ ] Redis는 할까? 말까? 할까? 말까?
 * [ ] Gradle 멀티 모듈 변경
 
+
 ## Install & Start
 * To begin, Install Docker and Docker Compose on your server or local machine.
 * Once installed successfully, run the below docker-compose command.
 ```shell
-docker-compose --env-file .env.docker up -d
+docker-compose --env-file container/.env.docker up -d
 ```
 * After Gradle build, execute MainApplication(MyIdeJavaApplication) with the `local` profile as Spring Boot active profiles.
 
@@ -83,7 +84,7 @@ sequenceDiagram
 ```
 
 
-### PHP 8.2, PHP 7.4, GCC 4.9
+### PHP 8.2, PHP 7.4, GCC 4.9, JDK, GoLang
 After create temp file, transfer the file to container.  
 Then, run a file on container.
 
@@ -106,7 +107,7 @@ sequenceDiagram
 
 
 
-## Usage
+## Tools
 ### Swagger
 * http://localhost:9000/swagger-ui/index.html
 
@@ -126,11 +127,9 @@ sequenceDiagram
 * gradle > Tasks > verification > jacocoTestReport `(For Coverage)`
   * build > jacoco > test > html  > index.html
 
+
 ### Codecov
 * https://app.codecov.io/gh/sanggi-wjg/my-ide-java
-  * ref
-    * https://about.codecov.io/blog/setting-up-codecov-with-java-and-gradle/
-    * https://jane514.tistory.com/12
 
 
 ### Local Test view
@@ -151,5 +150,10 @@ act -j build-test --container-architecture linux/amd64
 
 
 ### Ref
+* Kafka
+  * https://www.youtube.com/watch?v=gtM-NtRbf7c&list=PLGRDMO4rOGcNLwoack4ZiTyewUcF6y6BU&index=13&ab_channel=JavaGuides
+* Codecov
+  * https://about.codecov.io/blog/setting-up-codecov-with-java-and-gradle/
+  * https://jane514.tistory.com/12
 * JWT 구현 참조
   * https://medium.com/geekculture/implementing-json-web-token-jwt-authentication-using-spring-security-detailed-walkthrough-1ac480a8d970

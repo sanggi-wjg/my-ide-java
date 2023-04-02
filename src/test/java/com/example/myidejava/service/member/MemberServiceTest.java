@@ -31,6 +31,13 @@ class MemberServiceTest {
     JWTUtil jwtUtil;
 
     @Test
+    @DisplayName("getIssueHost")
+    void getIssueHost() {
+        String issueHost = jwtUtil.getIssueHost();
+        assertNotNull(issueHost);
+    }
+
+    @Test
     @DisplayName("createEmailUser")
     void test_createEmailUser() {
         // given

@@ -10,14 +10,14 @@ import java.util.List;
 
 @Component
 public class DockerClientShortCut extends MyDockerClient {
-    private static final String IDE_CONTAINER_NAME = "container";
+    private static final String ALLOWED_CONTAINER_NAME = "container";
 
     public List<ContainerResponse> getDockerContainers() {
         List<ContainerResponse> containerResponses = new ArrayList<>();
         DockerClient dockerClient = getDockerClient();
 
         dockerClient.listContainersCmd().withShowAll(true).exec().stream()
-                .filter(container -> container.getImage().contains(IDE_CONTAINER_NAME))
+                .filter(container -> container.getImage().contains(ALLOWED_CONTAINER_NAME))
                 .forEach(container -> containerResponses.add(ContainerResponse.containerToDto(container)));
         return containerResponses;
     }

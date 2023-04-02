@@ -59,6 +59,10 @@ class ContainerServiceTest {
         // then
         Assertions.assertEquals(containerResponseListOnServer.size(), containerResponseList.size(), "서버 컨테이너 개수와 디비에 저장된 컨테이너 개수는 같아야 한다.");
         containerResponseList.forEach(containerResponse -> {
+            Container container = containerRepository.findByLanguageNameAndLanguageVersion(containerResponse.getLanguageName(), containerResponse.getLanguageVersion()).orElseThrow();
+            container.saveContainerInfo(containerResponse);
+        });
+        containerResponseList.forEach(containerResponse -> {
             Assertions.assertNotNull(containerResponse.getContainerId());
             Assertions.assertNotNull(containerResponse.getDockerImageName());
             Assertions.assertNotNull(containerResponse.getLanguageName());
@@ -118,7 +122,7 @@ class ContainerServiceTest {
     }
 
 //    @Test
-//    @DisplayName("컨테이너_코드_실행_Python_3_8")
+//    @DisplayName("컨테이너 코드 실행 Python 3.8")
 //    void 컨테이너_코드_실행_Python_3_8() {
 //        // todo action gradle test 에서 에러 발생함
 //        // given
@@ -131,8 +135,9 @@ class ContainerServiceTest {
 //    }
 
     @Test
-    @DisplayName("컨테이너_코드_실행_Python_2_7")
+    @DisplayName("컨테이너 코드 실행 Python 2.7")
     void 컨테이너_코드_실행_Python_2_7() {
+        // todo 테스트 코드 리팩토링
         // given
         String[] given = {"python", "2.7", "print(12345)"};
         // when
@@ -144,7 +149,7 @@ class ContainerServiceTest {
     }
 
     @Test
-    @DisplayName("컨테이너_코드_실행_PHP_7_4")
+    @DisplayName("컨테이너 코드 실행 PHP 7.4")
     void 컨테이너_코드_실행_PHP_7_4() {
         // given
         String[] given = {"php", "7.4", "<?php\n print_r(['Hello' => 'World']);"};
@@ -157,7 +162,7 @@ class ContainerServiceTest {
     }
 
     @Test
-    @DisplayName("컨테이너_코드_실행_PHP_8_2")
+    @DisplayName("컨테이너 코드 실행 PHP 8.2")
     void 컨테이너_코드_실행_PHP_8_2() {
         // given
         String[] given = {"php", "8.2", "<?php\n print_r(['Hello' => 'World']);"};
@@ -170,7 +175,7 @@ class ContainerServiceTest {
     }
 
     @Test
-    @DisplayName("컨테이너_코드_실행_GCC_4_9")
+    @DisplayName("컨테이너 코드 실행 GCC 4.9")
     void 컨테이너_코드_실행_GCC_4_9() {
         // given
         String[] given = {"gcc", "4.9", "#include <stdio.h>\n\nint main()\n{\n    printf(\"Hello World\");\n    return 0;\n}"};
@@ -179,6 +184,32 @@ class ContainerServiceTest {
         // then
         assertThat(codeSnippetResponse.getResponse().get("output").toString(), containsString("Hello"));
         assertThat(codeSnippetResponse.getResponse().get("output").toString(), containsString("World"));
+        Assertions.assertEquals("", codeSnippetResponse.getResponse().get("error"));
+    }
+
+    @Test
+    @DisplayName("컨테이너 코드 실행 Go 1.19")
+    void 컨테이너_코드_실행_GO_1_19() {
+        // given
+        String[] given = {"go", "1.19", "package main\n\nimport \"fmt\"\n\nfunc main() {\n\tfmt.Println(\"Hello, Go!\")\n}"};
+        // when
+        CodeSnippetResponse codeSnippetResponse = whenExecuteCode(given);
+        // then
+        assertThat(codeSnippetResponse.getResponse().get("output").toString(), containsString("Hello"));
+        assertThat(codeSnippetResponse.getResponse().get("output").toString(), containsString("Go"));
+        Assertions.assertEquals("", codeSnippetResponse.getResponse().get("error"));
+    }
+
+    @Test
+    @DisplayName("컨테이너 코드 실행 JDK")
+    void 컨테이너_코드_실행_JDK() {
+        // given
+        String[] given = {"jdk", "15", "public class Test {\n    public static void main(String[] args) {\n        System.out.println(\"Hello, Java!\");\n    }\n}"};
+        // when
+        CodeSnippetResponse codeSnippetResponse = whenExecuteCode(given);
+        // then
+        assertThat(codeSnippetResponse.getResponse().get("output").toString(), containsString("Hello"));
+        assertThat(codeSnippetResponse.getResponse().get("output").toString(), containsString("Java"));
         Assertions.assertEquals("", codeSnippetResponse.getResponse().get("error"));
     }
 
