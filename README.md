@@ -111,7 +111,7 @@ sequenceDiagram
 ### Swagger
 * http://localhost:9000/swagger-ui/index.html
 
-![](.README_images/1241e6dc.png)
+![](.README_images/9ca6a62b.png)
 
 
 ### Kafka UI
